@@ -1,9 +1,9 @@
 # Jobbod frontend profile
 
-- Repository: https://github.com/hieu1020pk-web/jobbod-.git
+- Repository: https://github.com/Jobbod/Jobbod.git
 - Branches: frontend/develop → frontend/ci-cd; main is preserved.
 - Stack: Next.js generated defaults, npm, src/app.
-- Owner/release owner: repository owner hieu1020pk-web.
+- Owner/release owner: repository owner Jobbod.
 - Deployment authorized by the user in the bootstrap conversation on 2026-11-11.
 - CI: Docker build/push + one SSH deployment + readiness/smoke check; no extra CI test/lint gates requested.
 - Secrets: server-local file mounts; GitHub stores deployment SSH key and pinned host key only.
