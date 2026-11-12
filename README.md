@@ -56,3 +56,5 @@ Push `frontend/develop` to create/update the automated service PR into `staging`
 Merge only after Integration CI passes. Release through `staging` → `main`;
 only main builds/pushes/deploys production. Do not PR the service-root tree directly
 into the monorepo. Operational configuration belongs to monorepo `deploy/`.
+
+The promotion PR is updated automatically after each push; check Integration CI before merging it into staging.
