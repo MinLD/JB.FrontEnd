@@ -49,3 +49,10 @@ Open http://localhost:3000. The shared Dockerfile requires Next.js standalone ou
 ## Local environment example
 
 Copy `.env.example` to `.env.local` before `npm run dev`. Next.js reads `.env.local` automatically. The template currently has no secret or API client; `NEXT_PUBLIC_*` values are exposed to browsers and must never contain credentials. Real env files stay out of Git and Docker context.
+
+## Integration and release
+
+Push `frontend/develop` to create/update the automated service PR into `staging`.
+Merge only after Integration CI passes. Release through `staging` → `main`;
+only main builds/pushes/deploys production. Do not PR the service-root tree directly
+into the monorepo. Operational configuration belongs to monorepo `deploy/`.

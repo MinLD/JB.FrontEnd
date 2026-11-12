@@ -1,3 +1,10 @@
-# Project rules
+# Project integration rules
 
-Use the user-approved bootstrap plan. Backend owns PostgreSQL schema/migrations and canonical deployment files in deploy/. AI is internal and has no direct database ownership. Never commit secrets or model weights. CI remains build/push/deploy/check only. Keep source on develop and merge develop into ci-cd; do not cherry-pick deployments back into develop. Do not weaken existing repository protections.
+Backend owns PostgreSQL schema and migrations. AI has no direct database ownership.
+Production configuration is owned centrally in monorepo deploy/. Never commit real
+secrets or model weights. Service-only develop branches feed generated promotion
+PRs into staging; staging/main contain the monorepo. CI tests PR merge results with
+disposable infrastructure. Only main publishes/deploys affected application images.
+Do not merge a service-root branch directly into staging/main, or edit generated
+promote/* branches. CI/CD branches are historical and inactive. Do not weaken
+existing repository protections.

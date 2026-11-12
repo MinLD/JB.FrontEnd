@@ -1,0 +1,14 @@
+name: Service changed
+on:
+  push:
+    branches: [frontend/develop]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  signal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Signal trusted promotion workflow on main
+        run: echo 'Service source updated; the main workflow reconciles its staging PR.'

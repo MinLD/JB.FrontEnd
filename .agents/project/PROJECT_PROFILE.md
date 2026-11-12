@@ -1,12 +1,12 @@
 # Jobbod frontend profile
 
 - Repository: https://github.com/Jobbod/Jobbod.git
-- Branches: frontend/develop → frontend/ci-cd; main is preserved.
+- Branches: frontend/develop (service-only) → automatic promotion PR → staging (monorepo CI) → main (production CD).
 - Stack: Next.js generated defaults, npm, src/app.
 - Owner/release owner: repository owner Jobbod.
 - Deployment authorized by the user in the bootstrap conversation on 2026-11-11.
-- CI: Docker build/push + one SSH deployment + readiness/smoke check; no extra CI test/lint gates requested.
-- Secrets: server-local file mounts; GitHub stores deployment SSH key and pinned host key only.
+- CI: integration tests on PRs into staging/main; selective Docker build/push and one SSH batch deploy on main only.
+- Secrets: server-local runtime secrets; GitHub deployment key/host keys and a separate promotion token.
 - Verification: npm run build; infrastructure integration and rollback checks during bootstrap.
 - Runtime budget: app 4 GB RAM / 40 GB disk; infra 6 GB RAM / 99 GB disk.
 - AI: no selected model, no model download; persistent cache reserved for later use.
