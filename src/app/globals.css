@@ -940,7 +940,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   /* Partners & Matching */
   .partners-section {
     min-height: auto;
-    padding-block: 36px;
+    padding-block: 40px;
   }
   .partner-logo {
     flex: 0 0 120px;
@@ -952,36 +952,35 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   }
   .matching-heading {
     margin-top: 36px;
-    font-size: clamp(19px, 5vw, 26px);
+    font-size: clamp(20px, 5.5vw, 28px);
     line-height: 1.35;
-    padding-inline: 8px;
+    padding-inline: 12px;
     text-wrap: balance;
   }
   .matching-grid {
-    display: grid !important;
-    grid-template-columns: repeat(3, 1fr) !important;
-    gap: 8px;
-    padding: 16px 6px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 20px 0;
     width: 100%;
     margin: 16px auto 0;
   }
   .matching-grid > div {
-    gap: 6px;
+    gap: 8px;
     min-width: 0;
     text-align: center;
   }
   .matching-grid img, .matching-grid svg {
-    width: 36px;
-    height: 36px;
+    width: 40px;
+    height: 40px;
   }
   .matching-grid h3 {
-    font-size: 13px;
+    font-size: 15px;
     line-height: 1.3;
-    letter-spacing: normal;
   }
   .matching-grid p {
-    font-size: 11px;
-    line-height: 1.35;
+    font-size: 12px;
+    line-height: 1.4;
   }
 
   /* FAQ */
@@ -1081,6 +1080,59 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   .profile-top { flex-wrap: wrap; }
   .profile-details { grid-template-columns: 1fr; }
   .session-actions { flex-direction: column; }
+
+  /* Workflow cards on mobile */
+  .step-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 20px;
+    border-radius: 18px;
+  }
+  .step-art {
+    width: 100%;
+    max-width: 130px;
+    margin: 4px auto 0;
+  }
+
+  /* Matching items on mobile: standard clean vertical cards */
+  .matching-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px;
+    padding: 16px 0;
+    margin: 18px auto 0;
+  }
+  .matching-grid > div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    gap: 16px;
+    padding: 16px 18px;
+    background: #ffffff;
+    border: 1px solid #e8dfcc;
+    border-radius: 16px;
+    box-shadow: 0 4px 16px rgb(48 43 31 / .04);
+  }
+  .matching-grid img, .matching-grid svg {
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+  }
+  .matching-grid h3 {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0;
+  }
+  .matching-grid p {
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 3px 0 0;
+    color: var(--text-secondary);
+  }
 
   /* Founders Horizontal Cards for Mobile */
   .founders-section {

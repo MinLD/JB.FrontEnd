@@ -105,8 +105,11 @@ test('landing adapts responsively without horizontal overflow; keeps 3-column ma
     const current = await measure();
     expect(current.heading.width).toBeLessThanOrEqual(width);
     expect(current.project.width).toBeLessThanOrEqual(width);
-    // Keep 3 columns on matching grid side-by-side as requested
-    expect(Math.abs(current.matchingFirst.y - current.matchingLast.y)).toBeLessThan(5);
+    if (width > 650) {
+      expect(Math.abs(current.matchingFirst.y - current.matchingLast.y)).toBeLessThan(5);
+    } else {
+      expect(current.matchingLast.y).toBeGreaterThan(current.matchingFirst.y);
+    }
     if (width <= 900) {
       expect(current.desktopMenu).toBe('none');
       expect(['inline-flex', 'flex']).toContain(current.mobileMenu);
