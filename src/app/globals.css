@@ -287,6 +287,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
 .matching-heading { margin-top: 61px; text-align: center; font-size: 30px; line-height: 39px; font-weight: 600; letter-spacing: -.75px; }
 .matching-grid { width: min(960px, 100%); margin: 19.5px auto 0; display: grid; grid-template-columns: repeat(3, 1fr); background: transparent; padding: 25.5px 30px; border-radius: 25.5px; }
 .matching-grid > div { display: flex; flex-direction: column; align-items: center; gap: 11.25px; text-align: center; }
+.matching-grid img, .matching-grid svg { width: auto; height: 54px; max-width: 104px; object-fit: contain; }
 .matching-grid h3 { font-size: 17.25px; font-weight: 600; line-height: 24px; letter-spacing: -.3px; }
 .matching-grid p { font-size: 12px; line-height: 18px; color: var(--text-secondary); }
 .faq-section { background: var(--secondary); padding: 75px 24px 72px; min-height: 629.5px; }
@@ -971,8 +972,10 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
     text-align: center;
   }
   .matching-grid img, .matching-grid svg {
-    width: 40px;
-    height: 40px;
+    width: auto;
+    height: 44px;
+    max-width: 84px;
+    object-fit: contain;
   }
   .matching-grid h3 {
     font-size: 15px;
@@ -1117,8 +1120,10 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
     box-shadow: 0 4px 16px rgb(48 43 31 / .04);
   }
   .matching-grid img, .matching-grid svg {
-    width: 44px;
+    width: auto;
     height: 44px;
+    max-width: 84px;
+    object-fit: contain;
     flex-shrink: 0;
   }
   .matching-grid h3 {
