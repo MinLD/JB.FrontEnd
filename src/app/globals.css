@@ -230,7 +230,6 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
 .section-heading .eyebrow { margin-bottom: 9px; }
 .section-heading > p:last-child:not(.eyebrow) { font-size: 13.5px; line-height: 21px; color: var(--text-secondary); margin-top: 9px; }
 .workflow-heading h2 { font-size: clamp(30px, 3.15vw, 46px); line-height: 1.15; letter-spacing: -.04em; }
-.workflow-heading h2 em { color: #896014; }
 .workflow-heading > p:last-child:not(.eyebrow) { max-width: 530px; margin-inline: auto; text-wrap: balance; }
 .workflow {
   --step-width: min(442px, calc((100% - 140px) / 2));
@@ -261,7 +260,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
 .step-4 { grid-column: 1; grid-row: 2; }
 .step-art { display: grid; place-items: center; min-width: 0; }
 .step-art img { display: block; width: 100%; height: auto; }
-.step-label { display: block; color: #896014; font-size: 10px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 7px; }
+.step-label { display: block; color: var(--primary); font-size: 10px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 7px; }
 .step-card h3 { color: #22231f; font-size: 20px; line-height: 1.2; font-weight: 650; letter-spacing: -.025em; }
 .step-copy p { font-size: 13px; line-height: 1.5; color: #494a43; margin-top: 8px; }
 .step-line, .step-line-mobile { fill: none; stroke: #a9b2bc; stroke-width: 1.8px; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; overflow: visible; }
@@ -571,7 +570,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
 .auth-form { display: flex; flex-direction: column; gap: 18px; }
 .auth-label { display: block; font-size: 14px; line-height: 20px; margin-bottom: 10px; }
 .auth-field { position: relative; }
-.auth-input { height: 54px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--background); font-size: 14px; line-height: 24px; }
+.auth-input { height: 54px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--background); font-size: 16px; line-height: 24px; }
 .auth-input[type=password], .auth-input[autocomplete=new-password], .auth-input[autocomplete=current-password] { padding-right: 70px; }
 .auth-input::placeholder { color: #748091; }
 .auth-input:focus-visible { outline: none; box-shadow: none; border-color: var(--gold-ink); }
@@ -1088,7 +1087,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   .auth-intro { display: none; }
   .auth-content { margin-inline: auto; }
   .auth-panel h1 { font-size: 28px; line-height: 40px; margin-bottom: 30px; }
-  .auth-input, .google-button, .submit-button { font-size: 14px; }
+  .google-button, .submit-button { font-size: 14px; }
   .auth-bottom { font-size: 13px; }
   .user-main { width: calc(100% - 40px); padding-top: 120px; }
   .user-heading h1 { font-size: 28px; }
