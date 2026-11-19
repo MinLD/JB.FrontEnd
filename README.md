@@ -1,60 +1,40 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jobbod frontend
 
-## Getting Started
+Frontend dùng Next.js App Router, React, TypeScript và Tailwind CSS.
+Hiện có landing page, đăng nhập, đăng ký và trang tài khoản. Google login và quên mật khẩu chưa nối API.
 
-First, run the development server:
+## Cấu trúc source
+
+```text
+src/
+  app/          Các trang, layout, style chung và API handler Next.js
+  components/   Giao diện: auth, landing, layout và UI tái sử dụng
+  services/     Gọi API, quản lý cookie và refresh phiên
+  providers/    State tài khoản và thông báo toast dùng chung
+  config/       Endpoint API, nội dung landing và danh sách ảnh
+  lib/          Logic dùng chung; validations/ chứa schema kiểm tra dữ liệu
+  types/        Kiểu TypeScript cho dữ liệu
+  utils/        Hàm tiện ích
+public/         Ảnh và tài nguyên giao diện
+scripts/        Công cụ hỗ trợ dev, tài liệu và kiểm thử
+tests/          Unit test
+e2e/            Kiểm thử trình duyệt với backend giả lập
+```
+
+Giao diện gọi service → API Next.js → backend Jobbod. Token được server quản lý qua cookie HttpOnly; proxy kiểm tra cookie và refresh khi cần trước khi vào trang tài khoản. Backend xác thực token và quyền khi gọi API.
+
+## Chạy local
 
 ```bash
+npm ci
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Đặt URL backend tại `JOBBOD_API_URL`. Chạy `npm run check` để kiểm tra code.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+[Danh mục UI](./src/components/ui/README.md) ghi công dụng và cách dùng component; tự cập nhật khi chạy dev/build.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tích hợp repo
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Docker local
-
-From this directory (frontend/develop or frontend/ci-cd):
-
-```bash
-docker build -t jobbod-frontend:local .
-docker run --rm -p 127.0.0.1:3000:3000 jobbod-frontend:local
-```
-
-Open http://localhost:3000. The shared Dockerfile requires Next.js standalone output, configured in next.config.ts on both branches.
-
-## Local environment example
-
-Copy `.env.example` to `.env.local` before `npm run dev`. Next.js reads `.env.local` automatically. The template currently has no secret or API client; `NEXT_PUBLIC_*` values are exposed to browsers and must never contain credentials. Real env files stay out of Git and Docker context.
-
-## Integration and release
-
-Push `frontend/develop` to create/update the automated service PR into `staging`.
-Merge only after Integration CI passes. Release through `staging` → `main`;
-only main builds/pushes/deploys production. Do not PR the service-root tree directly
-into the monorepo. Operational configuration belongs to monorepo `deploy/`.
-
-The promotion PR is updated automatically after each push; check Integration CI before merging it into staging.
+Nhánh `frontend/develop` tự tạo/cập nhật PR tích hợp vào `staging`; kiểm tra Integration CI trước khi merge. Luồng phát hành là `staging` → `main`. Không merge trực tiếp cây service này vào monorepo hoặc sửa nhánh `promote/*`.

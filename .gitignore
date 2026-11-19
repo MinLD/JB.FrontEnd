@@ -12,6 +12,11 @@
 
 # testing
 /coverage
+/test-results
+/playwright-report
+
+# documentation
+docs/
 
 # next.js
 /.next/
@@ -24,7 +29,13 @@
 .DS_Store
 *.pem
 
+# editors
+.idea/
+.vscode/
+
 # debug
+*.log
+logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -41,5 +52,5 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Local private configuration
-.secrets/
+# Python deployment regression tests
+__pycache__/

@@ -11,5 +11,4 @@ __pycache__
 models
 tests
 deploy
-*.md
 .cache/
