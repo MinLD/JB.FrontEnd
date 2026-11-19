@@ -81,7 +81,7 @@ export const TEAM_GROUPS = [
       },
       {
         "id": "do-dang-minh-quan",
-        "name": "Do Dang Minh Quan",
+        "name": "Do Dang Minh Luan",
         "role": "UI/UX Designer · Fullstack Developer",
         "description": "Thiết kế sản phẩm từ đầu đến cuối, từ trải nghiệm và giao diện người dùng đến phát triển ứng dụng web và app.",
         "portrait": "/jobbod/team/do-dang-minh-quan.webp"
