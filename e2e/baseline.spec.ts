@@ -67,7 +67,7 @@ test('mobile landing assets honor their slots; FAQ is keyboard accessible', asyn
   const geometry = await page.locator('.photo-main img').evaluate(img => { const image = img.getBoundingClientRect(); const slot = img.parentElement!.getBoundingClientRect(); return { ratio: image.width / slot.width, heightRatio: image.height / slot.height }; });
   expect(geometry.ratio).toBeCloseTo(1, 1); expect(geometry.heightRatio).toBeCloseTo(1.0424, 1);
 });
-test('landing keeps desktop rows and scales proportionally on smaller screens', async ({ page }) => {
+test('landing adapts responsively without horizontal overflow; keeps 3-column matching and enables mobile nav', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto('/');
   await expect(page.locator('.intro-loader-overlay')).toHaveCount(0);
@@ -90,33 +90,27 @@ test('landing keeps desktop rows and scales proportionally on smaller screens', 
       bobScene: rect('.bob-scene'), bobCopy: rect('.bob-copy'),
       projectPhoto: rect('.project-photo'), projectCopy: rect('.project-copy'),
       matchingFirst: rect('.matching-grid > div:first-child'), matchingLast: rect('.matching-grid > div:last-child'),
-      teamFirst: rect('.founder-grid:not(.founder-grid-advisors) > article:first-child'),
-      teamThird: rect('.founder-grid:not(.founder-grid-advisors) > article:nth-child(3)'),
-      stepFirst: rect('.step-1'), stepSecond: rect('.step-2'), stepThird: rect('.step-3'),
       desktopMenu: getComputedStyle(document.querySelector('.landing-header .desktop-nav')!).display,
       mobileMenu: getComputedStyle(document.querySelector('.landing-header .mobile-toggle')!).display,
     };
   });
   const desktop = await measure();
+  expect(desktop.desktopMenu).toBe('flex');
+  expect(desktop.mobileMenu).toBe('none');
+  expect(Math.abs(desktop.matchingFirst.y - desktop.matchingLast.y)).toBeLessThan(2);
+
   for (const width of [1024, 768, 390, 320]) {
     await page.setViewportSize({ width, height: 960 });
-    await expect.poll(async () => Math.abs((await measure()).canvas.width - (await measure()).viewport)).toBeLessThan(1);
+    await expect.poll(async () => (await measure()).pageWidth).toBeLessThanOrEqual(width);
     const current = await measure();
-    const ratio = current.viewport / desktop.viewport;
-    expect(current.pageWidth).toBeLessThanOrEqual(width);
-    for (const name of ['heading', 'project', 'profile'] as const) {
-      expect(Math.abs(current[name].width - desktop[name].width * ratio)).toBeLessThan(1);
-      expect(Math.abs(current[name].height - desktop[name].height * ratio)).toBeLessThan(1);
+    expect(current.heading.width).toBeLessThanOrEqual(width);
+    expect(current.project.width).toBeLessThanOrEqual(width);
+    // Keep 3 columns on matching grid side-by-side as requested
+    expect(Math.abs(current.matchingFirst.y - current.matchingLast.y)).toBeLessThan(5);
+    if (width <= 900) {
+      expect(current.desktopMenu).toBe('none');
+      expect(['inline-flex', 'flex']).toContain(current.mobileMenu);
     }
-    expect(current.connectionCopy.x).toBeGreaterThan(current.connectionPhoto.x);
-    expect(current.bobCopy.x).toBeGreaterThan(current.bobScene.x);
-    expect(current.projectCopy.x).toBeGreaterThan(current.projectPhoto.x);
-    expect(Math.abs(current.matchingFirst.y - current.matchingLast.y)).toBeLessThan(1);
-    expect(Math.abs(current.teamFirst.y - current.teamThird.y)).toBeLessThan(1);
-    expect(Math.abs(current.stepFirst.y - current.stepSecond.y)).toBeLessThan(1);
-    expect(current.stepThird.y).toBeGreaterThan(current.stepFirst.y);
-    expect(current.desktopMenu).toBe('flex');
-    expect(current.mobileMenu).toBe('none');
   }
 });
 test('intro completes without leaving the navbar hidden during client navigation', async ({ page }) => {
