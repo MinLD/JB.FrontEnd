@@ -1,5 +1,6 @@
 {
-  "name": "jobbod-frontend",
+  "name": "jobbod",
+  "author": "MinLD",
   "version": "0.1.0",
   "private": true,
   "scripts": {

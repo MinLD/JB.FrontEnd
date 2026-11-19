@@ -5,7 +5,8 @@ import { ToastProvider } from "@/providers/toast-provider";
 import { IntroLoader } from "@/components/layout/intro-loader";
 import "./globals.css";
 export const metadata: Metadata = {
-  title: { default: "Jobbod AI", template: "%s | Jobbod AI" },
+  applicationName: "JobBod",
+  title: { default: "JobBod", template: "%s | JobBod" },
   description:
     "Đồng hành cùng sinh viên trong mọi dự án học tập và hành trình sự nghiệp.",
 };

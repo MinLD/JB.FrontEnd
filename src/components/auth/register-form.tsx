@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,9 +10,9 @@ import { AUTH_LIMITS, registerSchema, type RegisterFields } from "@/lib/validati
 import { register } from "@/services/auth-service";
 import { AuthField, showValidationError } from "./auth-field";
 
-export function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
+export function RegisterForm() {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
   const form = useForm<RegisterFields>({ resolver: zodResolver(registerSchema), reValidateMode: "onChange", defaultValues: { full_name: "", email: "", password: "" } });
   const submit = form.handleSubmit(async values => {
     setError(null);
@@ -22,11 +22,10 @@ export function RegisterForm({ onSuccess }: { onSuccess: () => void }) {
       toast.error(result.message, { id: "auth-request" });
       return;
     }
-    setSuccess(true);
-    onSuccess();
     form.reset();
+    toast.success("Đăng ký thành công! Bạn có thể đăng nhập bằng tài khoản vừa tạo.", { id: "auth-register" });
+    router.replace(`/login?email=${encodeURIComponent(values.email)}`);
   }, showValidationError);
-  if (success) return <div className="auth-form"><p role="status" className="success-message">Đăng ký thành công! Bạn có thể đăng nhập bằng tài khoản vừa tạo.</p><Button asChild className="submit-button"><Link href="/login">Đăng nhập</Link></Button></div>;
   return <form onSubmit={submit} className="auth-form" noValidate>
     <AuthField label="Họ và tên" placeholder="Tên của bạn" autoComplete="name" minLength={AUTH_LIMITS.nameMin} {...form.register("full_name")} validationAttempt={form.formState.submitCount} error={form.formState.errors.full_name?.message} />
     <AuthField label="Email" type="email" placeholder="ban@example.com" autoComplete="email" {...form.register("email")} validationAttempt={form.formState.submitCount} error={form.formState.errors.email?.message} />

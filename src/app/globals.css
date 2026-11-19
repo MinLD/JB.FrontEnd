@@ -585,7 +585,6 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
 .auth-bottom .auth-back-link { font-size: 13px; font-weight: 500; color: var(--text-secondary); }
 .auth-copyright { font-size: 11px; line-height: 18px; color: var(--muted-foreground); text-align: center; }
 .form-error { color: var(--error); padding: 12px 14px; border: 1px solid color-mix(in srgb, var(--error) 20%, transparent); border-radius: 8px; background: var(--error-background); font-size: 13px; line-height: 20px; }
-.success-message { color: var(--success); padding: 16px; border-radius: 10px; background: var(--success-background); font-size: 14px; line-height: 24px; }
 .availability-note { padding: 12px 14px; border-radius: 8px; background: var(--secondary); color: var(--text-secondary); font-size: 13px; line-height: 22px; }
 
 /* Authenticated account page. */

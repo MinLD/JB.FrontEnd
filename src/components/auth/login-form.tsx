@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LoaderCircle } from "lucide-react";
@@ -15,10 +15,16 @@ import { AuthField, showValidationError } from "./auth-field";
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const initialEmail = searchParams.get("email") ?? "";
   const { reload } = useAuth();
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const form = useForm<LoginFields>({ resolver: zodResolver(loginSchema), reValidateMode: "onChange", defaultValues: { email: "", password: "" } });
+  const { setValue } = form;
+  useEffect(() => {
+    if (initialEmail) setValue("email", initialEmail);
+  }, [initialEmail, setValue]);
   const submit = form.handleSubmit(async values => {
     setError(null);
     const result = await login(values.email, values.password, remember);

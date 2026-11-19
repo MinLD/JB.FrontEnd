@@ -48,13 +48,24 @@ test('outages preserve sessions, cross-site requests and auth forwarding are rej
   expect((await context.request.post('/api/auth/refresh')).status()).toBe(401);
   expect((await context.cookies()).some(c => c.name === 'refreshToken')).toBe(false);
 });
-test('forms validate and registration succeeds against the mock backend', async ({ page }) => {
+for (const width of [1440, 390]) {
+test(`registration validates, toasts success and prefills login at ${width}px`, async ({ page }) => {
+  await page.setViewportSize({ width, height: 900 });
   await page.goto('/register'); await page.getByRole('button', { name: 'Tạo tài khoản', exact: true }).click();
   await expect(page.getByLabel('Họ và tên', { exact: true })).toBeFocused();
   await page.getByLabel('Họ và tên', { exact: true }).fill('Nguyễn An'); await page.getByLabel('Email', { exact: true }).fill('student@example.com');
   await page.getByLabel('Mật khẩu', { exact: true }).fill('password123'); await page.getByRole('button', { name: 'Tạo tài khoản', exact: true }).click();
-  await expect(page.getByRole('status').filter({ hasText: 'Đăng ký thành công' })).toBeVisible();
+  await expect(page).toHaveURL('/login?email=student%40example.com');
+  await expect(page.getByText('Đăng ký thành công! Bạn có thể đăng nhập bằng tài khoản vừa tạo.', { exact: true })).toBeVisible();
+  const loginForm = page.locator('.auth-login:visible');
+  await expect(loginForm.getByLabel('Email', { exact: true })).toHaveValue('student@example.com');
+  await expect(loginForm.getByLabel('Mật khẩu', { exact: true })).toHaveValue('');
+  await expect(page.locator('.success-message')).toHaveCount(0);
+  await loginForm.getByLabel('Mật khẩu', { exact: true }).fill('password123');
+  await loginForm.getByRole('button', { name: 'Đăng nhập', exact: true }).click();
+  await expect(page).toHaveURL(/\/user$/);
 });
+}
 test('mobile landing assets honor their slots; FAQ is keyboard accessible', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 }); await page.goto('/');
   await expect(page.locator('.intro-loader-overlay')).toHaveCount(0);
