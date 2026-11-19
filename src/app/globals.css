@@ -107,7 +107,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
 .mobile-nav { padding: 12px 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--background); box-shadow: 0 8px 24px rgb(var(--shadow) / .08); }
 .mobile-nav a { display: block; padding: 12px; font-size: 14px; }
 .mobile-nav a[aria-current] { color: var(--gold-ink); background: var(--secondary); border-radius: 8px; }
-.hero { position: relative; overflow: visible; height: 900px; z-index: 10; }
+.hero { position: relative; overflow: visible; height: 924px; z-index: 10; }
 .frosted-background { background-image: var(--frosted-desktop); background-size: cover; background-position: center; background-repeat: no-repeat; }
 @media (max-width: 1100px) {
   .frosted-background { background-image: var(--frosted-tablet); background-size: 100% 100%; }
@@ -124,7 +124,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
 .hero-bob-link:hover { background: var(--background); }
 .hero-preview {
   position: absolute;
-  top: 548px;
+  top: 572px;
   left: 50%;
   transform: translateX(-50%);
   width: min(1240px, calc(100% - 48px));
@@ -156,8 +156,8 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   }
 }
 .connection-section { position: relative; background: var(--page-background); min-height: 731.25px; z-index: 1; }
-.connection-grid { display: grid; grid-template-columns: 627fr 450fr; gap: 57px; padding-top: 420px; padding-bottom: 83px; }
-.photo-stage { position: relative; width: 627px; height: 504px; perspective: 825px; }
+.connection-grid { display: grid; grid-template-columns: 627fr 450fr; gap: 57px; padding-top: 420px; padding-bottom: 32px; }
+.photo-stage { position: relative; width: 627px; height: 416px; perspective: 825px; }
 .photo-main { position: absolute; top: 67.5px; left: 168px; width: 441px; height: 287.613px; padding: 6px; background: var(--background); border-radius: 24px; box-shadow: 0 13.5px 39px rgb(var(--shadow) / .08); }
 .photo-crop { position: relative; width: 100%; height: 100%; overflow: hidden; border-radius: inherit; }
 .photo-main .photo-crop { border-radius: 18px; }
@@ -198,7 +198,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   max-width: none;
   object-fit: none;
 }
-.bob-container { position: relative; max-width: 1134px; width: calc(100% - 96px); margin-inline: auto; display: grid; grid-template-columns: 520fr 542fr; gap: 72px; padding-block: 60px; align-items: center; }
+.bob-container { position: relative; max-width: 1134px; width: calc(100% - 96px); margin-inline: auto; display: grid; grid-template-columns: 520fr 542fr; gap: 72px; padding-block: 32px 60px; align-items: center; }
 /* Include the complete orbit and greeting while preserving their desktop placement. */
 .bob-scene { width: calc(100% + 120px); margin-left: -56px; }
 .bob-orbit { position: absolute; inset: 0; pointer-events: none; }
@@ -788,7 +788,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
     left: auto;
     transform: none;
     width: calc(100% - 32px);
-    margin: 24px auto 0;
+    margin: 40px auto 0;
     perspective: none;
   }
 

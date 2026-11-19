@@ -7,7 +7,7 @@ import { StartLink } from "./start-link";
 export function PhotoScene() {
   const reduced = useReducedMotion();
   const transition = { duration: 8, times: [0, 0.5, 1], ease: "easeInOut" as const, repeat: Infinity };
-  return <ScaledScene width={627} height={504} className="photo-scene">
+  return <ScaledScene width={627} height={416} className="photo-scene">
     <div className="photo-stage">
       <motion.div className="photo-main" data-node-id="131:1824" style={{ transformOrigin: "0 0" }}
         transformTemplate={({ z = "0px", rotateY = "0deg", rotateZ = "0deg" }) => `translate(50%, 50%) translateZ(${z}) rotateY(${rotateY}) rotateZ(${rotateZ}) translate(-50%, -50%)`}

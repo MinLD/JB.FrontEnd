@@ -76,7 +76,7 @@ export const TEAM_GROUPS = [
         "id": "nguyen-huu-tan",
         "name": "Nguyen Huu Tan",
         "role": "Head of Engineering",
-        "description": "Chuyên về Python và framework FastAPI. Xây dựng hệ thống microservices hiệu năng cao cho vòng đời sản phẩm Jobbod.",
+        "description": "Chuyên về Python và framework FastAPI. Xây dựng hệ thống hiệu năng cao cho vòng đời sản phẩm Jobbod.",
         "portrait": "/jobbod/team/nguyen-huu-tan.webp"
       },
       {
