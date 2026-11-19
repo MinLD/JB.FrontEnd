@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { ArrowUpRight } from "lucide-react";
 import { Copyright } from "@/components/layout/copyright";
 import { DesignAsset } from "@/components/ui/design-asset";
 import { TEAM_GROUPS } from "@/config/landing";
@@ -45,7 +46,7 @@ export function SiteFooter() {
       </div>
     </section>
     <div className="footer-main page-container">
-      <div className="footer-invitation"><div><p className="eyebrow">CÙNG BẮT ĐẦU</p><h2>Một lời chào.<br /><em>Một đội hình mới.</em></h2></div><div><p>Tìm người cùng mục tiêu, bổ trợ kỹ năng<br />và sẵn sàng bắt đầu cùng bạn.</p><StartLink>Tìm đồng đội <span aria-hidden="true">↗</span></StartLink></div></div>
+      <div className="footer-invitation"><div><p className="eyebrow">CÙNG BẮT ĐẦU</p><h2>Một lời chào.<br /><em>Một đội hình mới.</em></h2></div><div><p>Tìm người cùng mục tiêu, bổ trợ kỹ năng<br />và sẵn sàng bắt đầu cùng bạn.</p><StartLink>Tìm đồng đội <ArrowUpRight size={16} aria-hidden="true" /></StartLink></div></div>
       <div className="footer-divider" />
       <div className="footer-wordmark" role="img" aria-label="Jobbod">
         <ScaledScene width={827} height={197}>
