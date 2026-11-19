@@ -90,8 +90,8 @@ test('landing adapts responsively without horizontal overflow; keeps 3-column ma
       bobScene: rect('.bob-scene'), bobCopy: rect('.bob-copy'),
       projectPhoto: rect('.project-photo'), projectCopy: rect('.project-copy'),
       matchingFirst: rect('.matching-grid > div:first-child'), matchingLast: rect('.matching-grid > div:last-child'),
-      desktopMenu: getComputedStyle(document.querySelector('.landing-header .desktop-nav')!).display,
-      mobileMenu: getComputedStyle(document.querySelector('.landing-header .mobile-toggle')!).display,
+      desktopMenu: getComputedStyle(document.querySelector('.site-header .desktop-nav')!).display,
+      mobileMenu: getComputedStyle(document.querySelector('.site-header .mobile-toggle')!).display,
     };
   });
   const desktop = await measure();
@@ -105,14 +105,94 @@ test('landing adapts responsively without horizontal overflow; keeps 3-column ma
     const current = await measure();
     expect(current.heading.width).toBeLessThanOrEqual(width);
     expect(current.project.width).toBeLessThanOrEqual(width);
-    if (width > 650) {
-      expect(Math.abs(current.matchingFirst.y - current.matchingLast.y)).toBeLessThan(5);
-    } else {
-      expect(current.matchingLast.y).toBeGreaterThan(current.matchingFirst.y);
-    }
+    expect(Math.abs(current.matchingFirst.y - current.matchingLast.y)).toBeLessThan(5);
     if (width <= 900) {
       expect(current.desktopMenu).toBe('none');
       expect(['inline-flex', 'flex']).toContain(current.mobileMenu);
+    }
+  }
+});
+test('Bob keeps its orbit background at desktop, tablet and mobile sizes', async ({ page }) => {
+  await page.goto('/');
+  for (const width of [1440, 900, 768, 390, 320]) {
+    await page.setViewportSize({ width, height: 900 });
+    const scene = page.locator('.bob-scene');
+    await scene.scrollIntoViewIfNeeded();
+    const orbit = page.locator('.bob-orbit img');
+    await expect(orbit).toBeVisible();
+    await expect.poll(() => orbit.evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
+    await expect.poll(() => page.locator('.bob-character img').evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
+    await expect.poll(() => scene.evaluate(element => {
+      const scene = element.getBoundingClientRect();
+      const orbit = element.querySelector('.bob-orbit')!.getBoundingClientRect();
+      return Math.abs(orbit.width - scene.width);
+    })).toBeLessThan(1);
+    const geometry = await scene.evaluate(element => {
+      const orbit = element.querySelector('.bob-orbit')!.getBoundingClientRect();
+      const character = element.querySelector('.bob-character')!.getBoundingClientRect();
+      return { ratio: character.width / orbit.width, left: orbit.left, right: orbit.right, viewport: innerWidth };
+    });
+    expect(geometry.ratio).toBeCloseTo(279 / 640, 2);
+    expect(geometry.left).toBeGreaterThanOrEqual(0);
+    expect(geometry.right).toBeLessThanOrEqual(geometry.viewport);
+    expect(await page.locator('.landing-canvas').evaluate(element => getComputedStyle(element).zoom)).toBe('1');
+  }
+});
+for (const width of [1440, 768, 390]) {
+  test(`workflow releases its pin after revealing once at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.emulateMedia({ reducedMotion: 'no-preference' });
+    await page.goto('/');
+    await expect(page.locator('.intro-loader-overlay')).toHaveCount(0, { timeout: 10000 });
+    await page.evaluate(() => document.fonts.ready);
+    await expect(page.locator('.workflow-section')).toHaveAttribute('data-workflow-pinned', '');
+    const stage = page.locator('.workflow-viewport');
+    await expect.poll(() => stage.evaluate(element => element.parentElement!.classList.contains('pin-spacer'))).toBe(true);
+    const range = await stage.evaluate(element => {
+      const spacer = element.parentElement!;
+      const top = Math.ceil(document.querySelector('.site-header .header-bar')!.getBoundingClientRect().bottom) + 12;
+      return { start: spacer.getBoundingClientRect().top + scrollY - top, distance: spacer.offsetHeight - (element as HTMLElement).offsetHeight, top };
+    });
+    expect(range.distance).toBeGreaterThan(800);
+    await page.evaluate(({ start, distance }) => scrollTo({ top: start + distance / 2, behavior: 'instant' }), range);
+    await expect.poll(() => stage.evaluate(element => element.getBoundingClientRect().top)).toBeCloseTo(range.top, 0);
+    await expect.poll(() => page.locator('.project-section').evaluate(element => element.getBoundingClientRect().top)).toBeGreaterThan(900);
+    await page.evaluate(({ start, distance }) => scrollTo({ top: start + distance + 24, behavior: 'instant' }), range);
+    await expect.poll(() => page.locator('.step-card').evaluateAll(cards => cards.every(card => Number(getComputedStyle(card).opacity) > .99))).toBe(true);
+    const arrows = page.locator(width > 900 ? '.step-line [data-arrow-line]' : '.step-line-mobile [data-arrow-line]');
+    await expect.poll(() => arrows.evaluateAll(lines => lines.every(line => Math.abs(parseFloat(getComputedStyle(line).strokeDashoffset)) < .01))).toBe(true);
+    await expect(page.locator('.workflow-section')).not.toHaveAttribute('data-workflow-pinned', '');
+    await expect(page.locator('.workflow .pin-spacer')).toHaveCount(0);
+    const lastCard = await page.locator('.step-card').last().boundingBox();
+    const stageBounds = await stage.boundingBox();
+    expect(lastCard).not.toBeNull();
+    expect(stageBounds).not.toBeNull();
+    expect(lastCard!.y + lastCard!.height).toBeLessThanOrEqual(stageBounds!.y + stageBounds!.height + 1);
+    expect(lastCard!.y).toBeGreaterThanOrEqual(range.top - 24);
+    expect(lastCard!.y + lastCard!.height).toBeLessThanOrEqual(900);
+    const beforeReverse = await stage.evaluate(element => ({ top: element.getBoundingClientRect().top, scroll: scrollY }));
+    await page.evaluate(() => scrollBy({ top: -120, behavior: 'instant' }));
+    await expect.poll(() => page.evaluate(() => scrollY)).toBeCloseTo(beforeReverse.scroll - 120, 0);
+    await expect.poll(() => stage.evaluate(element => element.getBoundingClientRect().top)).toBeCloseTo(beforeReverse.top + 120, 0);
+    await expect.poll(() => page.locator('.step-card').evaluateAll(cards => cards.every(card => Number(getComputedStyle(card).opacity) > .99))).toBe(true);
+    await expect.poll(() => arrows.evaluateAll(lines => lines.every(line => Math.abs(parseFloat(getComputedStyle(line).strokeDashoffset)) < .01))).toBe(true);
+    await page.setViewportSize({ width: width > 900 ? 768 : 1440, height: 900 });
+    await expect(page.locator('.workflow-section')).not.toHaveAttribute('data-workflow-pinned', '');
+    await expect(page.locator('.workflow .pin-spacer')).toHaveCount(0);
+    await expect.poll(() => page.locator('.step-card').evaluateAll(cards => cards.every(card => Number(getComputedStyle(card).opacity) > .99))).toBe(true);
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await expect(page.locator('.workflow-section')).not.toHaveAttribute('data-workflow-pinned', '');
+    await expect(page.locator('.workflow .pin-spacer')).toHaveCount(0);
+  });
+}
+test('landing, login and register share frosted backgrounds adapted to the screen', async ({ page }) => {
+  for (const route of ['/', '/login', '/register']) {
+    await page.goto(route);
+    for (const width of [1440, 768, 390]) {
+      await page.setViewportSize({ width, height: 900 });
+      const asset = width > 1100 ? 'hero-frosted-network-4k.png' : width > 650 ? 'frosted-tablet.svg' : 'frosted-mobile.svg';
+      await expect(page.locator('.frosted-background')).toHaveCSS('background-image', new RegExp(asset.replaceAll('.', '\\.')));
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     }
   }
 });

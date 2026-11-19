@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="844" viewBox="0 0 390 844" preserveAspectRatio="none" fill="none">
+  <defs>
+    <linearGradient id="base" x1="0" y1="422" x2="390" y2="422" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#f7f9fb"/></linearGradient>
+    <linearGradient id="glass" x1="270" y1="0" x2="425" y2="300" gradientUnits="userSpaceOnUse"><stop stop-color="#fcfdff"/><stop offset=".5" stop-color="#ecf1f5" stop-opacity=".75"/><stop offset=".76" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#dfe6ed" stop-opacity=".6"/></linearGradient>
+    <linearGradient id="edge" x1="270" y1="50" x2="395" y2="300" gradientUnits="userSpaceOnUse"><stop stop-color="#83b9e7"/><stop offset=".3" stop-color="#fff"/><stop offset="1" stop-color="#c7d4df"/></linearGradient>
+    <linearGradient id="floor" x1="0" y1="770" x2="130" y2="844" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#dce3e8"/></linearGradient>
+    <filter id="shadow" x="-50%" y="-30%" width="200%" height="180%"><feDropShadow dx="-5" dy="12" stdDeviation="12" flood-color="#546777" flood-opacity=".12"/></filter>
+  </defs>
+  <path fill="url(#base)" d="M0 0h390v844H0z"/>
+  <g filter="url(#shadow)">
+    <path d="M292-18 435-48V221L294 189Q274 184 274 165V7Q274-14 292-18Z" fill="url(#glass)" stroke="url(#edge)"/>
+    <path d="M333 53 452 27V326L334 297Q314 292 314 272V77Q314 57 333 53Z" fill="url(#glass)" stroke="white" stroke-width="2"/>
+    <path d="M315 158V77Q315 58 334 54L412 37" stroke="url(#edge)"/>
+  </g>
+  <path d="m374 365-22 93 28 92-23 95 25 83" stroke="#b3c3ce" stroke-width=".7"/>
+  <g fill="#b6cddd" stroke="#91afc3" stroke-width=".6"><circle cx="374" cy="365" r="3"/><circle cx="352" cy="458" r="3"/><circle cx="380" cy="550" r="3"/><circle cx="357" cy="645" r="3"/><circle cx="382" cy="728" r="3"/></g>
+  <g filter="url(#shadow)"><path d="m-45 790 137-13 72 37-129 21Z" fill="white"/><path d="m35 835 129-21v30H35Z" fill="url(#floor)"/><path d="m-38 761 123 83H-38Z" fill="url(#floor)" stroke="#e6edf1"/></g>
+</svg>

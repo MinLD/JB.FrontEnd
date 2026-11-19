@@ -36,12 +36,9 @@ export function BackToTop() {
           <Image src="/jobbod/footer/rope-student.webp" width={300} height={523} sizes="(max-width: 650px) 52px, 70px" alt="" />
         </div>
       </div>
-      <div className="back-to-top-bubble">
-        <p>Bạn muốn lên trên chứ?</p>
-        <a className="back-to-top-link" href="#gioi-thieu">
-          Lên đầu trang <span aria-hidden="true">↑</span>
-        </a>
-      </div>
+      <a className="back-to-top-link" href="#gioi-thieu">
+        Lên đầu trang <span aria-hidden="true">↑</span>
+      </a>
     </div>
   );
 }

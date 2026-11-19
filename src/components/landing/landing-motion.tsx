@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -35,6 +35,85 @@ function enableLetterHops(wordmark: HTMLElement) {
 
 const arrowDuration = 1.1;
 const stepDuration = 1.7;
+
+function animateWorkflow(section: HTMLElement, desktop: boolean, revealed: { current: number }) {
+  const viewport = section.querySelector<HTMLElement>(".workflow-viewport");
+  const content = section.querySelector<HTMLElement>(".workflow-track");
+  const cards = Array.from(section.querySelectorAll<HTMLElement>(".step-card"));
+  const arrows = Array.from(section.querySelectorAll<SVGSVGElement>(desktop ? ".step-line" : ".step-line-mobile"));
+  if (!viewport || !content || cards.length < 2) return;
+
+  let releaseFrame = 0;
+  let released = false;
+  const cleanup = () => {
+    cancelAnimationFrame(releaseFrame);
+    section.removeAttribute("data-workflow-pinned");
+    section.removeAttribute("data-workflow-enhanced");
+    viewport.style.removeProperty("--workflow-stage-height");
+  };
+  section.setAttribute("data-workflow-enhanced", "");
+  const reveal = gsap.timeline({ paused: true });
+  arrows.forEach((arrow, index) => drawConnection(reveal, arrow, cards[index + 1], index * stepDuration));
+  reveal.progress(revealed.current);
+  if (revealed.current === 1) return cleanup;
+
+  const pinTop = () => Math.ceil(document.querySelector(".site-header .header-bar")?.getBoundingClientRect().bottom ?? 70) + 12;
+  const resizeStage = () => {
+    const height = Math.min(content.scrollHeight, Math.max(120, window.innerHeight - pinTop() - 32));
+    viewport.style.setProperty("--workflow-stage-height", `${height}px`);
+  };
+  section.setAttribute("data-workflow-pinned", "");
+  resizeStage();
+
+  const timeline = gsap.timeline({
+    scrollTrigger: {
+      trigger: viewport,
+      start: () => `top top+=${pinTop()}`,
+      end: () => `+=${Math.max(1000, window.innerHeight * 1.5, content.scrollHeight - viewport.clientHeight + 900)}`,
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      scrub: true,
+      invalidateOnRefresh: true,
+      onRefreshInit: resizeStage,
+      onUpdate: trigger => {
+        revealed.current = Math.max(revealed.current, trigger.progress);
+        reveal.progress(revealed.current);
+        if (revealed.current === 1 && !released && !releaseFrame) {
+          releaseFrame = requestAnimationFrame(releasePin);
+        }
+      },
+    },
+  });
+  arrows.forEach((_, index) => {
+    const nextCard = cards[index + 1];
+    timeline.to(content, {
+      y: () => -Math.min(
+        Math.max(0, content.scrollHeight - viewport.clientHeight),
+        Math.max(0, nextCard.offsetTop + nextCard.offsetHeight + 24 - viewport.clientHeight),
+      ),
+      duration: arrowDuration,
+      ease: "none",
+    }, index * stepDuration);
+  });
+  timeline.to({}, { duration: reveal.duration() }, 0);
+
+  function releasePin() {
+    released = true;
+    const previousTop = content!.getBoundingClientRect().top;
+    timeline.scrollTrigger?.kill(true);
+    timeline.kill();
+    section.removeAttribute("data-workflow-pinned");
+    viewport!.style.removeProperty("--workflow-stage-height");
+    gsap.set(content, { clearProps: "transform" });
+    // Removing the spacer restores normal flow; keep the same content under the user's eyes.
+    window.scrollBy({ top: content!.getBoundingClientRect().top - previousTop, behavior: "instant" });
+    ScrollTrigger.refresh();
+    ScrollTrigger.update();
+  }
+
+  return cleanup;
+}
 
 function drawConnection(timeline: gsap.core.Timeline, arrow: SVGSVGElement, nextCard: HTMLElement, position: number) {
   const line = arrow.querySelector<SVGPathElement>("[data-arrow-line]");
@@ -71,32 +150,23 @@ function drawConnection(timeline: gsap.core.Timeline, arrow: SVGSVGElement, next
 }
 
 export function LandingMotion() {
+  const workflowRevealed = useRef(0);
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
     const media = gsap.matchMedia();
 
     media.add({
       motion: "(prefers-reduced-motion: no-preference)",
-      canPin: "(min-width: 901px) and (min-height: 860px)",
+      desktop: "(min-width: 901px)",
       finePointer: "(hover: hover) and (pointer: fine)",
     }, ({ conditions }) => {
       if (!conditions?.motion) return;
+      const cleanups: Array<() => void> = [];
 
       const section = document.querySelector<HTMLElement>(".workflow-section");
       if (section) {
-        const cards = Array.from(section.querySelectorAll<HTMLElement>(".step-card"));
-        const arrows = Array.from(section.querySelectorAll<SVGSVGElement>(".step-line"));
-        const canvas = section.closest<HTMLElement>(".landing-canvas");
-        const track = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: conditions.canPin ? "top top+=100" : "top 82%",
-            end: conditions.canPin ? () => `+=${1020 * Number(getComputedStyle(canvas ?? section).zoom)}` : "bottom 27%",
-            pin: conditions.canPin,
-            scrub: 0.62,
-          },
-        });
-        arrows.forEach((arrow, index) => drawConnection(track, arrow, cards[index + 1], index * stepDuration));
+        const stopWorkflow = animateWorkflow(section, Boolean(conditions.desktop), workflowRevealed);
+        if (stopWorkflow) cleanups.push(stopWorkflow);
       }
 
       const revealGroups = document.querySelectorAll<HTMLElement>([
@@ -156,10 +226,11 @@ export function LandingMotion() {
           });
       }
       const stopLetterHops = wordmark ? enableLetterHops(wordmark) : undefined;
+      if (stopLetterHops) cleanups.push(stopLetterHops);
 
       const preview = document.querySelector<HTMLElement>(".hero-preview");
       const surface = preview?.querySelector<HTMLElement>(".hero-preview-surface");
-      if (!conditions.finePointer || !preview || !surface) return stopLetterHops;
+      if (!conditions.finePointer || !preview || !surface) return () => cleanups.forEach(cleanup => cleanup());
 
       const lift = gsap.quickTo(surface, "y", { duration: 0.55, ease: "power3.out" });
       const rotateX = gsap.quickTo(surface, "rotationX", { duration: 0.65, ease: "power3.out" });
@@ -188,11 +259,11 @@ export function LandingMotion() {
 
       preview.addEventListener("pointermove", move);
       preview.addEventListener("pointerleave", reset);
-      return () => {
-        stopLetterHops?.();
+      cleanups.push(() => {
         preview.removeEventListener("pointermove", move);
         preview.removeEventListener("pointerleave", reset);
-      };
+      });
+      return () => cleanups.forEach(cleanup => cleanup());
     });
 
     return () => media.revert();

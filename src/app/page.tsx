@@ -11,14 +11,14 @@ import { Faq } from "@/components/landing/faq";
 import { SiteFooter } from "@/components/landing/site-footer";
 import { LandingMotion } from "@/components/landing/landing-motion";
 import { BackToTop } from "@/components/landing/back-to-top";
+import { frostedBackgroundStyle } from "@/config/design-assets";
 
 export default function HomePage() {
   return <div className="landing-viewport"><div className="landing-canvas">
     <a className="skip-link" href="#main-content">Đến nội dung chính</a>
     <main id="main-content" className="landing-main">
-      <section id="gioi-thieu" className="hero" aria-labelledby="hero-heading" tabIndex={-1}>
-        <DesignAsset name="heroBackground" className="hero-background" priority sizes="100vw" unoptimized />
-        <SiteHeader landing />
+      <section id="gioi-thieu" className="hero frosted-background" style={frostedBackgroundStyle} aria-labelledby="hero-heading" tabIndex={-1}>
+        <SiteHeader />
         <div className="hero-container">
           <h1 id="hero-heading">Tìm đúng <em>đồng đội</em><br />Cùng xây dựng <em>dự án thật.</em></h1>
           <div className="hero-description"><p>Jobbod giúp sinh viên tìm đồng đội cùng mục tiêu, bổ trợ kỹ năng và phù hợp lịch rảnh — để bắt đầu hackathon, cuộc thi và những dự án thật.</p><Link href="#lam-quen-voi-bob" className="hero-bob-link">Trò chuyện với Bob</Link></div>

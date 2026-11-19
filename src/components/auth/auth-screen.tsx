@@ -5,7 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { DesignAsset } from "@/components/ui/design-asset";
-import { designAssets } from "@/config/design-assets";
+import { frostedBackgroundStyle } from "@/config/design-assets";
 import { useAuth } from "@/providers/auth-provider";
 import { AuthField } from "./auth-field";
 import { LoginForm } from "./login-form";
@@ -17,7 +17,7 @@ export function AuthScreen({ mode, copyright }: { mode: "login" | "register" | "
   const [registered, setRegistered] = useState(false);
   useEffect(() => { if (!loading && user) router.replace("/user"); }, [loading, user, router]);
   const title = mode === "login" ? "Đăng nhập Jobbod" : mode === "register" ? "Tạo tài khoản Jobbod" : "Quên mật khẩu?";
-  return <main className={`auth-page auth-${mode}`} style={{ backgroundImage: `url("${designAssets.heroBackground.src}")`, backgroundSize: "cover", backgroundPosition: "center" }}>
+  return <main className={`auth-page auth-${mode} frosted-background`} style={frostedBackgroundStyle}>
     <Link href="/" className="auth-brand" aria-label="Jobbod — Trang chủ"><DesignAsset name="authWordmark" priority /></Link>
     <Link href="/" className="auth-home-link">← &nbsp; Về trang chủ</Link>
     <section className="auth-intro" aria-label="Cùng Jobbod tìm đồng đội">

@@ -32,7 +32,8 @@ export function BobSection() {
   return <section className="bob-section" id="lam-quen-voi-bob" aria-labelledby="bob-heading">
     <div className="bob-background" aria-hidden="true"><DesignAsset name="bobBackground" /></div>
     <div className="bob-container">
-      <ScaledScene width={520} height={560} className="bob-scene">
+      <ScaledScene width={640} height={560} className="bob-scene">
+        <div className="bob-orbit" aria-hidden="true"><DesignAsset name="bobOrbit" /></div>
         <div className="bob-shadow"><DesignAsset name="bobShadow" /></div>
         <div className="bob-character" data-node-id="131:2277">
           <DesignAsset name="bob" alt="Bob, trợ lý AI tìm đồng đội của Jobbod" sizes="279px" />

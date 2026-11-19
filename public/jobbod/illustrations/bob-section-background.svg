@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" overflow="visible" style="display: block;" width="1440" height="680" viewBox="0 0 1440 680" fill="none">
+  <g id="Illustration / Connection" clip-path="url(#clip0_0_29)">
+    <path id="Vector" d="M0 0H662C698 128.966 696 257.094 644 364.286C589 479.852 596 573.645 713 680H0V0Z" fill="url(#paint0_linear_0_29)" />
+    <path id="Vector_5" d="M60 612.4C186 581.4 294 631 426 641.54C542 651.46 627 616.74 729 629.14C827 641.54 885 675.64 1032 667.58C1194 658.9 1320 603.1 1440 625.42" stroke="#D9DCD5" />
+    <path id="Vector_6" d="M32 629.76C158 598.76 288 649.6 420 660.14C536 670.06 633 635.96 735 647.74" stroke="#ECEEE8" />
+    <path id="Vector_9" d="M426 644.02C428.209 644.02 430 642.91 430 641.54C430 640.17 428.209 639.06 426 639.06C423.791 639.06 422 640.17 422 641.54C422 642.91 423.791 644.02 426 644.02Z" fill="#F2C744" />
+    <path id="Vector_10" d="M1032 670.06C1034.21 670.06 1036 668.95 1036 667.58C1036 666.21 1034.21 665.1 1032 665.1C1029.79 665.1 1028 666.21 1028 667.58C1028 668.95 1029.79 670.06 1032 670.06Z" fill="#F2C744" />
+  </g>
+  <defs>
+    <linearGradient id="paint0_linear_0_29" x1="3.91155e-06" y1="10.0493" x2="563.958" y2="779.686" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8F8F4" />
+      <stop offset="1" stop-color="#FDFDFB" />
+    </linearGradient>
+    <clipPath id="clip0_0_29">
+      <rect width="1440" height="680" fill="white" />
+    </clipPath>
+  </defs>
+</svg>

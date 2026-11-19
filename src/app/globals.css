@@ -108,7 +108,13 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
 .mobile-nav a { display: block; padding: 12px; font-size: 14px; }
 .mobile-nav a[aria-current] { color: var(--gold-ink); background: var(--secondary); border-radius: 8px; }
 .hero { position: relative; overflow: visible; height: 900px; z-index: 10; }
-.hero-background { position: absolute; inset: 0; width: 100% !important; height: 100% !important; object-fit: cover; z-index: -1; }
+.frosted-background { background-image: var(--frosted-desktop); background-size: cover; background-position: center; background-repeat: no-repeat; }
+@media (max-width: 1100px) {
+  .frosted-background { background-image: var(--frosted-tablet); background-size: 100% 100%; }
+}
+@media (max-width: 650px) {
+  .frosted-background { background-image: var(--frosted-mobile); }
+}
 .hero-container { max-width: 1186.5px; width: calc(100% - 120px); margin-inline: auto; padding-top: 164px; }
 .hero h1 { font-weight: 500; font-size: clamp(38px, 4.375vw, 63px); line-height: 1.31; letter-spacing: -1.5px; margin: 0 0 22px; }
 .hero h1 em { font-size: 1.33333em; }
@@ -193,10 +199,14 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   object-fit: none;
 }
 .bob-container { position: relative; max-width: 1134px; width: calc(100% - 96px); margin-inline: auto; display: grid; grid-template-columns: 520fr 542fr; gap: 72px; padding-block: 60px; align-items: center; }
-.bob-shadow { position: absolute; left: 209px; top: 509.25px; }
-.bob-character { position: absolute; top: 141.25px; left: 197px; width: 279px; height: 363px; }
+/* Include the complete orbit and greeting while preserving their desktop placement. */
+.bob-scene { width: calc(100% + 120px); margin-left: -56px; }
+.bob-orbit { position: absolute; inset: 0; pointer-events: none; }
+.bob-orbit img { width: 100%; height: 100%; }
+.bob-shadow { position: absolute; left: 265px; top: 509.25px; }
+.bob-character { position: absolute; top: 141.25px; left: 253px; width: 279px; height: 363px; }
 .bob-character img { width: 279px; height: 363px; object-fit: contain; }
-.bob-greeting { position: absolute; left: -56px; top: 74.25px; width: 294px; padding: 16px 18px; background: var(--background); border: 1px solid #eee8d9; border-radius: 18px; box-shadow: 0 8px 24px rgb(56 46 26 / .07); }
+.bob-greeting { position: absolute; left: 0; top: 74.25px; width: 294px; padding: 16px 18px; background: var(--background); border: 1px solid #eee8d9; border-radius: 18px; box-shadow: 0 8px 24px rgb(56 46 26 / .07); }
 .bob-greeting span { color: var(--gold-ink); font-size: 12px; font-weight: 600; line-height: 18px; }
 .bob-greeting p { font-size: 14px; font-weight: 500; line-height: 22px; margin-top: 6px; }
 .bob-copy { display: flex; flex-direction: column; gap: 20px; }
@@ -231,6 +241,9 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   margin-top: 12px;
 }
 .workflow-grid { position: relative; display: grid; grid-template-columns: var(--step-width) var(--step-width); grid-template-rows: repeat(2, var(--step-height)); justify-content: space-between; row-gap: var(--step-gap); padding-block: var(--step-top) 14px; }
+.workflow-viewport, .workflow-track { position: relative; }
+.workflow-section[data-workflow-pinned] .workflow-viewport { height: var(--workflow-stage-height); overflow: clip; }
+.step-line-mobile { display: none; }
 .step-card {
   height: 100%;
   min-width: 0;
@@ -251,7 +264,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
 .step-label { display: block; color: #896014; font-size: 10px; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 7px; }
 .step-card h3 { color: #22231f; font-size: 20px; line-height: 1.2; font-weight: 650; letter-spacing: -.025em; }
 .step-copy p { font-size: 13px; line-height: 1.5; color: #494a43; margin-top: 8px; }
-.step-line { fill: none; stroke: #a9b2bc; stroke-width: 1.8px; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; overflow: visible; }
+.step-line, .step-line-mobile { fill: none; stroke: #a9b2bc; stroke-width: 1.8px; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; overflow: visible; }
 [data-arrow-spark] { fill: #fff4c7; stroke: var(--primary); stroke-width: 1; filter: drop-shadow(0 0 4px #e6ab25); }
 .step-line { position: absolute; }
 .line-one, .line-three { left: calc(var(--step-width) + 6px); width: calc(100% - 2 * var(--step-width) - 12px); }
@@ -363,7 +376,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   display: flex;
   flex-direction: row-reverse;
   align-items: flex-end;
-  gap: 9px;
+  gap: 4px;
   visibility: hidden;
   pointer-events: none;
 }
@@ -395,53 +408,48 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   box-shadow: 0 0 0 .35px #4a4038;
 }
 .back-to-top-student img { display: block; width: 100%; height: auto; }
-.back-to-top-bubble {
-  position: relative;
-  margin-bottom: 9px;
-  padding: 9px 12px 0;
-  border: 1px solid #e5ddce;
-  border-radius: 12px;
-  background: #fffbf2;
-  color: #252421;
-  box-shadow: 0 4px 20px rgb(21 20 17 / 14%);
-  font-size: 12px;
-  line-height: 1.4;
-}
-.back-to-top[data-phase="visible"] .back-to-top-bubble { pointer-events: auto; }
-.back-to-top-bubble::before {
-  content: "";
-  position: absolute;
-  top: 14px;
-  right: -5px;
-  width: 8px;
-  height: 8px;
-  border-top: 1px solid #e5ddce;
-  border-right: 1px solid #e5ddce;
-  background: inherit;
-  transform: rotate(45deg);
-}
 .back-to-top-link {
   display: inline-flex;
-  min-height: 44px;
   align-items: center;
-  gap: 7px;
-  font-weight: 650;
-  text-decoration: underline;
-  text-underline-offset: .24em;
+  gap: 8px;
+  min-height: 44px;
+  margin-bottom: 9px;
+  padding: 6px 8px 6px 13px;
+  border: 1px solid #e5ddce;
+  border-radius: 999px;
+  background: #fffbf2;
+  color: #252421;
+  box-shadow: 0 3px 12px rgb(21 20 17 / 8%);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  transition: background .2s, border-color .2s;
 }
+.back-to-top[data-phase="visible"] .back-to-top-link { pointer-events: auto; }
+.back-to-top-link span {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--primary);
+  font-size: 15px;
+}
+.back-to-top-link:hover { background: #fff4cf; border-color: var(--primary); }
 .back-to-top-link:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; border-radius: 3px; }
 
 @media (prefers-reduced-motion: no-preference) {
   .back-to-top[data-phase="visible"] .back-to-top-student { animation: rope-descent 1.24s both; }
-  .back-to-top[data-phase="visible"] .back-to-top-bubble { animation: back-to-top-prompt .32s ease-out .84s both; }
-  .back-to-top[data-phase="visible"] .back-to-top-bubble:focus-within { animation: none; }
+  .back-to-top[data-phase="visible"] .back-to-top-link { animation: back-to-top-prompt .32s ease-out .84s both; }
+  .back-to-top[data-phase="visible"] .back-to-top-link:focus-visible { animation: none; }
 
   .back-to-top[data-phase="retracting"] {
     --retraction-duration: .88s;
     transition: visibility 0s var(--retraction-duration);
   }
   .back-to-top[data-phase="retracting"] .back-to-top-student { animation: rope-retraction var(--retraction-duration) both; }
-  .back-to-top[data-phase="retracting"] .back-to-top-bubble { transform-origin: right center; animation: back-to-top-dismiss .26s ease-in both; }
+  .back-to-top[data-phase="retracting"] .back-to-top-link { transform-origin: right center; animation: back-to-top-dismiss .26s ease-in both; }
 
   @keyframes rope-descent {
     0% { transform: translateY(-110%); animation-timing-function: cubic-bezier(.5, .05, .25, 1); }
@@ -540,7 +548,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   align-items: center;
   gap: clamp(48px, 5vw, 96px);
   padding: 112px 48px 72px;
-  background: #ffffff;
+  background-color: #ffffff;
 }
 .auth-brand { position: absolute; top: 36px; left: 48px; z-index: 20; }
 .auth-home-link { position: absolute; top: 36px; right: 48px; font-size: 13px; line-height: 22px; font-weight: 500; color: var(--text-secondary); z-index: 50; cursor: pointer; transition: color .2s ease; }
@@ -836,7 +844,7 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   }
   .bob-scene {
     width: 100%;
-    max-width: 320px;
+    max-width: 400px;
     margin: 0 auto;
   }
   .bob-copy h2 {
@@ -871,6 +879,11 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
   .step-line {
     display: none !important;
   }
+  .step-line-mobile { display: block; width: 56px; height: 64px; margin: 6px auto; flex-shrink: 0; }
+  .workflow-step { display: flex; flex-direction: column; }
+  .workflow-section[data-workflow-enhanced] .workflow-grid { padding-inline: 4px; }
+  .workflow-section[data-workflow-enhanced] .step-card { display: grid; grid-template-columns: minmax(0, 1fr) 96px; align-items: center; gap: 12px; padding: 16px 18px; }
+  .workflow-section[data-workflow-enhanced] .step-art { width: 96px; height: auto; margin: 0; }
   .workflow-grid {
     display: flex;
     flex-direction: column;
@@ -1097,46 +1110,6 @@ em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var
     width: 100%;
     max-width: 130px;
     margin: 4px auto 0;
-  }
-
-  /* Matching items on mobile: standard clean vertical cards */
-  .matching-grid {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px;
-    padding: 16px 0;
-    margin: 18px auto 0;
-  }
-  .matching-grid > div {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: left;
-    gap: 16px;
-    padding: 16px 18px;
-    background: #ffffff;
-    border: 1px solid #e8dfcc;
-    border-radius: 16px;
-    box-shadow: 0 4px 16px rgb(48 43 31 / .04);
-  }
-  .matching-grid img, .matching-grid svg {
-    width: auto;
-    height: 44px;
-    max-width: 84px;
-    object-fit: contain;
-    flex-shrink: 0;
-  }
-  .matching-grid h3 {
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.3;
-    margin: 0;
-  }
-  .matching-grid p {
-    font-size: 13px;
-    line-height: 1.45;
-    margin: 3px 0 0;
-    color: var(--text-secondary);
   }
 
   /* Founders Horizontal Cards for Mobile */

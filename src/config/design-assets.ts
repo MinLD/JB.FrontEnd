@@ -1,9 +1,21 @@
+import type { CSSProperties } from "react";
+
 // Local Figma assets. SVG dimensions preserve the exported design geometry.
 export const designAssets = {
   "heroBackground": {
     "src": "/jobbod/design/hero-frosted-network-4k.png",
     "width": 3840,
     "height": 2403
+  },
+  "heroBackgroundTablet": {
+    "src": "/jobbod/illustrations/frosted-tablet.svg",
+    "width": 834,
+    "height": 1100
+  },
+  "heroBackgroundMobile": {
+    "src": "/jobbod/illustrations/frosted-mobile.svg",
+    "width": 390,
+    "height": 844
   },
   "wordmark": {
     "src": "/jobbod/design/131-1677-imgWordmarkOutlines.svg",
@@ -36,9 +48,14 @@ export const designAssets = {
     "height": 1448
   },
   "bobBackground": {
-    "src": "/jobbod/design/131-2272-imgIllustrationConnection.svg",
+    "src": "/jobbod/illustrations/bob-section-background.svg",
     "width": 1440,
     "height": 680
+  },
+  "bobOrbit": {
+    "src": "/jobbod/illustrations/bob-orbit.svg",
+    "width": 640,
+    "height": 560
   },
   "bobShadow": {
     "src": "/jobbod/design/131-2272-imgBongTipDt.svg",
@@ -217,3 +234,9 @@ export const designAssets = {
   }
 } as const;
 export type DesignAssetName = keyof typeof designAssets;
+
+export const frostedBackgroundStyle = {
+  "--frosted-desktop": `url("${designAssets.heroBackground.src}")`,
+  "--frosted-tablet": `url("${designAssets.heroBackgroundTablet.src}")`,
+  "--frosted-mobile": `url("${designAssets.heroBackgroundMobile.src}")`,
+} as CSSProperties;

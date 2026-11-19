@@ -53,31 +53,38 @@ export function HowItWorks() {
         <p>Tìm người phù hợp, cùng làm dự án và ghi lại những gì bạn đã đóng góp.</p>
       </div>
       <div className="workflow">
-        {connectors.map(({ className, ...path }, index) => (
-          <Connector key={className} {...path} className={`step-line ${className}`} index={index} />
-        ))}
-        <ol className="workflow-grid">
-          {steps.map((step, index) => (
-            <li className={`workflow-step step-${index + 1}`} key={step.label}>
-              <div className="step-card">
-                <div className="step-copy">
-                  <span className="step-label">{step.label}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                </div>
-                <div className="step-art">
-                  <Image
-                    src={`/jobbod/workflow/${step.illustration}.webp`}
-                    alt=""
-                    width={520}
-                    height={416}
-                    sizes="(max-width: 650px) 115px, 170px"
-                  />
-                </div>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <div className="workflow-viewport">
+          <div className="workflow-track">
+            {connectors.map(({ className, ...path }, index) => (
+              <Connector key={className} {...path} className={`step-line ${className}`} index={index} />
+            ))}
+            <ol className="workflow-grid">
+              {steps.map((step, index) => (
+                <li className={`workflow-step step-${index + 1}`} key={step.label}>
+                  <div className="step-card">
+                    <div className="step-copy">
+                      <span className="step-label">{step.label}</span>
+                      <h3>{step.title}</h3>
+                      <p>{step.description}</p>
+                    </div>
+                    <div className="step-art">
+                      <Image
+                        src={`/jobbod/workflow/${step.illustration}.webp`}
+                        alt=""
+                        width={520}
+                        height={416}
+                        sizes="(max-width: 650px) 115px, 170px"
+                      />
+                    </div>
+                  </div>
+                  {index < connectors.length && (
+                    <Connector className="step-line-mobile" viewBox="0 0 64 72" line="M23 3C42 9 50 25 39 35C29 44 14 34 21 25C29 14 46 33 40 49C37 57 31 62 24 67" tip="M25 57L24 67L34 65" index={index} />
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
       </div>
     </div>
   </section>;
