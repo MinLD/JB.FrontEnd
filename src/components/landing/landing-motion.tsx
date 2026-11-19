@@ -158,7 +158,6 @@ export function LandingMotion() {
     media.add({
       motion: "(prefers-reduced-motion: no-preference)",
       desktop: "(min-width: 901px)",
-      finePointer: "(hover: hover) and (pointer: fine)",
     }, ({ conditions }) => {
       if (!conditions?.motion) return;
       const cleanups: Array<() => void> = [];
@@ -173,7 +172,6 @@ export function LandingMotion() {
         ".landing-main .connection-copy", ".landing-main .project-copy",
         ".landing-main .bob-copy",
         ".landing-main .section-heading", ".landing-main .matching-grid",
-        ".site-footer .team-group-heading", ".site-footer .founder-card",
         ".site-footer .footer-invitation",
       ].join(", "));
 
@@ -228,41 +226,6 @@ export function LandingMotion() {
       const stopLetterHops = wordmark ? enableLetterHops(wordmark) : undefined;
       if (stopLetterHops) cleanups.push(stopLetterHops);
 
-      const preview = document.querySelector<HTMLElement>(".hero-preview");
-      const surface = preview?.querySelector<HTMLElement>(".hero-preview-surface");
-      if (!conditions.finePointer || !preview || !surface) return () => cleanups.forEach(cleanup => cleanup());
-
-      const lift = gsap.quickTo(surface, "y", { duration: 0.55, ease: "power3.out" });
-      const rotateX = gsap.quickTo(surface, "rotationX", { duration: 0.65, ease: "power3.out" });
-      const rotateY = gsap.quickTo(surface, "rotationY", { duration: 0.65, ease: "power3.out" });
-      const scaleX = gsap.quickTo(surface, "scaleX", { duration: 0.65, ease: "power3.out" });
-      const scaleY = gsap.quickTo(surface, "scaleY", { duration: 0.65, ease: "power3.out" });
-
-      const move = (event: PointerEvent) => {
-        if (event.pointerType === "touch") return;
-        const bounds = preview.getBoundingClientRect();
-        const x = gsap.utils.clamp(0, 1, (event.clientX - bounds.left) / bounds.width);
-        const y = gsap.utils.clamp(0, 1, (event.clientY - bounds.top) / bounds.height);
-        lift(-18);
-        scaleX(1.018);
-        scaleY(1.018);
-        rotateX((0.5 - y) * 10);
-        rotateY((x - 0.5) * 12);
-      };
-      const reset = () => {
-        lift(0);
-        scaleX(1);
-        scaleY(1);
-        rotateX(0);
-        rotateY(0);
-      };
-
-      preview.addEventListener("pointermove", move);
-      preview.addEventListener("pointerleave", reset);
-      cleanups.push(() => {
-        preview.removeEventListener("pointermove", move);
-        preview.removeEventListener("pointerleave", reset);
-      });
       return () => cleanups.forEach(cleanup => cleanup());
     });
 

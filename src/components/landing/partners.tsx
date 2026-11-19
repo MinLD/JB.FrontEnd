@@ -1,56 +1,22 @@
 import Image from "next/image";
 import { DesignAsset } from "@/components/ui/design-asset";
 
-const partnerLogos = [
-  { name: "Antler", logo: <DesignAsset name="antler" alt="Antler" /> },
-  { name: "Do Ventures", logo: <DesignAsset name="doVentures" alt="Do Ventures" /> },
-  { name: "VinaCapital", logo: <Image src="/jobbod/partners/vinacapital.png" alt="VinaCapital" width={350} height={62} sizes="160px" /> },
-  { name: "Spark Ventures", logo: <DesignAsset name="spark" alt="Spark Ventures" sizes="160px" /> },
-  {
-    name: "Genesia Ventures",
-    logo: (
-      <div className="genesia-logo" role="img" aria-label="Genesia Ventures">
-        <span className="genesia-symbol"><DesignAsset name="genesiaSymbol" /></span>
-        <span className="genesia-vector"><DesignAsset name="genesiaVector" /></span>
-        <span className="genesia-text-one"><DesignAsset name="genesiaText1" /></span>
-        <span className="genesia-text-two"><DesignAsset name="genesiaText2" /></span>
-      </div>
-    ),
-  },
-  { name: "Expara", logo: <DesignAsset name="expara" alt="Expara" sizes="160px" /> },
-  { name: "JDI One", logo: <Image src="/jobbod/partners/jdi-one.png" alt="JDI One" width={310} height={309} sizes="54px" /> },
-  { name: "Saigon Asset Management", logo: <Image src="/jobbod/partners/saigon-asset-management.png" alt="Saigon Asset Management" width={184} height={156} sizes="64px" /> },
-  {
-    name: "Golden Gate Ventures",
-    logo: (
-      <div className="golden-gate">
-        <DesignAsset name="goldenGate" alt="" sizes="56px" style={{ width: 56, height: "auto" }} />
-        <span>Golden Gate<br />Ventures</span>
-      </div>
-    ),
-  },
-  { name: "Crisis Management", logo: <Image src="/jobbod/partners/crisis-management.png" alt="Crisis Management Venture Capital Fund" width={601} height={299} sizes="110px" /> },
-  { name: "Aavishkaar Group", logo: <DesignAsset name="aavishkaar" alt="Aavishkaar Group" sizes="160px" /> },
-  { name: "Quest Ventures", logo: <DesignAsset name="quest" alt="Quest Ventures" sizes="120px" /> },
+const organizations = [
+  { name: "NTTU", description: "Đại học Nguyễn Tất Thành", src: "/jobbod/partners/nttu.svg", width: 376, height: 90 },
+  { name: "NJEC", description: "CLB Nhà khởi nghiệp trẻ", src: "/jobbod/partners/njec.png", width: 1182, height: 886 },
+  { name: "NIIC", description: "Trung tâm Sáng tạo & Ươm tạo khởi nghiệp", src: "/jobbod/partners/niic.png", width: 2048, height: 991 },
 ];
 
 export function Partners() {
   return <section className="partners-section" aria-labelledby="partners-heading">
     <div className="page-container">
-      <div className="section-heading"><h2 id="partners-heading">Nhà tài trợ &amp; đồng hành</h2><p>Cùng tạo thêm cơ hội cho sinh viên.</p></div>
-      <div className="partner-marquee">
-        <div className="partner-logos">
-          <div className="partner-track">
-            {[false, true].map(duplicate => (
-              <ul key={String(duplicate)} className="partner-logo-list" aria-hidden={duplicate || undefined}>
-                {partnerLogos.map(({ name, logo }) => (
-                  <li key={name} className="partner-logo">{logo}</li>
-                ))}
-              </ul>
-            ))}
-          </div>
-        </div>
-      </div>
+      <div className="section-heading"><p className="eyebrow">CÙNG CỘNG ĐỒNG SINH VIÊN</p><h2 id="partners-heading">Học tập. Kết nối. Cùng phát triển.</h2><p>Trong hệ sinh thái đại học và khởi nghiệp.</p></div>
+      <ul className="partner-organizations" aria-label="Các trường và cộng đồng">
+        {organizations.map(organization => <li key={organization.name}>
+          <div className={`organization-logo organization-${organization.name.toLowerCase()}`}><Image src={organization.src} alt={organization.name} width={organization.width} height={organization.height} sizes="(max-width: 650px) 28vw, 250px" /></div>
+          <p>{organization.description}</p>
+        </li>)}
+      </ul>
       <h2 className="matching-heading">Một kết nối tốt, bắt đầu từ ba điều.</h2>
       <div className="matching-grid">
         <div><DesignAsset name="matchGoal" /><h3>Cùng mục tiêu</h3><p>Chung hướng đi cùng tiến.</p></div>

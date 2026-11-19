@@ -44,6 +44,20 @@ import { DesignAsset } from "@/components/ui/design-asset";
 <DesignAsset name="authWordmark" alt="Jobbod" priority />
 ```
 
+## FeatureItem
+
+<!-- source-sha256: ffe6e6d7bf114aedf6e85ba76a075c95883f9ba520b3f0232f586821ac4ee7fe -->
+
+Hiển thị một mục tính năng hoặc giá trị nổi bật gồm biểu tượng, tiêu đề và mô tả. [FeatureItemProps](./feature-item.tsx).
+
+Nhận icon dưới dạng ReactNode (ví dụ icon Lucide), title và description. Dùng trong danh sách giới thiệu, onboarding hoặc thẻ thông tin.
+
+```tsx
+import { FeatureItem } from "@/components/ui/feature-item";
+import { UserRound } from "lucide-react";
+<FeatureItem icon={<UserRound size={20} />} title="Mục tiêu" description="Tổng hợp hồ sơ" />
+```
+
 ## Input
 
 <!-- source-sha256: 59b9c4632134cc89a39c23868804ee449712aeb2546b599c4aa47c62f90e905c -->
@@ -56,4 +70,17 @@ Nhận props HTML input. Tự thêm label/id và validation; dùng AuthField khi
 import { Input } from "@/components/ui/input";
 <label htmlFor="email">Email</label>
 <Input id="email" type="email" name="email" />
+```
+
+## Stepper
+
+<!-- source-sha256: 8ffda2df2eab1c0169c2202fa40bfa47661f346ee47413a977705fec16eb1846 -->
+
+Thanh chỉ báo tiến trình nhiều bước (Stepper) dùng trong onboarding, đăng ký và wizard. [StepperProps](./stepper.tsx).
+
+steps nhận mảng các bước có label, number và status. currentStep xác định bước hiện tại nếu status chưa gán. Có thể truyền onStepClick để tương tác. Hỗ trợ responsive ẩn bớt nhãn không active trên màn hình nhỏ.
+
+```tsx
+import { Stepper } from "@/components/ui/stepper";
+<Stepper steps={[{ id: "1", label: "Làm quen" }, { id: "2", label: "Tạo hồ sơ" }]} currentStep="1" />
 ```

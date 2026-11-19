@@ -40,12 +40,12 @@ export function SiteHeader() {
       <Link href="/" className="brand-link" id="header-brand-link" aria-label="Jobbod — Trang chủ">
         <Image id="header-brand-logo" src="/jobbod/design/131-1677-imgWordmarkOutlines.svg" alt="Jobbod" width={88.538} height={18.697} priority />
       </Link>
-      <nav aria-label="Điều hướng chính" className="desktop-nav">{LANDING_NAV.map(item => <Link key={item.id} href={`/#${item.id}`} aria-current={pathname === "/" && activeSection === item.id ? "location" : undefined}>{item.label}</Link>)}</nav>
+      <nav aria-label="Điều hướng chính" className="desktop-nav">{LANDING_NAV.map(item => <Link key={item.id} href={`/#${item.id}`} aria-current={pathname === "/" && activeSection === item.id ? "location" : undefined}>{item.label}</Link>)}<Link href="/about" aria-current={pathname === "/about" ? "page" : undefined}>Về chúng tôi</Link></nav>
       <div className="header-actions">
         {user ? <Button asChild size="sm" className="header-signup"><Link href="/user">Tài khoản</Link></Button> : <><Link href="/login" className="header-login">Đăng nhập</Link><Button asChild size="sm" className="header-signup"><Link href="/register">Đăng ký</Link></Button></>}
         <Button variant="ghost" size="icon" className="mobile-toggle" aria-label={open ? "Đóng menu" : "Mở menu"} aria-expanded={open} aria-controls="mobile-navigation" onClick={() => setOpen(!open)}>{open ? <X size={20} /> : <Menu size={20} />}</Button>
       </div>
     </div>
-    {open && <nav id="mobile-navigation" className="mobile-nav" aria-label="Điều hướng trên điện thoại">{LANDING_NAV.map(item => <Link key={item.id} href={`/#${item.id}`} onClick={() => setOpen(false)} aria-current={pathname === "/" && activeSection === item.id ? "location" : undefined}>{item.label}</Link>)}</nav>}
+    {open && <nav id="mobile-navigation" className="mobile-nav" aria-label="Điều hướng trên điện thoại">{LANDING_NAV.map(item => <Link key={item.id} href={`/#${item.id}`} onClick={() => setOpen(false)} aria-current={pathname === "/" && activeSection === item.id ? "location" : undefined}>{item.label}</Link>)}<Link href="/about" onClick={() => setOpen(false)} aria-current={pathname === "/about" ? "page" : undefined}>Về chúng tôi</Link></nav>}
   </header>;
 }

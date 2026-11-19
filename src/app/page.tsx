@@ -1,8 +1,7 @@
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { SiteHeader } from "@/components/layout/site-header";
 import { DesignAsset } from "@/components/ui/design-asset";
-import { ProductPreview } from "@/components/landing/product-preview";
-import { ScaledScene } from "@/components/landing/scaled-scene";
 import { PhotoScene, BobSection } from "@/components/landing/animated-scenes";
 import { StartLink } from "@/components/landing/start-link";
 import { HowItWorks } from "@/components/landing/how-it-works";
@@ -11,6 +10,7 @@ import { Faq } from "@/components/landing/faq";
 import { SiteFooter } from "@/components/landing/site-footer";
 import { LandingMotion } from "@/components/landing/landing-motion";
 import { BackToTop } from "@/components/landing/back-to-top";
+import { StoryVideo } from "@/components/landing/story-video";
 import { frostedBackgroundStyle } from "@/config/design-assets";
 
 export default function HomePage() {
@@ -24,12 +24,7 @@ export default function HomePage() {
           <div className="hero-description"><p>Jobbod giúp sinh viên tìm đồng đội cùng mục tiêu, bổ trợ kỹ năng và phù hợp lịch rảnh — để bắt đầu hackathon, cuộc thi và những dự án thật.</p><Link href="#lam-quen-voi-bob" className="hero-bob-link">Trò chuyện với Bob</Link></div>
         </div>
         <div className="hero-preview">
-          <div className="hero-preview-surface">
-            <ScaledScene width={885.75} height={502}>
-              <div aria-hidden="true"><ProductPreview /></div>
-              <Link className="preview-explore" href="#lam-quen-voi-bob" aria-label="Khám phá Jobbod" />
-            </ScaledScene>
-          </div>
+          <StoryVideo />
         </div>
       </section>
       <section className="connection-section" aria-labelledby="connection-heading"><div className="page-container connection-grid">
@@ -40,7 +35,7 @@ export default function HomePage() {
       <HowItWorks />
       <section className="project-section page-container" aria-labelledby="project-heading"><div className="project-card"><div className="project-photo"><DesignAsset name="projectPhoto" alt="Nhóm sinh viên NTTU cùng dự án tại cuộc thi khởi nghiệp" sizes="(max-width: 700px) 100vw, 615px" /></div><div className="project-copy"><p className="eyebrow">TÌM THẤY NHAU. CÙNG BẮT ĐẦU.</p><h2 id="project-heading">Dự án đầu tiên<br />của <em>cả nhóm.</em></h2><p>Ý tưởng của bạn có thể đang chờ một người có thế mạnh khác mình.</p><StartLink>Bắt đầu cùng Bob <DesignAsset name="projectArrow" /></StartLink></div></div></section>
       <Partners />
-      <section className="faq-section" id="faq" aria-labelledby="faq-heading"><div className="faq-container"><div className="section-heading"><p className="eyebrow">MỘT CHÚT RÕ RÀNG, TRƯỚC KHI BẮT ĐẦU</p><h2 id="faq-heading">Bạn hỏi, Jobbod trả lời.</h2></div><Faq /></div></section>
+      <section className="faq-section" id="faq" aria-labelledby="faq-heading"><div className="faq-container"><div className="faq-intro"><p className="eyebrow">CÂU HỎI THƯỜNG GẶP</p><h2 id="faq-heading">Thêm một chút<br />về <em>JobBod.</em></h2><p>Những điều bạn muốn biết trước khi bắt đầu.</p><Link href="/about">Gặp gỡ đội ngũ <ArrowUpRight size={16} aria-hidden="true" /></Link></div><Faq /></div></section>
     </main>
     <SiteFooter />
     <BackToTop />

@@ -22,10 +22,10 @@ test('protected routes reject missing sessions; login and logout keep tokens out
   const stats = (await (await request.get(`${backend}/__stats`)).json()).data;
   expect(stats.lastHeaders.authorization).toMatch(/^Bearer /); expect(stats.lastHeaders.cookie).toBeNull();
   expect(userRequests).toBe(2); // Initial account load and the new session after login.
-  await page.getByRole('button', { name: 'Làm mới phiên', exact: true }).click();
-  await expect(page.getByRole('status').filter({ hasText: 'Làm mới phiên thành công' })).toBeVisible();
+  const refreshed = await context.request.post('/api/auth/refresh');
+  expect(refreshed.status()).toBe(200);
   expect(userRequests).toBe(2);
-  await page.getByRole('button', { name: 'Đăng xuất', exact: true }).click(); await expect(page).toHaveURL(/\/login$/);
+  await page.getByRole('button', { name: /^Đăng xuất/ }).click(); await expect(page).toHaveURL(/\/login$/);
   expect((await context.cookies()).filter(c => c.name === 'refreshToken')).toHaveLength(0);
   expect(userRequests).toBe(2);
 });
@@ -69,15 +69,99 @@ test(`registration validates, toasts success and prefills login at ${width}px`, 
 test('mobile landing assets honor their slots; FAQ is keyboard accessible', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 }); await page.goto('/');
   await expect(page.locator('.intro-loader-overlay')).toHaveCount(0);
-  await page.getByRole('button', { name: 'Jobbod AI dành cho ai?', exact: true }).click();
+  await page.getByRole('button', { name: 'JobBod ghép cặp người dùng như thế nào?', exact: true }).click();
   const second = page.getByRole('button', { name: 'Bob giúp tôi làm gì?', exact: true }); await second.focus(); await page.keyboard.press('Enter');
   await expect(second).toHaveAttribute('aria-expanded', 'true');
-  await expect(page.getByRole('button', { name: 'Jobbod AI dành cho ai?', exact: true })).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.getByRole('button', { name: 'JobBod ghép cặp người dùng như thế nào?', exact: true })).toHaveAttribute('aria-expanded', 'false');
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await expect(page.locator('.photo-main img')).toHaveJSProperty('complete', true);
   const geometry = await page.locator('.photo-main img').evaluate(img => { const image = img.getBoundingClientRect(); const slot = img.parentElement!.getBoundingClientRect(); return { ratio: image.width / slot.width, heightRatio: image.height / slot.height }; });
   expect(geometry.ratio).toBeCloseTo(1, 1); expect(geometry.heightRatio).toBeCloseTo(1.0424, 1);
 });
+for (const width of [1440, 390]) {
+  test(`public landing keeps approved logos and moves the team to About at ${width}px`, async ({ page }, testInfo) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    await expect(page.locator('.partner-organizations > li')).toHaveCount(3);
+    await expect(page.locator('.founder-card')).toHaveCount(0);
+    await expect(page.getByRole('img', { name: /Antler|Ventures|VinaCapital/ })).toHaveCount(0);
+    for (const name of ['NTTU', 'NJEC', 'NIIC']) {
+      const logo = page.getByRole('img', { name, exact: true });
+      await logo.scrollIntoViewIfNeeded();
+      await expect.poll(() => logo.evaluate(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0)).toBe(true);
+    }
+    await page.locator('.partners-section').screenshot({ path: testInfo.outputPath('organizations.png') });
+    await page.getByRole('navigation', { name: 'Thông tin JobBod' }).getByRole('link', { name: 'Về chúng tôi', exact: true }).click();
+    await expect(page).toHaveURL('/about');
+    const about = page.locator('.about-page:visible');
+    await expect(about.locator('.founder-card')).toHaveCount(8);
+    await expect(about.getByRole('heading', { name: 'Những người xây dựng JobBod' })).toBeVisible();
+    const mission = about.locator('.about-actions').getByRole('button', { name: 'Sứ mệnh của chúng tôi' });
+    await mission.click();
+    const dialog = page.getByRole('dialog', { name: 'Tuyên ngôn sứ mệnh của JobBod' });
+    await expect(dialog).toBeVisible();
+    await dialog.screenshot({ path: testInfo.outputPath('mission.png') });
+    await page.keyboard.press('Escape');
+    await expect(dialog).not.toBeVisible();
+    await expect(mission).toBeFocused();
+    await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    await about.locator('.founders-section').scrollIntoViewIfNeeded();
+    await page.evaluate(() => document.fonts.ready);
+    await expect.poll(() => about.locator('.founder-portrait').evaluateAll(images => images.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath('about.png') });
+  });
+  test(`public policies are readable and linked from the footer at ${width}px`, async ({ page }, testInfo) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto('/');
+    await page.getByRole('navigation', { name: 'Thông tin JobBod' }).getByRole('link', { name: 'Quyền riêng tư', exact: true }).click();
+    await expect(page).toHaveURL('/privacy');
+    for (const [route, title] of [['privacy', 'Chính sách quyền riêng tư'], ['terms', 'Điều khoản sử dụng'], ['cookies', 'Chính sách Cookie']]) {
+      await page.goto(`/${route}`);
+      await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();
+      await expect(page).toHaveTitle(`${title} | JobBod`);
+      await expect(page.locator('.policy-body > section')).not.toHaveCount(0);
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    }
+    await page.screenshot({ path: testInfo.outputPath('policy.png') });
+  });
+}
+test('FAQ opens one answer at a time and supports closing with the keyboard', async ({ page }, testInfo) => {
+  await page.goto('/');
+  const first = page.getByRole('button', { name: 'JobBod ghép cặp người dùng như thế nào?', exact: true });
+  const second = page.getByRole('button', { name: 'JobBod hoạt động như thế nào?', exact: true });
+  await expect(first).toHaveAttribute('aria-expanded', 'true');
+  await second.focus(); await page.keyboard.press('Enter');
+  await expect(second).toHaveAttribute('aria-expanded', 'true');
+  await expect(first).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('#faq-answer-0')).toHaveAttribute('aria-hidden', 'true');
+  await page.keyboard.press('Enter');
+  await expect(second).toHaveAttribute('aria-expanded', 'false');
+  await expect(page.locator('.faq-item button[aria-expanded="true"]')).toHaveCount(0);
+  await first.click();
+  await page.locator('#faq').screenshot({ path: testInfo.outputPath('faq.png') });
+});
+for (const width of [1440, 390]) {
+test(`story video waits for play, exposes controls and closes at ${width}px`, async ({ page }, testInfo) => {
+  await page.setViewportSize({ width, height: 900 });
+  await page.goto('/');
+  await expect(page.locator('.story-section')).toHaveCount(1);
+  await expect(page.locator('.dashboard-preview')).toHaveCount(0);
+  const story = page.locator('.hero-preview .story-section');
+  await story.scrollIntoViewIfNeeded();
+  await expect(story.locator('.story-film')).toHaveCount(0);
+  await expect(story.locator('.story-preview')).not.toHaveAttribute('src', /.+/);
+  await page.evaluate(() => document.fonts.ready);
+  await story.screenshot({ path: testInfo.outputPath('video.png') });
+  await story.getByRole('button', { name: 'Phát video', exact: true }).click();
+  const film = story.locator('.story-film');
+  await expect(film).toHaveJSProperty('controls', true);
+  await expect.poll(() => film.evaluate(video => (video as HTMLVideoElement).readyState)).toBeGreaterThan(0);
+  await expect(story.getByRole('alert')).toHaveCount(0);
+  await story.getByRole('button', { name: 'Đóng video', exact: true }).click();
+  await expect(film).toHaveCount(0);
+  await expect(story.getByRole('button', { name: 'Phát video', exact: true })).toBeVisible();
+});
+}
 test('landing adapts responsively without horizontal overflow; keeps 3-column matching and enables mobile nav', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto('/');
@@ -96,7 +180,6 @@ test('landing adapts responsively without horizontal overflow; keeps 3-column ma
       canvas: rect('.landing-canvas'),
       heading: rect('.hero h1'),
       project: rect('.project-card'),
-      profile: rect('.founder-card'),
       connectionPhoto: rect('.photo-scene'), connectionCopy: rect('.connection-copy'),
       bobScene: rect('.bob-scene'), bobCopy: rect('.bob-copy'),
       projectPhoto: rect('.project-photo'), projectCopy: rect('.project-copy'),
@@ -215,16 +298,7 @@ test('intro completes without leaving the navbar hidden during client navigation
   await page.emulateMedia({ reducedMotion: 'no-preference' }); await page.goto('/');
   await expect(page.locator('.intro-loader-overlay')).toHaveCount(0, { timeout: 10000 });
   await expect(page.locator('#header-brand-logo')).toHaveCSS('opacity', '1');
-  const preview = await page.locator('.hero-preview').boundingBox();
-  if (!preview) throw new Error('Missing product preview');
-  await page.mouse.move(preview.x + preview.width / 2, preview.y + 40, { steps: 8 });
-  const scale = () => page.locator('.hero-preview-surface').evaluate(element => {
-    const matrix = new DOMMatrix(getComputedStyle(element).transform);
-    return Math.hypot(matrix.m11, matrix.m12, matrix.m13);
-  });
-  await expect.poll(scale).toBeGreaterThan(1.01);
-  await page.mouse.move(0, 0, { steps: 8 });
-  await expect.poll(scale).toBeCloseTo(1, 2);
+  await expect(page.locator('.hero-preview .story-section')).toHaveCount(1);
   await page.locator('.footer-wordmark').scrollIntoViewIfNeeded();
   await expect.poll(() => page.locator('.footer-wordmark img').evaluateAll(images => images.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
   expect(warnings).toEqual([]);

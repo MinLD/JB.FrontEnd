@@ -5,10 +5,16 @@ export const LANDING_NAV = [
 ] as const;
 
 export const LANDING_FAQ = [
-  { question: "Jobbod AI dành cho ai?", answer: "Jobbod AI dành cho sinh viên muốn tìm đồng đội, tham gia hackathon, làm đồ án hoặc triển khai dự án. Bạn cũng có thể ghi lại kỹ năng và đóng góp qua từng dự án." },
+  { question: "JobBod ghép cặp người dùng như thế nào?", answer: "Bob đối chiếu mục tiêu, kỹ năng và lịch rảnh để gợi ý những người có thể bổ trợ cho nhau. Bạn xem lý do phù hợp và tự quyết định kết nối." },
+  { question: "JobBod hoạt động như thế nào?", answer: "Bạn chia sẻ mong muốn với Bob, tạo hồ sơ và xem gợi ý đồng đội. Khi tìm được người phù hợp, cả nhóm thống nhất cách trao đổi và bắt đầu dự án." },
+  { question: "Tôi sẽ biết gì về người được ghép trước khi gặp gỡ?", answer: "Bạn có thể xem các thông tin hồ sơ được chia sẻ, như kỹ năng, mục tiêu và vai trò mong muốn. Hãy trao đổi thêm để hiểu nhau trước khi hẹn gặp." },
+  { question: "Nếu tôi không thích người ghép cặp đó thì sao?", answer: "Bạn có thể bỏ qua đề xuất và tiếp tục tìm người khác. Chia sẻ thêm với Bob về điều bạn mong muốn để điều chỉnh tiêu chí phù hợp hơn." },
+  { question: "Ai sẽ tham gia?", answer: "JobBod hướng đến sinh viên muốn tìm đồng đội làm đồ án, tham gia hackathon, cuộc thi học thuật hoặc cùng xây dựng một dự án thực tế." },
+  { question: "Nếu tôi không thể đến vào phút cuối thì sao?", answer: "Hãy báo sớm cho đồng đội và cùng thống nhất một lịch hẹn khác. Tôn trọng thời gian của nhau là bước đầu cho một nhóm làm việc tốt." },
+  { question: "Thông thường mất bao lâu?", answer: "Bạn có thể bắt đầu bằng một cuộc trò chuyện ngắn với Bob. Thời gian tìm được đồng đội tùy vào nhu cầu, kỹ năng và lịch rảnh của những người tham gia." },
+  { question: "Nếu tôi không nhận được phản hồi từ JobBod thì sao?", answer: "Hãy kiểm tra lại thông tin hồ sơ, thông báo và các tiêu chí bạn đã chọn. Bạn có thể bổ sung kỹ năng hoặc mở rộng lịch rảnh để có thêm cơ hội kết nối." },
+  { question: "Các buổi gặp gỡ thường diễn ra ở đâu?", answer: "Các thành viên cùng chọn địa điểm thuận tiện, ưu tiên khuôn viên trường hoặc không gian công cộng. Bạn cũng có thể bắt đầu bằng một buổi trao đổi trực tuyến." },
   { question: "Bob giúp tôi làm gì?", answer: "Bob là trợ lý AI giúp bạn tạo hồ sơ từ cuộc trò chuyện, tìm đồng đội phù hợp và hỗ trợ sắp xếp kết nối theo quyền bạn cho phép." },
-  { question: "Bob tìm đồng đội dựa trên những thông tin nào?", answer: "Bob sử dụng mục tiêu dự án, kỹ năng, lịch rảnh và cách làm việc trong hồ sơ của bạn. Mỗi đề xuất có lý do phù hợp để bạn xem trước khi quyết định." },
-  { question: "Sau khi kết nối, tôi có thể làm gì?", answer: "Bạn có thể trao đổi, tạo nhóm và triển khai dự án cùng đồng đội. Trong quá trình làm việc, bạn ghi lại sản phẩm và phần đóng góp của mình." },
   { question: "Career DNA là gì?", answer: "Career DNA là hồ sơ năng lực tổng hợp kỹ năng, dự án đã tham gia, sản phẩm và đóng góp của bạn. Hồ sơ được bổ sung qua kết quả dự án và phản hồi từ đồng đội." },
   { question: "Bob có tự quyết định thay tôi không?", answer: "Bạn kiểm soát thông tin và quyền hoạt động của Bob. Bạn tự quyết định tham gia nhóm hoặc dự án; việc sắp xếp cuộc hẹn tuân theo quyền bạn đã chọn." },
 ] as const;
