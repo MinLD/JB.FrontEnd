@@ -4,12 +4,14 @@ import Image from "next/image";
 import { LocalizedLink as Link } from "@/components/layout/localized-link";
 import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
-import { Menu, X, ChevronDown, Check, Globe, Search } from "lucide-react";
+import { Menu, X, ChevronDown, Check, Globe, Search, Sun, Moon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { parseLocalePath } from "@/i18n/settings";
 import { LANDING_NAV } from "@/config/landing";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
+import { useTheme } from "@/providers/theme-provider";
 
 const emptySubscribe = () => () => {};
 
@@ -29,6 +31,7 @@ export function SiteHeader() {
   const langModalRef = useRef<HTMLDivElement>(null);
 
   const { user } = useAuth();
+  const { toggleTheme } = useTheme();
   const pathname = parseLocalePath(usePathname()).pathname;
   const { locale, setLocale, t, languages, currentLanguage } = useI18n();
 
@@ -266,6 +269,9 @@ export function SiteHeader() {
         </nav>
 
         <div className="header-actions">
+          {/* Theme toggle - desktop only */}
+          <ThemeToggle className="header-desktop-theme-toggle" />
+
           {/* Language trigger on desktop */}
           <div className="header-lang-wrapper" ref={langWrapperRef}>
             <button
@@ -355,6 +361,19 @@ export function SiteHeader() {
           </nav>
 
           <div className="mobile-drawer-footer">
+            <button
+              type="button"
+              className="mobile-drawer-theme-btn"
+              onClick={toggleTheme}
+              aria-label={t("header.theme_toggle_aria")}
+            >
+              <span className="drawer-theme-label">{t("header.theme_toggle_aria")}</span>
+              <span className="theme-toggle-icon-wrap" aria-hidden="true">
+                <Sun className="theme-icon theme-sun-icon" size={19} />
+                <Moon className="theme-icon theme-moon-icon" size={19} />
+              </span>
+            </button>
+
             <button
               type="button"
               className="mobile-drawer-lang-btn"

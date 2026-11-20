@@ -33,6 +33,9 @@ export const en: TranslationDictionary = {
     lang_no_results: "No matching language found",
     drawer_lang_label: "Display language",
     drawer_lang_aria: "Select display language",
+    theme_light: "Switch to light mode",
+    theme_dark: "Switch to dark mode",
+    theme_toggle_aria: "Toggle light / dark theme",
   },
   hero: {
     title_line1_pre: "Find the right ",

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { DesignAsset } from "@/components/ui/design-asset";
 import { LanguageSwitcher } from "@/components/layout/language-switcher";
+import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { frostedBackgroundStyle } from "@/config/design-assets";
 import { useAuth } from "@/providers/auth-provider";
 import { useI18n } from "@/providers/i18n-provider";
@@ -21,7 +22,7 @@ export function AuthScreen({ mode, copyright }: { mode: "login" | "register" | "
   const title = t(mode === "login" ? "auth.login_title" : mode === "register" ? "auth.register_title" : "auth.forgot_title");
   return <main className={`auth-page auth-${mode} frosted-background`} style={frostedBackgroundStyle}>
     <Link href="/" className="auth-brand inline-flex items-center" aria-label={t("header.brand_aria")}><DesignAsset name="authWordmark" priority /></Link>
-    <div className="auth-language-switcher"><LanguageSwitcher /></div>
+    <div className="auth-language-switcher flex items-center gap-2"><ThemeToggle /><LanguageSwitcher /></div>
     <section className="auth-intro" aria-label={t("auth.intro_aria")}>
       <h2>{mode === "register" ? <>{t("auth.intro_profile")}<br />{t("auth.intro_bob")}<em>{t("auth.intro_match")}</em></> : <>{t("auth.intro_find")}<em>{t("auth.intro_teammates")}</em><br />{t("auth.intro_project")}</>}</h2>
       <div className="auth-photo"><DesignAsset name={mode === "register" ? "registerPhoto" : mode === "forgot" ? "forgotPhoto" : "loginPhoto"} alt={t("auth.photo_alt")} priority sizes="(max-width: 900px) 90vw, 648px" /></div>

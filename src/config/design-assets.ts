@@ -7,13 +7,28 @@ export const designAssets = {
     "width": 3840,
     "height": 2403
   },
+  "heroBackgroundDark": {
+    "src": "/jobbod/design/hero-frosted-network-4k-dark.png",
+    "width": 3840,
+    "height": 2402
+  },
   "heroBackgroundTablet": {
     "src": "/jobbod/illustrations/frosted-tablet.svg",
     "width": 834,
     "height": 1100
   },
+  "heroBackgroundTabletDark": {
+    "src": "/jobbod/illustrations/frosted-tablet-dark.svg",
+    "width": 834,
+    "height": 1100
+  },
   "heroBackgroundMobile": {
     "src": "/jobbod/illustrations/frosted-mobile.svg",
+    "width": 390,
+    "height": 844
+  },
+  "heroBackgroundMobileDark": {
+    "src": "/jobbod/illustrations/frosted-mobile-dark.svg",
     "width": 390,
     "height": 844
   },
@@ -239,4 +254,7 @@ export const frostedBackgroundStyle = {
   "--frosted-desktop": `url("${designAssets.heroBackground.src}")`,
   "--frosted-tablet": `url("${designAssets.heroBackgroundTablet.src}")`,
   "--frosted-mobile": `url("${designAssets.heroBackgroundMobile.src}")`,
+  "--frosted-desktop-dark": `url("${designAssets.heroBackgroundDark.src}")`,
+  "--frosted-tablet-dark": `url("${designAssets.heroBackgroundTabletDark.src}")`,
+  "--frosted-mobile-dark": `url("${designAssets.heroBackgroundMobileDark.src}")`,
 } as CSSProperties;

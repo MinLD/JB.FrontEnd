@@ -206,7 +206,7 @@ export function IntroLoader() {
                     d={letter.d}
                     fillRule="evenodd"
                     clipRule="evenodd"
-                    fill="#20211E"
+                    fill="currentColor"
                     className="intro-letter-glyph"
                     style={{
                       opacity: letterCount > idx ? 1 : 0,

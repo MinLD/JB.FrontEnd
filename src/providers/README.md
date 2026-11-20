@@ -2,7 +2,9 @@
 
 Đây là folder chứa state và tiện ích cần dùng chung giữa nhiều trang, được gắn vào layout chung của ứng dụng.
 
-Hiện có thông tin tài khoản qua useAuth, quản lý ngôn ngữ qua useI18n và thông báo toast. Các component có thể sử dụng chung những dữ liệu này mà không phải truyền qua nhiều tầng props.
+Hiện có thông tin tài khoản qua useAuth, quản lý ngôn ngữ qua useI18n, quản lý giao diện sáng/tối qua useTheme và thông báo toast. Các component có thể sử dụng chung những dữ liệu này mà không phải truyền qua nhiều tầng props.
+
+ThemeProvider quản lý chế độ hiển thị (sáng/tối/hệ thống), đồng bộ với localStorage (khóa `jobbod_theme`), media query `prefers-color-scheme`, thẻ `<meta name="color-scheme">` và class `dark` trên `html`. Script inline ở đầu trang giúp tránh FOUC khi tải lại. Nút ThemeToggle tạo hiệu ứng chuyển động xoay và scale mượt mà giữa biểu tượng Mặt trời và Mặt trăng.
 
 I18nProvider nhận locale và một từ điển từ server. URL quyết định ngôn ngữ; cookie/localStorage chỉ nhớ lựa chọn và đồng bộ tab. Dùng `t` để dịch, `href` để tạo đường dẫn và `setLocale` để chuyển ngôn ngữ, kể cả khi storage bị chặn. Xem [i18n](../i18n/README.md).
 

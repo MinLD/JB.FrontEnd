@@ -33,6 +33,9 @@ export const vi: TranslationDictionary = {
     lang_no_results: "Không tìm thấy ngôn ngữ phù hợp",
     drawer_lang_label: "Ngôn ngữ hiển thị",
     drawer_lang_aria: "Chọn ngôn ngữ hiển thị",
+    theme_light: "Chuyển sang chế độ sáng",
+    theme_dark: "Chuyển sang chế độ tối",
+    theme_toggle_aria: "Chuyển đổi giao diện sáng / tối",
   },
   hero: {
     title_line1_pre: "Tìm đúng ",

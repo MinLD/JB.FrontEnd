@@ -5,6 +5,7 @@ import Image from "next/image";
 import { LocalizedLink as Link } from "@/components/layout/localized-link";
 import { LogOut, LoaderCircle } from "lucide-react";
 import { LanguageSwitcher } from "./language-switcher";
+import { ThemeToggle } from "./theme-toggle";
 import { cn } from "@/utils/cn";
 import { useI18n } from "@/providers/i18n-provider";
 
@@ -56,8 +57,9 @@ export function AppHeader({
           </div>
         )}
 
-        {/* Right: Logout Action */}
+        {/* Right: Theme Toggle, Language Switcher, Logout Action */}
         <div className="flex items-center justify-end gap-2 shrink-0">
+          <ThemeToggle />
           <LanguageSwitcher />
           {onLogout && (
             <button

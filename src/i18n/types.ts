@@ -31,6 +31,9 @@ export type HeaderTranslations = {
   lang_no_results: string;
   drawer_lang_label: string;
   drawer_lang_aria: string;
+  theme_light: string;
+  theme_dark: string;
+  theme_toggle_aria: string;
 };
 
 export type HeroTranslations = {
