@@ -22,30 +22,8 @@ export const LANDING_FAQ = [
 // Team information and portraits supplied by the Jobbod project.
 export const TEAM_GROUPS = [
   {
-    "id": "advisors",
-    "number": "01",
-    "title": "Cố vấn",
-    "description": "Định hướng khởi nghiệp và chuyên môn AI cho Jobbod.",
-    "members": [
-      {
-        "id": "huynh-hong-mai",
-        "name": "Huynh Hong Mai",
-        "role": "Cố vấn khởi nghiệp · NIIC",
-        "description": "Phó Giám đốc NIIC (NTTU), đồng trưởng Làng Tư duy thiết kế Techfest. Cố vấn khởi nghiệp quốc gia, giảng viên được chứng nhận bởi IPP và WISE.",
-        "portrait": "/jobbod/team/huynh-hong-mai.webp"
-      },
-      {
-        "id": "linh-nguyen",
-        "name": "Linh Nguyen",
-        "role": "Cố vấn AI/ML · Google Developer Expert",
-        "description": "Head of AI tại Obello, hơn 13 năm kinh nghiệm AI/NLP tại IBM, Shopee và A*STAR. Thạc sĩ AI tại Đại học Quốc gia Singapore (NUS).",
-        "portrait": "/jobbod/team/linh-nguyen.webp"
-      }
-    ]
-  },
-  {
     "id": "founders",
-    "number": "02",
+    "number": "01",
     "title": "Nhà sáng lập",
     "description": "Định hướng sản phẩm, kinh doanh và công nghệ.",
     "members": [
@@ -74,7 +52,7 @@ export const TEAM_GROUPS = [
   },
   {
     "id": "development",
-    "number": "03",
+    "number": "02",
     "title": "Đội ngũ phát triển",
     "description": "Thiết kế trải nghiệm, xây dựng hệ thống và phát triển AI.",
     "members": [
@@ -98,6 +76,28 @@ export const TEAM_GROUPS = [
         "role": "AI / Deep Learning",
         "description": "Data Science tại USTH, chuyên về LLM, hệ thống đa tác tử và NLP với PyTorch và Hugging Face.",
         "portrait": "/jobbod/team/nguyen-le-minh.webp"
+      }
+    ]
+  },
+  {
+    "id": "advisors",
+    "number": "03",
+    "title": "Cố vấn",
+    "description": "Định hướng khởi nghiệp và chuyên môn AI cho Jobbod.",
+    "members": [
+      {
+        "id": "huynh-hong-mai",
+        "name": "Huynh Hong Mai",
+        "role": "Cố vấn khởi nghiệp · NIIC",
+        "description": "Phó Giám đốc NIIC (NTTU), đồng trưởng Làng Tư duy thiết kế Techfest. Cố vấn khởi nghiệp quốc gia, giảng viên được chứng nhận bởi IPP và WISE.",
+        "portrait": "/jobbod/team/huynh-hong-mai.webp"
+      },
+      {
+        "id": "linh-nguyen",
+        "name": "Linh Nguyen",
+        "role": "Cố vấn AI/ML · Google Developer Expert",
+        "description": "Head of AI tại Obello, hơn 13 năm kinh nghiệm AI/NLP tại IBM, Shopee và A*STAR. Thạc sĩ AI tại Đại học Quốc gia Singapore (NUS).",
+        "portrait": "/jobbod/team/linh-nguyen.webp"
       }
     ]
   }
