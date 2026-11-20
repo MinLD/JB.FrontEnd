@@ -1,15 +1,20 @@
-import Image from "next/image";
-import { TEAM_GROUPS } from "@/config/landing";
+"use client";
 
-export function TeamSection() {
+import Image from "next/image";
+import type { TeamGroup } from "@/config/landing";
+import { useI18n } from "@/providers/i18n-provider";
+
+export function TeamSection({ groups }: { groups: TeamGroup[] }) {
+  const { t } = useI18n();
+
   return (
     <section id="doi-ngu" className="founders-section page-container" aria-labelledby="founders-heading">
-      <p className="eyebrow gold">ĐỘI NGŨ JOBBOD</p>
-      <h2 id="founders-heading">Những người xây dựng JobBod</h2>
-      <p>Nhà sáng lập, đội ngũ phát triển và ban cố vấn cùng xây dựng nền tảng kết nối sinh viên.</p>
+      <p className="eyebrow gold">{t("about.team_eyebrow")}</p>
+      <h2 id="founders-heading">{t("about.team_heading")}</h2>
+      <p>{t("about.team_description")}</p>
 
       <div className="team-groups">
-        {TEAM_GROUPS.map(group => (
+        {groups.map(group => (
           <section key={group.id} className="team-group" aria-labelledby={`team-${group.id}`}>
             <div className="team-group-heading">
               <h3 id={`team-${group.id}`}>
@@ -24,7 +29,7 @@ export function TeamSection() {
                   <Image
                     className="founder-portrait"
                     src={member.portrait}
-                    alt={`Chân dung ${member.name}`}
+                    alt={member.name}
                     width={174}
                     height={174}
                     sizes="(max-width: 650px) 64px, 174px"

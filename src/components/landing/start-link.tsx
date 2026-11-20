@@ -1,5 +1,5 @@
 "use client";
-import Link from "next/link";
+import { LocalizedLink as Link } from "@/components/layout/localized-link";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/providers/auth-provider";
 import type { ReactNode } from "react";

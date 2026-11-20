@@ -1,10 +1,12 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
+import { useI18n } from "@/providers/i18n-provider";
 import { DesignAsset } from "@/components/ui/design-asset";
 import { ScaledScene } from "@/components/landing/scaled-scene";
 
 export function BobMascotStage() {
+  const { t } = useI18n();
   const reduced = useReducedMotion();
 
   return (
@@ -68,7 +70,7 @@ export function BobMascotStage() {
         >
           <DesignAsset
             name="bob"
-            alt="Bob, trợ lý AI tìm đồng đội của Jobbod"
+            alt={t("onboarding.bob_alt")}
             priority
             sizes="(max-width: 640px) 240px, 279px"
           />

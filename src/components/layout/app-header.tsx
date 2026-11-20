@@ -2,9 +2,11 @@
 
 import type { ReactNode } from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { LocalizedLink as Link } from "@/components/layout/localized-link";
 import { LogOut, LoaderCircle } from "lucide-react";
+import { LanguageSwitcher } from "./language-switcher";
 import { cn } from "@/utils/cn";
+import { useI18n } from "@/providers/i18n-provider";
 
 export type AppHeaderProps = {
   center?: ReactNode;
@@ -19,6 +21,8 @@ export function AppHeader({
   loggingOut = false,
   className,
 }: AppHeaderProps) {
+  const { t } = useI18n();
+
   return (
     <header
       className={cn(
@@ -31,9 +35,18 @@ export function AppHeader({
         <div className="flex items-center shrink-0">
           <Link
             href="/"
-            className="inline-flex items-center outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md"
-            aria-label="Jobbod — Trang chủ"
+            className="inline-flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md"
+            aria-label={t("header.brand_aria")}
           >
+            <Image
+              src="/jobbod/brand-mark.png"
+              alt=""
+              width={32}
+              height={32}
+              sizes="32px"
+              preload
+              className="shrink-0 rounded-lg"
+            />
             <Image
               src="/jobbod/design/131-1677-imgWordmarkOutlines.svg"
               alt="Jobbod"
@@ -47,22 +60,23 @@ export function AppHeader({
 
         {/* Center: Stepper (scrollable or flexibly centered on mobile) */}
         {center && (
-          <div className="flex items-center justify-center px-1 overflow-x-auto no-scrollbar">
+          <div className="flex min-w-0 items-center justify-center px-1 overflow-x-auto no-scrollbar">
             {center}
           </div>
         )}
 
         {/* Right: Logout Action */}
-        <div className="flex items-center justify-end shrink-0">
+        <div className="flex items-center justify-end gap-2 shrink-0">
+          <LanguageSwitcher />
           {onLogout && (
             <button
               type="button"
               onClick={onLogout}
               disabled={loggingOut}
               className="inline-flex cursor-pointer items-center gap-1.5 text-xs sm:text-[13px] font-medium text-[#526172] hover:text-[#20211e] transition-colors disabled:opacity-50 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded px-1.5 py-1"
-              aria-label="Đăng xuất khỏi tài khoản"
+              aria-label={t("header.logout_aria")}
             >
-              <span className="hidden sm:inline">Đăng xuất</span>
+              <span className="hidden sm:inline">{t("header.logout")}</span>
               {loggingOut ? (
                 <LoaderCircle size={15} className="animate-spin" />
               ) : (

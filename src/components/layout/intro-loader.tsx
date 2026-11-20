@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/providers/i18n-provider";
 import gsap from "gsap";
 import { Flip } from "gsap/Flip";
 
@@ -36,6 +37,7 @@ const LETTERS = [
 ];
 
 export function IntroLoader() {
+  const { t } = useI18n();
   const [letterCount, setLetterCount] = useState(0);
   const [isDone, setIsDone] = useState(false);
   const bgRef = useRef<HTMLDivElement>(null);
@@ -183,7 +185,7 @@ export function IntroLoader() {
     <div
       className="intro-loader-overlay"
       role="status"
-      aria-label="Đang tải Jobbod AI..."
+      aria-label={t("accessibility.loading")}
     >
       <div ref={bgRef} className="intro-loader-bg" />
       <div className="intro-loader-content">

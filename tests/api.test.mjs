@@ -223,17 +223,18 @@ test('navigation never fetches /me; missing cookies redirect and expired tokens 
     assert.ok(url.endsWith('/api/auth/refresh'));
     return envelope({ access_token: rotatedAccess, refresh_token: 'navigation-rotated', expires_in: 1800 });
   };
-  assert.equal((await proxy(new NextRequest('http://localhost/user'))).headers.get('location'), 'http://localhost/login');
+  assert.equal((await proxy(new NextRequest('http://localhost/user'))).headers.get('location'), 'http://localhost/vi/login');
   for (const path of ['/user', '/user/projects', '/login']) {
     const response = await proxy(withSession(path));
-    assert.equal(response.status, path === '/login' ? 307 : 200);
+    assert.equal(response.status, 307);
+    assert.equal(response.headers.get('location'), `http://localhost/vi${path === '/login' ? '/user' : path}`);
   }
   assert.equal(calls.length, 0);
   const req = new NextRequest('http://localhost/user', { headers: { cookie: `accessToken=${jwt(-1)}; refreshToken=navigation-expired-${Math.random()}; authRemember=1` } });
   const responses = await Promise.all(Array.from({ length: 3 }, () => proxy(req)));
   assert.equal(calls.length, 1);
   for (const response of responses) {
-    assert.equal(response.status, 200);
+    assert.equal(response.status, 307);
     assert.match(response.headers.get('set-cookie'), /navigation-rotated/);
     assert.ok(response.headers.get('x-middleware-request-cookie').includes(rotatedAccess));
   }
@@ -247,7 +248,7 @@ test('navigation clears rejected rotations, preserves outages and never treats c
   assert.match(response.headers.get('set-cookie'), /Max-Age=0/);
   // A token with a future exp may pass navigation, but the data endpoint still validates it.
   const req = withSession();
-  assert.equal((await proxy(req)).status, 200);
+  assert.equal((await proxy(req)).status, 307);
   response = await me(req, context());
   assertResult(await response.json(), false, 401);
   assert.match(response.headers.get('set-cookie'), /Max-Age=0/);
@@ -255,4 +256,24 @@ test('navigation clears rejected rotations, preserves outages and never treats c
   response = await proxy(expired());
   assert.equal(response.status, 503);
   assert.equal(response.headers.get('set-cookie'), null);
+});
+
+test('localized page navigation enforces session gates and isolates cached language variants', async () => {
+  for (const locale of ['vi', 'en']) {
+    const denied = await proxy(new NextRequest(`http://localhost/${locale}/user/projects`));
+    assert.equal(denied.status, 307);
+    assert.equal(denied.headers.get('location'), `http://localhost/${locale}/login`);
+    const signedIn = await proxy(withSession(`/${locale}/login`));
+    assert.equal(signedIn.headers.get('location'), `http://localhost/${locale}/user`);
+    const publicPage = await proxy(new NextRequest(`http://localhost/${locale}/about`));
+    assert.equal(publicPage.status, 200);
+    assert.equal(publicPage.headers.get('x-middleware-rewrite'), null);
+  }
+  const legacy = await proxy(new NextRequest('http://localhost/about?from=home', { headers: { cookie: 'jobbod_lang=en' } }));
+  assert.equal(legacy.status, 307);
+  assert.equal(legacy.headers.get('location'), 'http://localhost/en/about?from=home');
+  assert.match(legacy.headers.get('cache-control'), /no-store/);
+  assert.match(legacy.headers.get('vary'), /Cookie/);
+  const invalid = await proxy(new NextRequest('http://localhost/', { headers: { cookie: 'jobbod_lang=invalid' } }));
+  assert.equal(invalid.headers.get('location'), 'http://localhost/vi');
 });

@@ -15,19 +15,21 @@ import { Stepper, type StepItem } from "@/components/ui/stepper";
 import { FeatureItem } from "@/components/ui/feature-item";
 import { AppHeader } from "@/components/layout/app-header";
 import { useAuth } from "@/providers/auth-provider";
+import { useI18n } from "@/providers/i18n-provider";
+import { authErrorMessage } from "@/i18n/auth-errors";
 import { logout } from "@/services/auth-service";
 import { BobMascotStage } from "./bob-mascot-stage";
-
-const ONBOARDING_STEPS: StepItem[] = [
-  { id: "01", label: "Làm quen", number: "01" },
-  { id: "02", label: "Tạo hồ sơ", number: "02" },
-  { id: "03", label: "Xác nhận", number: "03" },
-  { id: "04", label: "Quyền của Bob", number: "04" },
-];
 
 export function UserScreen() {
   const { user, loading, error, reload } = useAuth();
   const router = useRouter();
+  const { t, href } = useI18n();
+  const steps: StepItem[] = [
+    { id: "01", label: t("onboarding.step_intro"), number: "01" },
+    { id: "02", label: t("onboarding.step_profile"), number: "02" },
+    { id: "03", label: t("onboarding.step_confirm"), number: "03" },
+    { id: "04", label: t("onboarding.step_permissions"), number: "04" },
+  ];
   const reduced = useReducedMotion();
 
   const [currentStep, setCurrentStep] = useState("01");
@@ -36,25 +38,25 @@ export function UserScreen() {
   useEffect(() => {
     if (loading) return;
     if (!user && !error) {
-      router.replace("/login");
+      router.replace(href("/login"));
     }
-  }, [user, loading, error, router]);
+  }, [user, loading, error, router, href]);
 
   async function handleLogout() {
     setLoggingOut(true);
     const result = await logout();
     if (result.success) {
-      toast.success("Đã đăng xuất thành công.", { id: "auth-logout" });
-      router.replace("/login");
+      toast.success(t("auth.logged_out"), { id: "auth-logout" });
+      router.replace(href("/login"));
     } else {
-      toast.error(result.message, { id: "auth-logout" });
+      toast.error(authErrorMessage(result, t), { id: "auth-logout" });
       setLoggingOut(false);
     }
   }
 
   function handleStartOnboarding() {
-    toast.success("Bắt đầu hành trình cùng Bob!", {
-      description: "Chào mừng bạn đến với Jobbod.",
+    toast.success(t("onboarding.welcome_title"), {
+      description: t("onboarding.welcome_description"),
       id: "bob-onboarding",
     });
     setCurrentStep("02");
@@ -70,7 +72,7 @@ export function UserScreen() {
         >
           <div className="flex flex-col items-center gap-3 text-muted-foreground">
             <LoaderCircle className="size-8 animate-spin text-primary" />
-            <p className="text-sm font-medium">Đang xác thực tài khoản…</p>
+            <p className="text-sm font-medium">{t("onboarding.authenticating")}</p>
           </div>
         </main>
       </div>
@@ -83,8 +85,8 @@ export function UserScreen() {
         <AppHeader />
         <main className="flex min-h-[calc(100vh-64px)] items-center justify-center px-4">
           <div className="flex max-w-md flex-col items-center gap-4 text-center">
-            <p role="alert" className="text-sm text-destructive">{error}</p>
-            <Button onClick={() => void reload()}>Thử lại</Button>
+            <p role="alert" className="text-sm text-destructive">{t("auth.service_unavailable")}</p>
+            <Button onClick={() => void reload()}>{t("onboarding.retry")}</Button>
           </div>
         </main>
       </div>
@@ -96,7 +98,7 @@ export function UserScreen() {
       <div className="min-h-screen bg-white">
         <AppHeader />
         <main className="flex min-h-[calc(100vh-64px)] items-center justify-center text-sm text-muted-foreground">
-          Đang chuyển đến đăng nhập…
+          {t("onboarding.redirecting")}
         </main>
       </div>
     );
@@ -129,7 +131,8 @@ export function UserScreen() {
       <AppHeader
         center={
           <Stepper
-            steps={ONBOARDING_STEPS}
+            steps={steps}
+            ariaLabel={t("onboarding.steps_aria")}
             currentStep={currentStep}
             onStepClick={(step) => setCurrentStep(String(step.id))}
           />
@@ -198,7 +201,7 @@ export function UserScreen() {
               variants={itemVariants}
               className="m-0 mb-2.5 sm:mb-3.5 text-[11px] sm:text-[12px] font-bold tracking-[0.16em] text-[#6a7580] uppercase"
             >
-              LÀM QUEN VỚI BOB
+              {t("onboarding.eyebrow")}
             </motion.p>
 
             {/* Heading */}
@@ -206,8 +209,8 @@ export function UserScreen() {
               variants={itemVariants}
               className="m-0 mb-2.5 sm:mb-3 text-[30px] sm:text-[38px] lg:text-[44px] font-bold tracking-tight text-[#1f2937] leading-[1.15]"
             >
-              Xin chào!<br />
-              Mình là Bob.
+              {t("onboarding.hello")}<br />
+              {t("onboarding.bob")}
             </motion.h1>
 
             {/* Subheading */}
@@ -215,7 +218,7 @@ export function UserScreen() {
               variants={itemVariants}
               className="m-0 mb-5 sm:mb-6 text-[14px] sm:text-[15px] leading-relaxed text-[#526172] max-w-[460px]"
             >
-              Trợ lý AI giúp bạn tạo hồ sơ, tìm đồng đội phù hợp và bắt đầu dự án cùng nhóm.
+              {t("onboarding.description")}
             </motion.p>
 
             {/* Feature List */}
@@ -225,18 +228,18 @@ export function UserScreen() {
             >
               <FeatureItem
                 icon={<UserRound size={20} className="stroke-[1.8]" />}
-                title="Hiểu mục tiêu của bạn"
-                description="Tổng hợp hồ sơ từ những gì bạn chia sẻ."
+                title={t("onboarding.feature1_title")}
+                description={t("onboarding.feature1_description")}
               />
               <FeatureItem
                 icon={<UsersRound size={20} className="stroke-[1.8]" />}
-                title="Tìm đồng đội phù hợp"
-                description="Đối chiếu mục tiêu, kỹ năng và lịch rảnh."
+                title={t("onboarding.feature2_title")}
+                description={t("onboarding.feature2_description")}
               />
               <FeatureItem
                 icon={<IdCard size={20} className="stroke-[1.8]" />}
-                title="Đồng hành cùng dự án"
-                description="Hỗ trợ kết nối và ghi nhận kết quả cộng tác."
+                title={t("onboarding.feature3_title")}
+                description={t("onboarding.feature3_description")}
               />
             </motion.div>
 
@@ -246,7 +249,7 @@ export function UserScreen() {
                 onClick={handleStartOnboarding}
                 className="h-[46px] w-full sm:w-auto sm:min-w-[210px] px-8 rounded-[10px] bg-[#f2c744] hover:bg-[#dfaa28] text-[#20211e] font-semibold text-[15px] shadow-xs cursor-pointer transition-all"
               >
-                Bắt đầu cùng Bob
+                {t("onboarding.start")}
               </Button>
             </motion.div>
           </motion.div>

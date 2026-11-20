@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 128 128">
-  <title>Jobbod</title>
-  <rect width="128" height="128" rx="28" fill="#F2C744"/>
-  <path fill="#20211E" transform="translate(26 17) scale(.88)" d="M12 5C26 7 45 8 67 5C76 4 83 6 84 12C85 18 80 22 71 23L70 64C70 85 57 102 33 102C12 102 2 94 2 80C2 70 9 64 17 66C26 67 28 74 25 82C23 88 26 92 32 92C42 92 43 83 43 70L44 24C37 24 27 24 19 24C10 25 4 21 5 14C5 8 8 5 12 5Z"/>
-</svg>

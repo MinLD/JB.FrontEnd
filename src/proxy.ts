@@ -9,12 +9,13 @@ import {
 } from "@/services/auth-cookie";
 import type { TokenPair } from "@/types/auth";
 import { apiFailure, ApiError } from "@/services/api-response";
+import { DEFAULT_LOCALE, LOCALE_COOKIE_NAME, isValidLocale, localePath, parseLocalePath } from "@/i18n/settings";
 const authRoutes = ["/login", "/register", "/forgot-password"];
-export async function proxy(request: NextRequest) {
+async function sessionProxy(request: NextRequest, pathname: string, redirectPath: (path: string) => string) {
   const session = getAuthCookies(request);
-  const authPage = authRoutes.includes(request.nextUrl.pathname);
+  const authPage = authRoutes.includes(pathname);
   const loginRedirect = () =>
-    NextResponse.redirect(new URL("/login", request.url));
+    NextResponse.redirect(new URL(redirectPath("/login"), request.url));
   if (!session.accessToken && !session.refreshToken)
     return authPage ? NextResponse.next() : loginRedirect();
   try {
@@ -27,7 +28,7 @@ export async function proxy(request: NextRequest) {
     }
     let response: NextResponse;
     if (authPage) {
-      response = NextResponse.redirect(new URL("/user", request.url));
+      response = NextResponse.redirect(new URL(redirectPath("/user"), request.url));
     } else {
       const headers = new Headers(request.headers);
       if (rotated) headers.set("cookie", mergeAuthCookies(request, rotated));
@@ -55,6 +56,27 @@ export async function proxy(request: NextRequest) {
     return response;
   }
 }
+
+export async function proxy(request: NextRequest) {
+  const parsed = parseLocalePath(request.nextUrl.pathname);
+  const saved = request.cookies.get(LOCALE_COOKIE_NAME)?.value;
+  const locale = parsed.locale ?? (isValidLocale(saved) ? saved : DEFAULT_LOCALE);
+  const pathname = parsed.pathname;
+  const protectedPage = pathname === "/user" || pathname.startsWith("/user/");
+  const response = protectedPage || authRoutes.includes(pathname)
+    ? await sessionProxy(request, pathname, path => localePath(path, locale))
+    : NextResponse.next();
+  if (response.status !== 200 || parsed.locale) return response;
+
+  const url = request.nextUrl.clone();
+  url.pathname = localePath(pathname, locale);
+  const headers = new Headers(response.headers);
+  headers.delete("x-middleware-next");
+  // Legacy URLs depend on the cookie. Never cache them across languages.
+  headers.set("Cache-Control", "private, no-store");
+  headers.append("Vary", "Cookie");
+  return NextResponse.redirect(url, { status: 307, headers });
+}
 export const config = {
-  matcher: ["/user/:path*", "/login", "/register", "/forgot-password"],
+  matcher: ["/((?!api(?:/|$)|_next(?:/|$)|.*\\..*).*)"],
 };

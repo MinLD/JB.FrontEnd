@@ -3,8 +3,10 @@
 import { useEffect, useId, useRef } from "react";
 import { Award, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useI18n } from "@/providers/i18n-provider";
 
 export function MissionDialog() {
+  const { t } = useI18n();
   const ref = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   useEffect(() => {
@@ -12,17 +14,17 @@ export function MissionDialog() {
     return () => dialog?.close();
   }, []);
   return <>
-    <button type="button" className="mission-trigger" onClick={() => ref.current?.showModal()}>Sứ mệnh của chúng tôi</button>
+    <button type="button" className="mission-trigger" onClick={() => ref.current?.showModal()}>{t("mission.trigger")}</button>
     <dialog ref={ref} className="mission-dialog" aria-labelledby={titleId} onClick={event => { if (event.target === event.currentTarget) ref.current?.close(); }}>
       <article>
-        <header><Award size={20} aria-hidden="true" /><h2 id={titleId}>Tuyên ngôn sứ mệnh của JobBod</h2><button type="button" className="mission-close" aria-label="Đóng tuyên ngôn" onClick={() => ref.current?.close()}><X size={18} /></button></header>
+        <header><Award size={20} aria-hidden="true" /><h2 id={titleId}>{t("mission.title")}</h2><button type="button" className="mission-close" aria-label={t("mission.close_aria")} onClick={() => ref.current?.close()}><X size={18} /></button></header>
         <div className="mission-content">
-          <p><strong>Chúng tôi tin rằng: Không sinh viên nào xứng đáng phải “gánh team một mình” trong cô độc.</strong></p>
-          <p>Hàng ngày, hàng ngàn sinh viên phải lướt qua hàng trăm bài đăng để tìm một người bạn cùng chí hướng làm đồ án hoặc đi thi hackathon.</p>
-          <blockquote>JobBod ra đời để mỗi kỹ năng tìm thấy mảnh ghép còn thiếu, và những cuộc trò chuyện trở thành những cái bắt tay cùng làm dự án thật.</blockquote>
-          <p>Một người đồng đội phù hợp. Một khởi đầu có ý nghĩa.</p>
+          <p><strong>{t("mission.belief")}</strong></p>
+          <p>{t("mission.context")}</p>
+          <blockquote>{t("mission.quote")}</blockquote>
+          <p>{t("mission.closing")}</p>
         </div>
-        <footer><Button onClick={() => ref.current?.close()}>Đã hiểu</Button></footer>
+        <footer><Button onClick={() => ref.current?.close()}>{t("mission.understood")}</Button></footer>
       </article>
     </dialog>
   </>;

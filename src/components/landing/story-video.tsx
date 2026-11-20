@@ -3,10 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUpRight, Maximize, Pause, Play, X } from "lucide-react";
 import { StartLink } from "./start-link";
+import { useI18n } from "@/providers/i18n-provider";
+import { StoryHandwriting } from "./story-handwriting";
+import type { StoryLettering } from "@/config/story-lettering";
 
-const poster = "/jobbod/video/connection-story-poster.jpg";
+const poster = "/jobbod/video/jobbod-team-poster.jpg";
 
-export function StoryVideo() {
+export function StoryVideo({ lettering }: { lettering: StoryLettering }) {
+  const { t } = useI18n();
   const frame = useRef<HTMLDivElement>(null);
   const preview = useRef<HTMLVideoElement>(null);
   const film = useRef<HTMLVideoElement>(null);
@@ -51,19 +55,19 @@ export function StoryVideo() {
     }
   };
 
-  return <section className="story-section" aria-label="Câu chuyện về kết nối">
+  return <section className="story-section" aria-label={t("story.section_aria")}>
     <div className="story-frame" ref={frame} data-watching={watching}>
-      <video ref={preview} className="story-preview" src={previewReady ? "/jobbod/video/connection-story-preview.mp4" : undefined} poster={poster} autoPlay muted loop playsInline preload="none" aria-hidden="true" />
+      <video ref={preview} className="story-preview" src={previewReady ? "/jobbod/video/jobbod-team-preview.mp4" : undefined} poster={poster} autoPlay muted loop playsInline preload="none" aria-hidden="true" />
       {watching ? <>
-        <video ref={film} className="story-film" src="/jobbod/video/connection-story.mp4" poster={poster} controls autoPlay playsInline preload="metadata" aria-label="Video câu chuyện về kết nối" onError={() => setError(true)} />
-        <button className="story-close story-icon-button" aria-label="Đóng video" onClick={() => setWatching(false)}><X size={20} /></button>
-        {error && <p className="story-error" role="alert">Chưa phát được video. <button onClick={() => { setError(false); film.current?.load(); }}>Thử lại</button></p>}
+        <video ref={film} className="story-film" src="/jobbod/video/jobbod-team-150s.mp4" poster={poster} controls autoPlay playsInline preload="metadata" aria-label={t("story.video_aria")} onError={() => setError(true)} />
+        <button className="story-close story-icon-button" aria-label={t("story.close_video")} onClick={() => setWatching(false)}><X size={20} /></button>
+        {error && <p className="story-error" role="alert">{t("story.error")} <button onClick={() => { setError(false); film.current?.load(); }}>{t("story.retry")}</button></p>}
       </> : <>
-        <div className="story-copy"><p className="eyebrow">MỖI KẾT NỐI, MỘT KHỞI ĐẦU.</p><h2 id="story-heading">Có người cùng mình.<br /><em>Câu chuyện sẽ khác.</em></h2><div className="story-actions"><StartLink>Bắt đầu cùng Bob <ArrowUpRight size={16} aria-hidden="true" /></StartLink><a href="#faq">Tìm hiểu thêm <ArrowDown size={15} /></a></div></div>
-        <button type="button" className="story-play" onClick={watch}><Play size={16} fill="currentColor" /> Phát video</button>
-        <button type="button" className="story-pause story-icon-button" aria-label={previewPaused || !previewReady ? "Phát nền video" : "Tạm dừng nền video"} onClick={togglePreview}>{previewPaused || !previewReady ? <Play size={18} /> : <Pause size={18} />}</button>
+        <div className="story-copy"><p className="eyebrow">{t("story.eyebrow")}</p><StoryHandwriting key={lettering.lines[0].text} lettering={lettering} /><div className="story-actions"><StartLink>{t("story.start_with_bob")} <ArrowUpRight size={16} aria-hidden="true" /></StartLink><a href="#faq">{t("story.learn_more")} <ArrowDown size={15} /></a></div></div>
+        <button type="button" className="story-play" onClick={watch}><Play size={16} fill="currentColor" /> {t("story.play_video")}</button>
+        <button type="button" className="story-pause story-icon-button" aria-label={previewPaused || !previewReady ? t("story.play_bg") : t("story.pause_bg")} onClick={togglePreview}>{previewPaused || !previewReady ? <Play size={18} /> : <Pause size={18} />}</button>
       </>}
     </div>
-    <div className="story-caption"><span>Một câu chuyện về kết nối.</span><span>2:26</span><button type="button" onClick={() => void fullscreen()}><Maximize size={16} /> Toàn màn hình</button></div>
+    <div className="story-caption"><span>{t("story.caption")}</span><span>{t("story.duration")}</span><button type="button" onClick={() => void fullscreen()}><Maximize size={16} /> {t("story.fullscreen")}</button></div>
   </section>;
 }

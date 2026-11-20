@@ -9,6 +9,7 @@ export type StepItem = {
 
 export type StepperProps = {
   steps: StepItem[];
+  ariaLabel?: string;
   currentStep?: string | number;
   className?: string;
   onStepClick?: (step: StepItem) => void;
@@ -16,20 +17,21 @@ export type StepperProps = {
 
 /**
  * Thanh chỉ báo tiến trình nhiều bước (Stepper) dùng trong onboarding, đăng ký và wizard.
- * @remarks steps nhận mảng các bước có label, number và status. currentStep xác định bước hiện tại nếu status chưa gán. Có thể truyền onStepClick để tương tác. Hỗ trợ responsive ẩn bớt nhãn không active trên màn hình nhỏ.
+ * @remarks ariaLabel cho phép dịch tên điều hướng cho trình đọc màn hình. steps nhận mảng các bước có label, number và status. currentStep xác định bước hiện tại nếu status chưa gán. Có thể truyền onStepClick để tương tác. Hỗ trợ responsive ẩn bớt nhãn không active trên màn hình nhỏ.
  * @example
  * import { Stepper } from "@/components/ui/stepper";
  * <Stepper steps={[{ id: "1", label: "Làm quen" }, { id: "2", label: "Tạo hồ sơ" }]} currentStep="1" />
  */
 export function Stepper({
   steps,
+  ariaLabel = "Tiến trình các bước",
   currentStep,
   className,
   onStepClick,
 }: StepperProps) {
   return (
     <nav
-      aria-label="Tiến trình các bước"
+      aria-label={ariaLabel}
       className={cn("flex items-center gap-1.5 sm:gap-2.5 md:gap-3", className)}
     >
       <ol className="m-0 flex list-none items-center gap-1.5 sm:gap-2.5 md:gap-3 p-0">

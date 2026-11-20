@@ -1,30 +1,7 @@
+"use client";
+
 import Image from "next/image";
-const steps = [
-  {
-    title: "Tạo hồ sơ cùng Bob",
-    label: "01 / Tạo hồ sơ",
-    description: "Chia sẻ mục tiêu, kỹ năng và lịch rảnh. Bob tổng hợp thành hồ sơ để bạn xem lại trước khi tìm đội.",
-    illustration: "profile",
-  },
-  {
-    title: "Tìm người bổ trợ kỹ năng",
-    label: "02 / Tìm đồng đội",
-    description: "Bob gợi ý người cùng mục tiêu, bổ trợ kỹ năng và hợp lịch. Bạn xem lý do phù hợp rồi quyết định gửi lời mời.",
-    illustration: "match",
-  },
-  {
-    title: "Cùng làm dự án",
-    label: "03 / Hợp tác dự án",
-    description: "Sau khi kết nối, cả nhóm thống nhất phần việc, lên lịch trao đổi và cùng theo dõi tiến độ.",
-    illustration: "project",
-  },
-  {
-    title: "Ghi lại phần bạn đóng góp",
-    label: "04 / Career DNA",
-    description: "Lưu vai trò, kỹ năng và sản phẩm bạn đã làm vào hồ sơ năng lực Career DNA.",
-    illustration: "career",
-  },
-];
+import { useI18n } from "@/providers/i18n-provider";
 
 const connectors = [
   { className: "line-one", viewBox: "0 0 307.216 83.8313", line: "M0.9 73.9847C47.4 73.9847 92.4 43.2347 81.9 17.7347C70.65 -10.7653 36.9 -0.265331 38.4 28.2347C40.65 62.7347 112.65 94.9847 166.65 78.4847C218.4 62.7347 242.4 34.9847 305.4 62.7347", tip: "M301.04 55.8934L305.4 62.7347L297.408 64.1281" },
@@ -45,12 +22,41 @@ function Connector({ className, viewBox, line, tip, index }: {
 }
 
 export function HowItWorks() {
+  const { t } = useI18n();
+
+  const steps = [
+    {
+      title: t("how_it_works.step1_title"),
+      label: t("how_it_works.step1_label"),
+      description: t("how_it_works.step1_desc"),
+      illustration: "profile",
+    },
+    {
+      title: t("how_it_works.step2_title"),
+      label: t("how_it_works.step2_label"),
+      description: t("how_it_works.step2_desc"),
+      illustration: "match",
+    },
+    {
+      title: t("how_it_works.step3_title"),
+      label: t("how_it_works.step3_label"),
+      description: t("how_it_works.step3_desc"),
+      illustration: "project",
+    },
+    {
+      title: t("how_it_works.step4_title"),
+      label: t("how_it_works.step4_label"),
+      description: t("how_it_works.step4_desc"),
+      illustration: "career",
+    },
+  ];
+
   return <section className="workflow-section" id="cach-hoat-dong" aria-labelledby="workflow-heading">
     <div className="page-container">
       <div className="section-heading workflow-heading">
-        <p className="eyebrow">CÁCH HOẠT ĐỘNG</p>
-        <h2 id="workflow-heading">Từ ý tưởng đến <em>dự án thật.</em></h2>
-        <p>Tìm người phù hợp, cùng làm dự án và ghi lại những gì bạn đã đóng góp.</p>
+        <p className="eyebrow">{t("how_it_works.eyebrow")}</p>
+        <h2 id="workflow-heading">{t("how_it_works.heading_pre")}<em>{t("how_it_works.heading_em")}</em></h2>
+        <p>{t("how_it_works.description")}</p>
       </div>
       <div className="workflow">
         <div className="workflow-viewport">

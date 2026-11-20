@@ -18,7 +18,7 @@ test('protected routes reject missing sessions; login and logout keep tokens out
   const cookies = (await context.cookies()).filter(c => ['accessToken', 'refreshToken', 'authRemember'].includes(c.name));
   expect(cookies).toHaveLength(3);
   for (const c of cookies) { expect(c.httpOnly).toBe(true); expect(c.secure).toBe(true); expect(c.sameSite).toBe('Lax'); }
-  expect(await page.evaluate(() => ({ local: localStorage.length, session: sessionStorage.length, cookie: document.cookie }))).toEqual({ local: 0, session: 0, cookie: '' });
+  expect(await page.evaluate(() => ({ local: localStorage.length, session: sessionStorage.length, cookie: document.cookie }))).toEqual({ local: 1, session: 0, cookie: 'jobbod_lang=vi' });
   const stats = (await (await request.get(`${backend}/__stats`)).json()).data;
   expect(stats.lastHeaders.authorization).toMatch(/^Bearer /); expect(stats.lastHeaders.cookie).toBeNull();
   expect(userRequests).toBe(2); // Initial account load and the new session after login.
@@ -55,9 +55,12 @@ test(`registration validates, toasts success and prefills login at ${width}px`, 
   await expect(page.getByLabel('Họ và tên', { exact: true })).toBeFocused();
   await page.getByLabel('Họ và tên', { exact: true }).fill('Nguyễn An'); await page.getByLabel('Email', { exact: true }).fill('student@example.com');
   await page.getByLabel('Mật khẩu', { exact: true }).fill('password123'); await page.getByRole('button', { name: 'Tạo tài khoản', exact: true }).click();
-  await expect(page).toHaveURL('/login?email=student%40example.com');
+  await expect(page).toHaveURL('/vi/login?email=student%40example.com');
   await expect(page.getByText('Đăng ký thành công! Bạn có thể đăng nhập bằng tài khoản vừa tạo.', { exact: true })).toBeVisible();
   const loginForm = page.locator('.auth-login:visible');
+  const brandColor = await loginForm.locator('.submit-button').evaluate(button => getComputedStyle(button).backgroundColor);
+  await expect(loginForm.locator('.auth-intro h2 em')).toHaveCSS('color', brandColor);
+  await expect(loginForm.locator('.auth-bottom a')).toHaveCSS('color', brandColor);
   await expect(loginForm.getByLabel('Email', { exact: true })).toHaveValue('student@example.com');
   await expect(loginForm.getByLabel('Mật khẩu', { exact: true })).toHaveValue('');
   await expect(page.locator('.success-message')).toHaveCount(0);
@@ -92,7 +95,7 @@ for (const width of [1440, 390]) {
     }
     await page.locator('.partners-section').screenshot({ path: testInfo.outputPath('organizations.png') });
     await page.getByRole('navigation', { name: 'Thông tin JobBod' }).getByRole('link', { name: 'Về chúng tôi', exact: true }).click();
-    await expect(page).toHaveURL('/about');
+    await expect(page).toHaveURL('/vi/about');
     const about = page.locator('.about-page:visible');
     await expect(about.locator('.founder-card')).toHaveCount(8);
     await expect(about.getByRole('heading', { name: 'Những người xây dựng JobBod' })).toBeVisible();
@@ -114,7 +117,7 @@ for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 900 });
     await page.goto('/');
     await page.getByRole('navigation', { name: 'Thông tin JobBod' }).getByRole('link', { name: 'Quyền riêng tư', exact: true }).click();
-    await expect(page).toHaveURL('/privacy');
+    await expect(page).toHaveURL('/vi/privacy');
     for (const [route, title] of [['privacy', 'Chính sách quyền riêng tư'], ['terms', 'Điều khoản sử dụng'], ['cookies', 'Chính sách Cookie']]) {
       await page.goto(`/${route}`);
       await expect(page.getByRole('heading', { name: title, exact: true })).toBeVisible();
@@ -150,18 +153,75 @@ test(`story video waits for play, exposes controls and closes at ${width}px`, as
   await story.scrollIntoViewIfNeeded();
   await expect(story.locator('.story-film')).toHaveCount(0);
   await expect(story.locator('.story-preview')).not.toHaveAttribute('src', /.+/);
+  await expect(story.locator('.story-preview')).toHaveAttribute('poster', '/jobbod/video/jobbod-team-poster.jpg');
+  await expect(story.locator('.story-caption')).toContainText('2:30');
+  await expect(story.locator('.story-lettering')).toHaveAttribute('data-writing', 'complete');
+  await expect(story.locator('.story-writing-pen')).toHaveCSS('opacity', '0');
   await page.evaluate(() => document.fonts.ready);
   await story.screenshot({ path: testInfo.outputPath('video.png') });
   await story.getByRole('button', { name: 'Phát video', exact: true }).click();
   const film = story.locator('.story-film');
+  await expect(film).toHaveAttribute('src', '/jobbod/video/jobbod-team-150s.mp4');
   await expect(film).toHaveJSProperty('controls', true);
   await expect.poll(() => film.evaluate(video => (video as HTMLVideoElement).readyState)).toBeGreaterThan(0);
+  await expect.poll(() => film.evaluate(video => (video as HTMLVideoElement).duration)).toBeCloseTo(150, 0);
   await expect(story.getByRole('alert')).toHaveCount(0);
   await story.getByRole('button', { name: 'Đóng video', exact: true }).click();
   await expect(film).toHaveCount(0);
   await expect(story.getByRole('button', { name: 'Phát video', exact: true })).toBeVisible();
+  await story.getByRole('button', { name: 'Phát nền video', exact: true }).click();
+  await expect(story.locator('.story-preview')).toHaveAttribute('src', '/jobbod/video/jobbod-team-preview.mp4');
+  await expect.poll(() => story.locator('.story-preview').evaluate(video => (video as HTMLVideoElement).readyState)).toBeGreaterThan(0);
 });
 }
+
+for (const locale of ['vi', 'en']) {
+  for (const width of [1440, 390]) {
+    test(`story handwriting draws once without shifting controls in ${locale} at ${width}px`, async ({ page }, testInfo) => {
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+      await page.setViewportSize({ width, height: 960 });
+      await page.goto(`/${locale}`);
+      await expect(page.locator('.intro-loader-overlay')).toHaveCount(0, { timeout: 10000 });
+      const story = page.locator('.story-section');
+      await story.scrollIntoViewIfNeeded();
+      const lettering = story.locator('.story-lettering');
+      await expect(lettering).toHaveAttribute('data-writing', 'writing');
+      await expect(story.locator('.story-writing-pen')).toHaveCSS('opacity', '1');
+      const writingCenter = await story.locator('.story-lettering').evaluate(svg => {
+        const visible = Array.from(svg.querySelectorAll<SVGPathElement>('[data-line="0"] [data-ink]')).filter(path => path.style.visibility !== 'hidden').map(path => path.getBoundingClientRect());
+        const center = (Math.min(...visible.map(rect => rect.left)) + Math.max(...visible.map(rect => rect.right))) / 2;
+        const rect = svg.getBoundingClientRect();
+        return { center, expected: rect.x + rect.width / 2, tolerance: rect.width * .15 };
+      });
+      expect(Math.abs(writingCenter.center - writingCenter.expected)).toBeLessThan(writingCenter.tolerance);
+      const before = await story.locator('.story-actions').boundingBox();
+      await story.screenshot({ path: testInfo.outputPath('handwriting-in-progress.png') });
+      await expect(lettering).toHaveAttribute('data-writing', 'complete', { timeout: 22000 });
+      await expect(story.locator('.story-writing-pen')).toHaveCSS('opacity', '0');
+      const after = await story.locator('.story-actions').boundingBox();
+      expect(Math.abs(before!.y - after!.y)).toBeLessThan(1);
+      await expect(story.getByRole('heading', { level: 2 })).toHaveAccessibleName(locale === 'vi' ? 'Có người cùng mình. Câu chuyện sẽ khác.' : 'Having someone by your side. The journey changes.');
+      await story.screenshot({ path: testInfo.outputPath('handwriting-complete.png') });
+      await page.evaluate(() => window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }));
+      await story.scrollIntoViewIfNeeded();
+      await expect(lettering).toHaveAttribute('data-writing', 'complete');
+      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+    });
+  }
+}
+
+test('story handwriting immediately finishes when reduced motion is enabled', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'no-preference' });
+  await page.goto('/en');
+  await expect(page.locator('.intro-loader-overlay')).toHaveCount(0, { timeout: 10000 });
+  await page.locator('.story-section').scrollIntoViewIfNeeded();
+  const lettering = page.locator('.story-lettering');
+  await expect(lettering).toHaveAttribute('data-writing', 'writing');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await expect(lettering).toHaveAttribute('data-writing', 'complete');
+  await expect(page.locator('.story-writing-pen')).toHaveCSS('opacity', '0');
+});
+
 test('landing adapts responsively without horizontal overflow; keeps 3-column matching and enables mobile nav', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 960 });
   await page.goto('/');
@@ -305,7 +365,7 @@ test('intro completes without leaving the navbar hidden during client navigation
   await page.evaluate(() => window.scrollTo({ top: 0, behavior: 'instant' }));
   await page.getByRole('link', { name: 'Đăng nhập', exact: true }).click();
   await expect(page.getByRole('heading', { name: 'Đăng nhập Jobbod', exact: true })).toBeVisible();
-  await page.getByRole('link', { name: /Về trang chủ/ }).click();
+  await page.getByRole('link', { name: 'Jobbod — Trang chủ', exact: true }).click();
   await expect(page.getByRole('heading', { name: /Tìm đúng đồng đội/ })).toBeVisible();
   const scrollLanding = async () => {
     await expect.poll(() => page.evaluate(() => getComputedStyle(document.documentElement).overflowY)).not.toBe('hidden');

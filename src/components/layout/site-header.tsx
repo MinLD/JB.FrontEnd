@@ -1,27 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
+import { LocalizedLink as Link } from "@/components/layout/localized-link";
 import { useEffect, useState, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import { Menu, X, ChevronDown, Check, Globe, Search } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { parseLocalePath } from "@/i18n/settings";
 import { LANDING_NAV } from "@/config/landing";
 import { useAuth } from "@/providers/auth-provider";
-
-type LanguageCode = "vi" | "en";
-
-interface LanguageOption {
-  code: LanguageCode;
-  label: string;
-  sub: string;
-  short: string;
-}
-
-const LANGUAGES: LanguageOption[] = [
-  { code: "vi", label: "Tiếng Việt", sub: "Vietnamese", short: "VI" },
-  { code: "en", label: "English", sub: "English", short: "EN" },
-];
+import { useI18n } from "@/providers/i18n-provider";
 
 const emptySubscribe = () => () => {};
 
@@ -35,13 +23,14 @@ export function SiteHeader() {
   const [activeSection, setActiveSection] = useState("gioi-thieu");
   const [scrolled, setScrolled] = useState(false);
   const [langModalOpen, setLangModalOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState<LanguageCode>("vi");
   const [searchQuery, setSearchQuery] = useState("");
   const langWrapperRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const langModalRef = useRef<HTMLDivElement>(null);
 
   const { user } = useAuth();
-  const pathname = usePathname();
+  const pathname = parseLocalePath(usePathname()).pathname;
+  const { locale, setLocale, t, languages, currentLanguage } = useI18n();
 
   useEffect(() => {
     let frame = 0;
@@ -95,16 +84,27 @@ export function SiteHeader() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [langModalOpen, open]);
 
-  // Focus search input when language modal opens (desktop only to prevent mobile keyboard layout shift)
+  // Keep keyboard focus inside the modal and restore the trigger on close.
   useEffect(() => {
-    if (langModalOpen) {
-      if (typeof window !== "undefined" && window.innerWidth > 900) {
-        const timer = setTimeout(() => {
-          searchInputRef.current?.focus();
-        }, 50);
-        return () => clearTimeout(timer);
+    if (!langModalOpen) return;
+    const previous = document.activeElement as HTMLElement | null;
+    const modal = langModalRef.current;
+    if (window.innerWidth > 900) searchInputRef.current?.focus();
+    else modal?.focus();
+    const trapFocus = (event: KeyboardEvent) => {
+      if (event.key !== "Tab" || !modal) return;
+      const items = Array.from(modal.querySelectorAll<HTMLElement>('button:not([disabled]):not([tabindex="-1"]), input'));
+      const first = items[0];
+      const last = items.at(-1);
+      if (!first || !last) return;
+      if (event.shiftKey && (document.activeElement === first || document.activeElement === modal)) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || document.activeElement === modal)) {
+        event.preventDefault(); first.focus();
       }
-    }
+    };
+    modal?.addEventListener("keydown", trapFocus);
+    return () => { modal?.removeEventListener("keydown", trapFocus); previous?.focus(); };
   }, [langModalOpen]);
 
   const touchStartY = useRef<number | null>(null);
@@ -136,13 +136,24 @@ export function SiteHeader() {
     setLangModalOpen(true);
   };
 
-  const filteredLanguages = LANGUAGES.filter(
+  const filteredLanguages = languages.filter(
     l =>
       l.label.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
       l.sub.toLowerCase().includes(searchQuery.toLowerCase().trim())
   );
 
-  const currentLangObj = LANGUAGES.find(l => l.code === currentLang) || LANGUAGES[0];
+  const getNavLabel = (id: string, fallback: string) => {
+    switch (id) {
+      case "gioi-thieu":
+        return t("header.nav_intro");
+      case "cach-hoat-dong":
+        return t("header.nav_how_it_works");
+      case "faq":
+        return t("header.nav_faq");
+      default:
+        return fallback;
+    }
+  };
 
   const renderLanguageModal = () => (
     <>
@@ -152,6 +163,8 @@ export function SiteHeader() {
         aria-hidden="true"
       />
       <div
+        ref={langModalRef}
+        tabIndex={-1}
         className="lang-modal"
         role="dialog"
         aria-modal="true"
@@ -164,14 +177,14 @@ export function SiteHeader() {
         <div className="bottom-sheet-handle" aria-hidden="true" />
         <div className="lang-modal-header">
           <div>
-            <span className="lang-modal-eyebrow">NGÔN NGỮ HIỂN THỊ</span>
-            <h2 id="lang-modal-title" className="lang-modal-title">Chọn ngôn ngữ</h2>
+            <span className="lang-modal-eyebrow">{t("header.lang_modal_eyebrow")}</span>
+            <h2 id="lang-modal-title" className="lang-modal-title">{t("header.lang_modal_title")}</h2>
           </div>
           <button
             type="button"
             className="lang-modal-close"
             onClick={() => setLangModalOpen(false)}
-            aria-label="Đóng"
+            aria-label={t("header.lang_modal_close_aria")}
           >
             <X size={18} />
           </button>
@@ -182,26 +195,35 @@ export function SiteHeader() {
           <input
             ref={searchInputRef}
             type="search"
-            placeholder="Tìm ngôn ngữ"
+            placeholder={t("header.lang_search_placeholder")}
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
             className="lang-search-input"
-            aria-label="Tìm ngôn ngữ"
+            aria-label={t("header.lang_search_aria")}
           />
         </div>
 
-        <div className="lang-modal-list" role="radiogroup" aria-label="Danh sách ngôn ngữ">
+        <div className="lang-modal-list" role="radiogroup" aria-label={t("header.lang_list_aria")} onKeyDown={event => {
+          if (!["ArrowDown", "ArrowUp", "ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+          const options = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>('[role="radio"]'));
+          if (!options.length) return;
+          const current = options.indexOf(document.activeElement as HTMLButtonElement);
+          const index = event.key === "Home" ? 0 : event.key === "End" ? options.length - 1 : (current + (event.key === "ArrowUp" || event.key === "ArrowLeft" ? -1 : 1) + options.length) % options.length;
+          event.preventDefault();
+          options[index].click();
+        }}>
           {filteredLanguages.map(lang => {
-            const isSelected = currentLang === lang.code;
+            const isSelected = locale === lang.code;
             return (
               <button
                 key={lang.code}
                 type="button"
                 role="radio"
                 aria-checked={isSelected}
+                tabIndex={isSelected || filteredLanguages.length === 1 ? 0 : -1}
                 className={`lang-option ${isSelected ? "selected" : ""}`}
                 onClick={() => {
-                  setCurrentLang(lang.code);
+                  setLocale(lang.code);
                   setLangModalOpen(false);
                 }}
               >
@@ -214,7 +236,7 @@ export function SiteHeader() {
             );
           })}
           {filteredLanguages.length === 0 && (
-            <p className="lang-no-results">Không tìm thấy ngôn ngữ phù hợp</p>
+            <p className="lang-no-results">{t("header.lang_no_results")}</p>
           )}
         </div>
       </div>
@@ -224,22 +246,23 @@ export function SiteHeader() {
   return (
     <header className={`site-header ${scrolled || open ? "header-scrolled" : ""}`} data-scrolled={scrolled || open}>
       <div className="header-bar">
-        <Link href="/" className="brand-link" id="header-brand-link" aria-label="Jobbod — Trang chủ">
+        <Link href="/" className="brand-link gap-3" id="header-brand-link" aria-label={t("header.brand_aria")}>
+          <Image src="/jobbod/brand-mark.png" alt="" width={36} height={36} sizes="36px" preload className="shrink-0 rounded-[10px]" />
           <Image id="header-brand-logo" src="/jobbod/design/131-1677-imgWordmarkOutlines.svg" alt="Jobbod" width={88.538} height={18.697} priority />
         </Link>
 
-        <nav aria-label="Điều hướng chính" className="desktop-nav">
+        <nav aria-label={t("header.main_nav_aria")} className="desktop-nav">
           {LANDING_NAV.map(item => (
             <Link
               key={item.id}
               href={`/#${item.id}`}
               aria-current={pathname === "/" && activeSection === item.id ? "location" : undefined}
             >
-              {item.label}
+              {getNavLabel(item.id, item.label)}
             </Link>
           ))}
           <Link href="/about" aria-current={pathname === "/about" ? "page" : undefined}>
-            Về chúng tôi
+            {t("header.nav_about_us")}
           </Link>
         </nav>
 
@@ -252,9 +275,9 @@ export function SiteHeader() {
               onClick={() => (langModalOpen ? setLangModalOpen(false) : handleOpenLangModal())}
               aria-expanded={langModalOpen}
               aria-haspopup="dialog"
-              aria-label="Chọn ngôn ngữ"
+              aria-label={t("header.lang_trigger_aria")}
             >
-              <span>{currentLangObj.short}</span>
+              <span>{currentLanguage.short}</span>
               <ChevronDown size={14} className={`lang-chevron ${langModalOpen ? "rotate-180" : ""}`} aria-hidden="true" />
             </button>
 
@@ -265,11 +288,11 @@ export function SiteHeader() {
           {/* Login button - Only Login is shown */}
           {user ? (
             <Link href="/user" className="header-login-btn">
-              Tài khoản
+              {t("header.account")}
             </Link>
           ) : (
             <Link href="/login" className="header-login-btn">
-              Đăng nhập
+              {t("header.login")}
             </Link>
           )}
 
@@ -277,7 +300,7 @@ export function SiteHeader() {
           <button
             type="button"
             className="mobile-toggle"
-            aria-label={open ? "Đóng menu" : "Mở menu"}
+            aria-label={open ? t("header.mobile_menu_close") : t("header.mobile_menu_open")}
             aria-expanded={open}
             aria-controls="mobile-navigation"
             onClick={() => setOpen(!open)}
@@ -294,23 +317,24 @@ export function SiteHeader() {
           className="mobile-drawer"
           role="dialog"
           aria-modal="true"
-          aria-label="Menu điều hướng trên điện thoại"
+          aria-label={t("header.mobile_nav_aria")}
         >
           <div className="mobile-drawer-header">
-            <Link href="/" className="brand-link" onClick={() => setOpen(false)} aria-label="Jobbod — Trang chủ">
+            <Link href="/" className="brand-link gap-3" onClick={() => setOpen(false)} aria-label={t("header.brand_aria")}>
+              <Image src="/jobbod/brand-mark.png" alt="" width={36} height={36} sizes="36px" className="shrink-0 rounded-[10px]" />
               <Image src="/jobbod/design/131-1677-imgWordmarkOutlines.svg" alt="Jobbod" width={88.538} height={18.697} />
             </Link>
             <button
               type="button"
               className="mobile-drawer-close"
               onClick={() => setOpen(false)}
-              aria-label="Đóng menu"
+              aria-label={t("header.mobile_menu_close")}
             >
               <X size={22} />
             </button>
           </div>
 
-          <nav className="mobile-drawer-nav" aria-label="Điều hướng chính">
+          <nav className="mobile-drawer-nav" aria-label={t("header.main_nav_aria")}>
             {LANDING_NAV.map(item => (
               <Link
                 key={item.id}
@@ -319,7 +343,7 @@ export function SiteHeader() {
                 className="mobile-drawer-link"
                 aria-current={pathname === "/" && activeSection === item.id ? "location" : undefined}
               >
-                {item.label}
+                {getNavLabel(item.id, item.label)}
               </Link>
             ))}
             <Link
@@ -328,7 +352,7 @@ export function SiteHeader() {
               className="mobile-drawer-link"
               aria-current={pathname === "/about" ? "page" : undefined}
             >
-              Về chúng tôi
+              {t("header.nav_about_us")}
             </Link>
           </nav>
 
@@ -337,25 +361,25 @@ export function SiteHeader() {
               type="button"
               className="mobile-drawer-lang-btn"
               onClick={handleOpenLangModal}
-              aria-label="Chọn ngôn ngữ hiển thị"
+              aria-label={t("header.drawer_lang_aria")}
             >
               <div className="drawer-lang-left">
                 <Globe size={18} aria-hidden="true" />
-                <span>Ngôn ngữ hiển thị</span>
+                <span>{t("header.drawer_lang_label")}</span>
               </div>
               <div className="drawer-lang-right">
-                <span>{currentLangObj.label}</span>
+                <span>{currentLanguage.label}</span>
                 <ChevronDown size={14} aria-hidden="true" />
               </div>
             </button>
 
             {user ? (
               <Link href="/user" className="mobile-drawer-login-btn" onClick={() => setOpen(false)}>
-                Tài khoản
+                {t("header.account")}
               </Link>
             ) : (
               <Link href="/login" className="mobile-drawer-login-btn" onClick={() => setOpen(false)}>
-                Đăng nhập
+                {t("header.login")}
               </Link>
             )}
           </div>

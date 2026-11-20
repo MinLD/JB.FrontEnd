@@ -4,6 +4,8 @@
 
 Folder `api/` dùng để khai báo API chạy trên Next.js server, làm lớp trung gian giữa giao diện và backend Jobbod. `auth/` xử lý đăng nhập và phiên tài khoản.
 
+Các trang và root layout nằm trong `[locale]/`, hỗ trợ `vi` và `en`. Proxy redirect các URL cũ sang URL có ngôn ngữ; API ở `/api/...` độc lập với ngôn ngữ. Favicon dùng `icon.png` và biểu tượng màn hình chính dùng `apple-icon.png`, cùng lấy từ logo robot mới. Xem [hướng dẫn i18n](../i18n/README.md).
+
 ## api/backend — Server proxy dùng chung
 
 `api/backend/[...path]/route.ts` nhận request từ giao diện rồi gọi API tương ứng trên backend Jobbod. `[...path]` nhận nhiều đoạn đường dẫn, nên không cần tạo một route Next.js riêng cho mỗi endpoint nghiệp vụ.

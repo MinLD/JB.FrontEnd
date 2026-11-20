@@ -2,10 +2,12 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { useI18n } from "@/providers/i18n-provider";
 
 type BackToTopPhase = "idle" | "visible" | "retracting";
 
 export function BackToTop() {
+  const { t } = useI18n();
   const [phase, setPhase] = useState<BackToTopPhase>("idle");
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export function BackToTop() {
         </div>
       </div>
       <a className="back-to-top-link" href="#gioi-thieu">
-        Lên đầu trang <span aria-hidden="true">↑</span>
+        {t("common.back_to_top")} <span aria-hidden="true">↑</span>
       </a>
     </div>
   );

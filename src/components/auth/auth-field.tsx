@@ -2,6 +2,7 @@
 import { useEffect, useId, useRef, useState, type InputHTMLAttributes } from "react";
 import type { FieldErrors } from "react-hook-form";
 import { toast } from "sonner";
+import { useI18n } from "@/providers/i18n-provider";
 import { Input } from "@/components/ui/input";
 import { AUTH_LIMITS } from "@/lib/validations/auth";
 export function AuthField({
@@ -14,6 +15,7 @@ export function AuthField({
   label: string;
   validationAttempt?: number;
 }) {
+  const { t } = useI18n();
   const [visible, setVisible] = useState(false);
   const password = props.type === "password";
   const generatedId = useId();
@@ -50,7 +52,7 @@ export function AuthField({
     );
   }, [visibleError, validationAttempt, limitAttempt]);
   const rejectLongInput = () => {
-    const message = `${label} tối đa ${maxLength} ký tự.`;
+    const message = t("auth.limit", { label, max: maxLength });
     setLimitError(message);
     setLimitAttempt((value) => value + 1);
     toast.error(message, { id: "auth-validation", duration: 4000 });
@@ -110,10 +112,10 @@ export function AuthField({
           <button
             type="button"
             className="password-toggle"
-            aria-label={visible ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
+            aria-label={visible ? t("auth.hide_password") : t("auth.show_password")}
             onClick={() => setVisible(!visible)}
           >
-            {visible ? "Ẩn" : "Hiện"}
+            {visible ? t("auth.hide") : t("auth.show")}
           </button>
         )}
       </div>
@@ -125,14 +127,14 @@ export function AuthField({
     </div>
   );
 }
-export function showValidationError(errors: FieldErrors) {
+export function showValidationError(errors: FieldErrors, fallback: string) {
   const firstError = Object.values(errors).find(
     (error) => typeof error?.message === "string",
   );
   toast.error(
     typeof firstError?.message === "string"
       ? firstError.message
-      : "Vui lòng kiểm tra lại thông tin đã nhập.",
+      : fallback,
     { id: "auth-validation", duration: 4000 },
   );
 }

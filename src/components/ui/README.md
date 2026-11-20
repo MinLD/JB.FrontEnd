@@ -74,11 +74,11 @@ import { Input } from "@/components/ui/input";
 
 ## Stepper
 
-<!-- source-sha256: 8ffda2df2eab1c0169c2202fa40bfa47661f346ee47413a977705fec16eb1846 -->
+<!-- source-sha256: e891ce03f102b490d4a797eb680d3bc342fbf35ebab1f31ce692963ff37929b9 -->
 
 Thanh chỉ báo tiến trình nhiều bước (Stepper) dùng trong onboarding, đăng ký và wizard. [StepperProps](./stepper.tsx).
 
-steps nhận mảng các bước có label, number và status. currentStep xác định bước hiện tại nếu status chưa gán. Có thể truyền onStepClick để tương tác. Hỗ trợ responsive ẩn bớt nhãn không active trên màn hình nhỏ.
+ariaLabel cho phép dịch tên điều hướng cho trình đọc màn hình. steps nhận mảng các bước có label, number và status. currentStep xác định bước hiện tại nếu status chưa gán. Có thể truyền onStepClick để tương tác. Hỗ trợ responsive ẩn bớt nhãn không active trên màn hình nhỏ.
 
 ```tsx
 import { Stepper } from "@/components/ui/stepper";
