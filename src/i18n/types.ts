@@ -190,6 +190,17 @@ export type AboutTranslations = {
 };
 
 export type MetadataTranslations = {
+  home_description: string;
+  about_description: string;
+  login_description: string;
+  register_description: string;
+  forgot_description: string;
+  user_description: string;
+  privacy_description: string;
+  terms_description: string;
+  cookies_description: string;
+  share_image_alt: string;
+
   description: string;
   home: string;
   about: string;

@@ -5,6 +5,7 @@ import { I18nProvider } from "@/providers/i18n-provider";
 import { ToastProvider } from "@/providers/toast-provider";
 import { IntroLoader } from "@/components/layout/intro-loader";
 import { getDictionary, getLocale } from "@/i18n/server";
+import { SITE_NAME, SITE_ORIGIN } from "@/config/seo";
 import "../globals.css";
 
 export function generateStaticParams() { return [{ locale: "vi" }, { locale: "en" }]; }
@@ -12,8 +13,9 @@ export function generateStaticParams() { return [{ locale: "vi" }, { locale: "en
 export async function generateMetadata(): Promise<Metadata> {
   const dictionary = await getDictionary(await getLocale());
   return {
-  applicationName: "JobBod",
-  title: { default: "JobBod", template: "%s | JobBod" },
+  metadataBase: new URL(SITE_ORIGIN),
+  applicationName: SITE_NAME,
+  title: { default: SITE_NAME, template: `%s | ${SITE_NAME}` },
   description:
     dictionary.metadata.description,
   };

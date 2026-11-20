@@ -13,4 +13,4 @@ async function AccountContent() {
   return <UserScreen />;
 }
 
-export function generateMetadata() { return pageMetadata("user", "/user"); }
+export function generateMetadata() { return pageMetadata("user"); }

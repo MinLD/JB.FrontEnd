@@ -172,7 +172,7 @@ export const en: TranslationDictionary = {
   },
   "metadata": {
     "description": "Helping students find teammates, build meaningful projects, and grow their careers.",
-    "home": "JobBod",
+    "home": "JobBod – Find student teammates for real projects",
     "about": "About us",
     "login": "Log in",
     "register": "Sign up",
@@ -180,7 +180,17 @@ export const en: TranslationDictionary = {
     "user": "Profile · 01 Meet Bob",
     "terms": "Terms of service",
     "privacy": "Privacy policy",
-    "cookies": "Cookie policy"
+    "cookies": "Cookie policy",
+    "home_description": "Find teammates for student projects, hackathons and coursework with JobBod. Bob AI matches shared goals, complementary skills and availability to build together.",
+    "about_description": "Meet the JobBod team and discover our mission: helping students find compatible teammates, combine their skills and start meaningful projects together.",
+    "login_description": "Log in to JobBod to find teammates, manage your profile and continue your project journey with Bob AI.",
+    "register_description": "Create a JobBod account to share your goals and skills and connect with compatible teammates for student projects.",
+    "forgot_description": "Information about restoring access to your JobBod account.",
+    "user_description": "Manage your account, meet Bob AI and start building your student profile on JobBod.",
+    "privacy_description": "Learn how JobBod collects, uses and protects your account information, student profile and connection data.",
+    "terms_description": "Read the JobBod terms of service, community participation guidelines and responsibilities when sharing content and connecting with teammates.",
+    "cookies_description": "Learn about JobBod authentication cookies, language preferences and how to manage cookies while using our student connection platform.",
+    "share_image_alt": "JobBod – Find the right teammates and build real projects together."
 },
   "auth": {
     "login_title": "Log in to Jobbod",

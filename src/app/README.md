@@ -6,6 +6,10 @@ Folder `api/` dùng để khai báo API chạy trên Next.js server, làm lớp 
 
 Các trang và root layout nằm trong `[locale]/`, hỗ trợ `vi` và `en`. Proxy redirect các URL cũ sang URL có ngôn ngữ; API ở `/api/...` độc lập với ngôn ngữ. Favicon dùng `icon.png` và biểu tượng màn hình chính dùng `apple-icon.png`, cùng lấy từ logo robot mới. Xem [hướng dẫn i18n](../i18n/README.md).
 
+SEO: root layout khai báo metadataBase; mỗi page dùng `pageMetadata` với khóa trang từ [cấu hình SEO](../config/seo.ts). `/sitemap.xml` liệt kê 10 URL canonical Anh–Việt kèm hreflang; `/robots.txt` công khai sitemap và chặn crawl `/api/`. Các trang tài khoản có noindex; lỗi 404 giữ status và noindex mặc định của Next.js. Trang chủ xuất Organization/WebSite/WebPage bằng JSON-LD đã escape, không thêm rating hay thông tin doanh nghiệp chưa được xác nhận.
+
+Sau khi triển khai lên domain chính, gửi `https://jobbod.net/sitemap.xml` trong Google Search Console và dùng URL Inspection để kiểm tra `/vi`, `/en`. Việc xác minh sở hữu domain và gửi sitemap cần quyền tài khoản Search Console; không lưu mã xác minh hay token vào source nếu chưa được cung cấp.
+
 ## api/backend — Server proxy dùng chung
 
 `api/backend/[...path]/route.ts` nhận request từ giao diện rồi gọi API tương ứng trên backend Jobbod. `[...path]` nhận nhiều đoạn đường dẫn, nên không cần tạo một route Next.js riêng cho mỗi endpoint nghiệp vụ.

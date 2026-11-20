@@ -8,7 +8,7 @@ test("SSR sends localized content, metadata and favicon without requiring JavaSc
     const page = await context.newPage();
     await page.goto(`/${locale}`);
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
-    await expect(page).toHaveTitle("JobBod");
+    await expect(page).toHaveTitle(locale === "vi" ? "JobBod – Tìm đồng đội làm dự án cho sinh viên" : "JobBod – Find student teammates for real projects");
     await expect(page.locator("#hero-heading")).toContainText(heading);
     await expect(page.locator(".intro-loader-overlay")).not.toBeVisible();
     await page.goto(`/${locale}/about`);

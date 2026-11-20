@@ -5,4 +5,4 @@ export default function Page() {
   return <AuthScreen mode="register" copyright={<Copyright />} />;
 }
 
-export function generateMetadata() { return pageMetadata("register", "/register"); }
+export function generateMetadata() { return pageMetadata("register"); }

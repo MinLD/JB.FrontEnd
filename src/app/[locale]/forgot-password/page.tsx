@@ -5,4 +5,4 @@ export default function Page() {
   return <AuthScreen mode="forgot" copyright={<Copyright />} />;
 }
 
-export function generateMetadata() { return pageMetadata("forgot", "/forgot-password"); }
+export function generateMetadata() { return pageMetadata("forgot"); }

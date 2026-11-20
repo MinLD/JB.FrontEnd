@@ -8,4 +8,4 @@ export default async function Page() {
   return <AboutContent groups={getTeamGroups(await getLocale())} copyright={<Copyright />} />;
 }
 
-export function generateMetadata() { return pageMetadata("about", "/about"); }
+export function generateMetadata() { return pageMetadata("about"); }

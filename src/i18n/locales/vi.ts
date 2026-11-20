@@ -172,7 +172,7 @@ export const vi: TranslationDictionary = {
   },
   "metadata": {
     "description": "Đồng hành cùng sinh viên trong mọi dự án học tập và hành trình sự nghiệp.",
-    "home": "JobBod",
+    "home": "JobBod – Tìm đồng đội làm dự án cho sinh viên",
     "about": "Về chúng tôi",
     "login": "Đăng nhập",
     "register": "Đăng ký",
@@ -180,7 +180,17 @@ export const vi: TranslationDictionary = {
     "user": "Hồ sơ · 01 Làm quen với Bob",
     "terms": "Điều khoản sử dụng",
     "privacy": "Chính sách quyền riêng tư",
-    "cookies": "Chính sách Cookie"
+    "cookies": "Chính sách Cookie",
+    "home_description": "Tìm đồng đội làm đồ án, hackathon và dự án sinh viên cùng JobBod. Bob AI gợi ý kết nối theo mục tiêu, kỹ năng và lịch rảnh để cùng bắt đầu dự án thật.",
+    "about_description": "Tìm hiểu đội ngũ, sứ mệnh và câu chuyện JobBod: giúp sinh viên kết nối với đồng đội phù hợp, bổ trợ kỹ năng và cùng xây dựng những dự án có ý nghĩa.",
+    "login_description": "Đăng nhập JobBod để tiếp tục hành trình tìm đồng đội, quản lý hồ sơ và bắt đầu dự án cùng Bob AI.",
+    "register_description": "Tạo tài khoản JobBod để chia sẻ mục tiêu, kỹ năng và kết nối với những đồng đội phù hợp cho dự án sinh viên.",
+    "forgot_description": "Thông tin về việc khôi phục quyền truy cập tài khoản JobBod.",
+    "user_description": "Quản lý tài khoản, làm quen với Bob AI và bắt đầu xây dựng hồ sơ năng lực của bạn trên JobBod.",
+    "privacy_description": "Tìm hiểu cách JobBod thu thập, sử dụng và bảo vệ thông tin tài khoản, hồ sơ sinh viên và dữ liệu kết nối của bạn.",
+    "terms_description": "Đọc điều khoản sử dụng JobBod, nguyên tắc tham gia cộng đồng, chia sẻ nội dung và kết nối đồng đội có trách nhiệm.",
+    "cookies_description": "Tìm hiểu cookie xác thực, lựa chọn ngôn ngữ và cách quản lý cookie khi sử dụng nền tảng kết nối sinh viên JobBod.",
+    "share_image_alt": "JobBod – Tìm đúng đồng đội, cùng làm dự án thật."
 },
   "auth": {
     "login_title": "Đăng nhập Jobbod",
