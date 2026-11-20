@@ -1,4 +1,4 @@
-# JobBod
+# Jobbod
 
 Frontend dùng Next.js App Router, React, TypeScript và Tailwind CSS.
 Hiện có landing page, đăng nhập, đăng ký và trang tài khoản. Google login và quên mật khẩu chưa nối API.

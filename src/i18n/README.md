@@ -1,6 +1,6 @@
 # i18n
 
-Thư mục quản lý đa ngôn ngữ (quốc tế hóa) cho giao diện JobBod.
+Thư mục quản lý đa ngôn ngữ (quốc tế hóa) cho giao diện Jobbod.
 
 Hỗ trợ hai ngôn ngữ:
 - `vi`: Tiếng Việt (mặc định)

@@ -12,14 +12,14 @@ export interface FaqItem {
 }
 
 export const LANDING_FAQ: readonly FaqItem[] = [
-  { question: "JobBod ghép cặp người dùng như thế nào?", answer: "Bob đối chiếu mục tiêu, kỹ năng và lịch rảnh để gợi ý những người có thể bổ trợ cho nhau. Bạn xem lý do phù hợp và tự quyết định kết nối." },
-  { question: "JobBod hoạt động như thế nào?", answer: "Bạn chia sẻ mong muốn với Bob, tạo hồ sơ và xem gợi ý đồng đội. Khi tìm được người phù hợp, cả nhóm thống nhất cách trao đổi và bắt đầu dự án." },
+  { question: "Jobbod ghép cặp người dùng như thế nào?", answer: "Bob đối chiếu mục tiêu, kỹ năng và lịch rảnh để gợi ý những người có thể bổ trợ cho nhau. Bạn xem lý do phù hợp và tự quyết định kết nối." },
+  { question: "Jobbod hoạt động như thế nào?", answer: "Bạn chia sẻ mong muốn với Bob, tạo hồ sơ và xem gợi ý đồng đội. Khi tìm được người phù hợp, cả nhóm thống nhất cách trao đổi và bắt đầu dự án." },
   { question: "Tôi sẽ biết gì về người được ghép trước khi gặp gỡ?", answer: "Bạn có thể xem các thông tin hồ sơ được chia sẻ, như kỹ năng, mục tiêu và vai trò mong muốn. Hãy trao đổi thêm để hiểu nhau trước khi hẹn gặp." },
   { question: "Nếu tôi không thích người ghép cặp đó thì sao?", answer: "Bạn có thể bỏ qua đề xuất và tiếp tục tìm người khác. Chia sẻ thêm với Bob về điều bạn mong muốn để điều chỉnh tiêu chí phù hợp hơn." },
-  { question: "Ai sẽ tham gia?", answer: "JobBod hướng đến sinh viên muốn tìm đồng đội làm đồ án, tham gia hackathon, cuộc thi học thuật hoặc cùng xây dựng một dự án thực tế." },
+  { question: "Ai sẽ tham gia?", answer: "Jobbod hướng đến sinh viên muốn tìm đồng đội làm đồ án, tham gia hackathon, cuộc thi học thuật hoặc cùng xây dựng một dự án thực tế." },
   { question: "Nếu tôi không thể đến vào phút cuối thì sao?", answer: "Hãy báo sớm cho đồng đội và cùng thống nhất một lịch hẹn khác. Tôn trọng thời gian của nhau là bước đầu cho một nhóm làm việc tốt." },
   { question: "Thông thường mất bao lâu?", answer: "Bạn có thể bắt đầu bằng một cuộc trò chuyện ngắn với Bob. Thời gian tìm được đồng đội tùy vào nhu cầu, kỹ năng và lịch rảnh của những người tham gia." },
-  { question: "Nếu tôi không nhận được phản hồi từ JobBod thì sao?", answer: "Hãy kiểm tra lại thông tin hồ sơ, thông báo và các tiêu chí bạn đã chọn. Bạn có thể bổ sung kỹ năng hoặc mở rộng lịch rảnh để có thêm cơ hội kết nối." },
+  { question: "Nếu tôi không nhận được phản hồi từ Jobbod thì sao?", answer: "Hãy kiểm tra lại thông tin hồ sơ, thông báo và các tiêu chí bạn đã chọn. Bạn có thể bổ sung kỹ năng hoặc mở rộng lịch rảnh để có thêm cơ hội kết nối." },
   { question: "Các buổi gặp gỡ thường diễn ra ở đâu?", answer: "Các thành viên cùng chọn địa điểm thuận tiện, ưu tiên khuôn viên trường hoặc không gian công cộng. Bạn cũng có thể bắt đầu bằng một buổi trao đổi trực tuyến." },
   { question: "Bob giúp tôi làm gì?", answer: "Bob là trợ lý AI giúp bạn tạo hồ sơ từ cuộc trò chuyện, tìm đồng đội phù hợp và hỗ trợ sắp xếp kết nối theo quyền bạn cho phép." },
   { question: "Career DNA là gì?", answer: "Career DNA là hồ sơ năng lực tổng hợp kỹ năng, dự án đã tham gia, sản phẩm và đóng góp của bạn. Hồ sơ được bổ sung qua kết quả dự án và phản hồi từ đồng đội." },
@@ -27,14 +27,14 @@ export const LANDING_FAQ: readonly FaqItem[] = [
 ] as const;
 
 export const LANDING_FAQ_EN: readonly FaqItem[] = [
-  { question: "How does JobBod match users?", answer: "Bob compares goals, skills, and free schedules to suggest people who complement each other. You review the match reasons and decide whether to connect." },
-  { question: "How does JobBod work?", answer: "You share your aspirations with Bob, create a profile, and explore teammate recommendations. When you find the right people, the team agrees on how to collaborate and starts the project." },
+  { question: "How does Jobbod match users?", answer: "Bob compares goals, skills, and free schedules to suggest people who complement each other. You review the match reasons and decide whether to connect." },
+  { question: "How does Jobbod work?", answer: "You share your aspirations with Bob, create a profile, and explore teammate recommendations. When you find the right people, the team agrees on how to collaborate and starts the project." },
   { question: "What will I know about a match before meeting?", answer: "You can see shared profile details such as skills, goals, and desired roles. Reach out to chat and get to know each other before meeting up." },
   { question: "What if I don't like a suggested match?", answer: "You can simply skip the recommendation and keep exploring. Tell Bob more about your preferences to refine future match criteria." },
-  { question: "Who will participate?", answer: "JobBod is designed for students seeking teammates for course projects, hackathons, academic contests, or building real-world ventures together." },
+  { question: "Who will participate?", answer: "Jobbod is designed for students seeking teammates for course projects, hackathons, academic contests, or building real-world ventures together." },
   { question: "What if I can't make it at the last minute?", answer: "Notify your teammates promptly and reschedule. Respecting each other's time is the foundation of effective teamwork." },
   { question: "How long does it usually take?", answer: "You can get started with a brief chat with Bob. Finding teammates depends on your project needs, skill sets, and matching availability." },
-  { question: "What if I don't hear back from JobBod?", answer: "Review your profile details, notifications, and selected preferences. Adding more skills or expanding your schedule can unlock more connections." },
+  { question: "What if I don't hear back from Jobbod?", answer: "Review your profile details, notifications, and selected preferences. Adding more skills or expanding your schedule can unlock more connections." },
   { question: "Where do meetups typically take place?", answer: "Team members choose convenient spots, prioritizing campus areas or public spaces. You can also start with an online video call." },
   { question: "What does Bob help me do?", answer: "Bob is an AI assistant that builds your profile from a conversation, finds suitable teammates, and helps arrange connections within your chosen permissions." },
   { question: "What is Career DNA?", answer: "Career DNA is a comprehensive portfolio showcasing your verified skills, projects, deliverables, and contributions, updated with project results and peer feedback." },

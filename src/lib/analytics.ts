@@ -42,7 +42,7 @@ function pageDetails(pathname = window.location.pathname) {
   return page ? {
     page_location: `${SITE_ORIGIN}${page}`,
     page_referrer: referrerOrigin(document.referrer),
-    page_title: "JobBod",
+    page_title: "Jobbod",
     language: page.startsWith("/en") ? "en" : "vi",
   } : null;
 }

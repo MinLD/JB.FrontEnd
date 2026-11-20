@@ -35,18 +35,9 @@ export function AppHeader({
         <div className="flex items-center shrink-0">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md"
+            className="inline-flex items-center outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-md"
             aria-label={t("header.brand_aria")}
           >
-            <Image
-              src="/jobbod/brand-mark.png"
-              alt=""
-              width={32}
-              height={32}
-              sizes="32px"
-              preload
-              className="shrink-0 rounded-lg"
-            />
             <Image
               src="/jobbod/design/131-1677-imgWordmarkOutlines.svg"
               alt="Jobbod"

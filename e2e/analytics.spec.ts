@@ -50,7 +50,7 @@ test("declining never loads the tag; accepting then withdrawing stops it and rem
   const scripts: string[] = [];
   page.on("request", request => { if (request.url().includes("googletagmanager.com/gtag")) scripts.push(request.url()); });
   await page.goto("/vi");
-  await expect(page.getByRole("complementary", { name: "Giúp cải thiện JobBod" })).toBeVisible();
+  await expect(page.getByRole("complementary", { name: "Giúp cải thiện Jobbod" })).toBeVisible();
   expect(scripts).toEqual([]);
   await page.getByRole("button", { name: "Chỉ cần thiết", exact: true }).click();
   expect(await page.evaluate(key => localStorage.getItem(key), choiceKey)).toBe("denied");
@@ -115,7 +115,7 @@ test("mobile preferences are translated; locale navigation is measured once and 
   await configured(page);
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("/en/register");
-  const banner = page.getByRole("complementary", { name: "Help improve JobBod" });
+  const banner = page.getByRole("complementary", { name: "Help improve Jobbod" });
   await expect(banner).toBeVisible();
   await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await banner.screenshot({ path: testInfo.outputPath("analytics-mobile.png") });

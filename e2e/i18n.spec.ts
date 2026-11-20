@@ -8,11 +8,11 @@ test("SSR sends localized content, metadata and favicon without requiring JavaSc
     const page = await context.newPage();
     await page.goto(`/${locale}`);
     await expect(page.locator("html")).toHaveAttribute("lang", locale);
-    await expect(page).toHaveTitle(locale === "vi" ? "JobBod – Tìm đồng đội làm dự án cho sinh viên" : "JobBod – Find student teammates for real projects");
+    await expect(page).toHaveTitle(locale === "vi" ? "Jobbod – Tìm đồng đội làm dự án cho sinh viên" : "Jobbod – Find student teammates for real projects");
     await expect(page.locator("#hero-heading")).toContainText(heading);
     await expect(page.locator(".intro-loader-overlay")).not.toBeVisible();
     await page.goto(`/${locale}/about`);
-    await expect(page).toHaveTitle(`${title} | JobBod`);
+    await expect(page).toHaveTitle(`${title} | Jobbod`);
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute("href", /\/en\/about$/);
     const icon = await page.locator('link[rel="icon"]').getAttribute("href");
     expect(icon).toMatch(/^\/icon\.png\?/);
@@ -44,7 +44,7 @@ test("switching locale preserves the URL query and hash, persists on reload, and
     await page.goto(`/en/${route}`);
     await expect(page.getByRole("heading", { level: 1, name: heading, exact: true })).toBeVisible();
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
-    await expect(page).toHaveTitle(/JobBod$/);
+    await expect(page).toHaveTitle(/Jobbod$/);
   }
   await page.goto("/en/register");
   await page.getByRole("button", { name: "Create account", exact: true }).click();

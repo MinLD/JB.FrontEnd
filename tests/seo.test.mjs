@@ -56,7 +56,7 @@ test('sitemap contains only the ten canonical public URLs and robots lets crawle
 test('home schema uses verified organization data and safely embeds localized text', () => {
   const data = homeStructuredData('en', en);
   const [organization, website, page] = data['@graph'];
-  assert.equal(organization.name, 'JobBod');
+  assert.equal(organization.name, 'Jobbod');
   assert.equal(organization.logo.url, 'https://jobbod.net/jobbod/brand-mark.png');
   assert.equal(website['@id'], page.isPartOf['@id']);
   assert.equal(page.url, 'https://jobbod.net/en');

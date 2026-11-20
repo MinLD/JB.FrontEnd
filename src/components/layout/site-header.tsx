@@ -246,8 +246,7 @@ export function SiteHeader() {
   return (
     <header className={`site-header ${scrolled || open ? "header-scrolled" : ""}`} data-scrolled={scrolled || open}>
       <div className="header-bar">
-        <Link href="/" className="brand-link gap-3" id="header-brand-link" aria-label={t("header.brand_aria")}>
-          <Image src="/jobbod/brand-mark.png" alt="" width={36} height={36} sizes="36px" preload className="shrink-0 rounded-[10px]" />
+        <Link href="/" className="brand-link" id="header-brand-link" aria-label={t("header.brand_aria")}>
           <Image id="header-brand-logo" src="/jobbod/design/131-1677-imgWordmarkOutlines.svg" alt="Jobbod" width={88.538} height={18.697} priority />
         </Link>
 
@@ -320,8 +319,7 @@ export function SiteHeader() {
           aria-label={t("header.mobile_nav_aria")}
         >
           <div className="mobile-drawer-header">
-            <Link href="/" className="brand-link gap-3" onClick={() => setOpen(false)} aria-label={t("header.brand_aria")}>
-              <Image src="/jobbod/brand-mark.png" alt="" width={36} height={36} sizes="36px" className="shrink-0 rounded-[10px]" />
+            <Link href="/" className="brand-link" onClick={() => setOpen(false)} aria-label={t("header.brand_aria")}>
               <Image src="/jobbod/design/131-1677-imgWordmarkOutlines.svg" alt="Jobbod" width={88.538} height={18.697} />
             </Link>
             <button

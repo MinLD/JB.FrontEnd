@@ -1,6 +1,5 @@
 "use client";
 import { LocalizedLink as Link } from "@/components/layout/localized-link";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { Suspense, useEffect, type ReactNode } from "react";
 import { toast } from "sonner";
@@ -21,7 +20,7 @@ export function AuthScreen({ mode, copyright }: { mode: "login" | "register" | "
   useEffect(() => { if (!loading && user) router.replace(href("/user")); }, [loading, user, router, href]);
   const title = t(mode === "login" ? "auth.login_title" : mode === "register" ? "auth.register_title" : "auth.forgot_title");
   return <main className={`auth-page auth-${mode} frosted-background`} style={frostedBackgroundStyle}>
-    <Link href="/" className="auth-brand inline-flex items-center gap-2 sm:gap-3" aria-label={t("header.brand_aria")}><Image src="/jobbod/brand-mark.png" alt="" width={44} height={44} sizes="(min-width: 640px) 44px, 32px" preload className="h-8 w-8 shrink-0 rounded-[10px] sm:h-11 sm:w-11 sm:rounded-xl" /><DesignAsset name="authWordmark" priority /></Link>
+    <Link href="/" className="auth-brand inline-flex items-center" aria-label={t("header.brand_aria")}><DesignAsset name="authWordmark" priority /></Link>
     <div className="auth-language-switcher"><LanguageSwitcher /></div>
     <section className="auth-intro" aria-label={t("auth.intro_aria")}>
       <h2>{mode === "register" ? <>{t("auth.intro_profile")}<br />{t("auth.intro_bob")}<em>{t("auth.intro_match")}</em></> : <>{t("auth.intro_find")}<em>{t("auth.intro_teammates")}</em><br />{t("auth.intro_project")}</>}</h2>

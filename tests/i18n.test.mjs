@@ -99,8 +99,8 @@ test('getLandingFaq returns 12 questions and answers in corresponding locale', (
   assert.equal(viFaq.length, 12);
   assert.equal(enFaq.length, 12);
 
-  assert.equal(viFaq[0].question, 'JobBod ghép cặp người dùng như thế nào?');
-  assert.equal(enFaq[0].question, 'How does JobBod match users?');
+  assert.equal(viFaq[0].question, 'Jobbod ghép cặp người dùng như thế nào?');
+  assert.equal(enFaq[0].question, 'How does Jobbod match users?');
 
   for (let i = 0; i < 12; i++) {
     assert.ok(viFaq[i].question.length > 0 && viFaq[i].answer.length > 0);

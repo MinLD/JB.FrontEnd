@@ -3,7 +3,7 @@ import { localePath, SUPPORTED_LANGUAGES } from "../i18n/settings.ts";
 import type { Locale, TranslationDictionary } from "../i18n/types.ts";
 
 export const SITE_ORIGIN = "https://jobbod.net";
-export const SITE_NAME = "JobBod";
+export const SITE_NAME = "Jobbod";
 
 export const SEO_PAGES = {
   home: { path: "/", indexable: true },
