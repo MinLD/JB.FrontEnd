@@ -1,6 +1,14 @@
 import type { TranslationDictionary } from "../types.ts";
 
 export const en: TranslationDictionary = {
+  analytics: {
+    title: "Help improve JobBod",
+    description: "Allow Google Analytics to understand visits and improve your experience. You can change your choice at any time.",
+    learn_more: "Learn more",
+    accept: "Allow analytics",
+    decline: "Necessary only",
+    settings: "Privacy preferences",
+  },
   header: {
     brand_aria: "Jobbod — Home",
     main_nav_aria: "Main navigation",

@@ -11,6 +11,7 @@ import { Button } from "@/components/ui/button";
 import { AUTH_LIMITS, createAuthSchemas, type RegisterFields } from "@/lib/validations/auth";
 import { register } from "@/services/auth-service";
 import { AuthField, showValidationError } from "./auth-field";
+import { trackAnalytics } from "@/lib/analytics";
 
 export function RegisterForm() {
   const router = useRouter();
@@ -20,13 +21,16 @@ export function RegisterForm() {
   const form = useForm<RegisterFields>({ resolver: zodResolver(schemas.registerSchema), reValidateMode: "onChange", defaultValues: { full_name: "", email: "", password: "" } });
   const submit = form.handleSubmit(async values => {
     setError(null);
+    trackAnalytics("sign_up_attempt");
     const result = await register(values.full_name, values.email, values.password);
     if (!result.success) {
+      trackAnalytics("auth_error", { action: "register", error_type: "request_failed" });
       setError(authErrorMessage(result, t));
       toast.error(authErrorMessage(result, t), { id: "auth-request" });
       return;
     }
     form.reset();
+    trackAnalytics("sign_up");
     toast.success(t("auth.registered"), { id: "auth-register" });
     router.replace(href(`/login?email=${encodeURIComponent(values.email)}`));
   }, errors => showValidationError(errors, t("auth.check_fields")));

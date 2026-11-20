@@ -33,6 +33,8 @@ npm run dev
 
 Đặt URL backend tại `JOBBOD_API_URL`. Chạy `npm run check` để kiểm tra code.
 
+[Runbook Search Console và GA4](./src/config/README.md) hướng dẫn kích hoạt đo lường, kiểm tra chuyển đổi và theo dõi SEO. Analytics mặc định tắt khi chưa có cấu hình thật; khi bật, chỉ tải sau lựa chọn cho phép của người dùng.
+
 [Danh mục UI](./src/components/ui/README.md) ghi công dụng và cách dùng component; tự cập nhật khi chạy dev/build.
 
 ## Tích hợp repo

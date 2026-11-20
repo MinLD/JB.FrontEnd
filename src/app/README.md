@@ -10,6 +10,8 @@ SEO: root layout khai báo metadataBase; mỗi page dùng `pageMetadata` với k
 
 Sau khi triển khai lên domain chính, gửi `https://jobbod.net/sitemap.xml` trong Google Search Console và dùng URL Inspection để kiểm tra `/vi`, `/en`. Việc xác minh sở hữu domain và gửi sitemap cần quyền tài khoản Search Console; không lưu mã xác minh hay token vào source nếu chưa được cung cấp.
 
+Root layout hỗ trợ metadata xác minh Google qua `JOBBOD_GOOGLE_SITE_VERIFICATION` tại build. AnalyticsProvider tải cấu hình GA4 từ `/api/measurement` tại runtime, không làm các trang công khai mất static rendering. Route này dùng ApiResult và no-store, chỉ xuất ID công khai đã validate. [Runbook giai đoạn 2](../config/README.md) mô tả cấu hình, xác minh và giới hạn kiểm thử local.
+
 ## api/backend — Server proxy dùng chung
 
 `api/backend/[...path]/route.ts` nhận request từ giao diện rồi gọi API tương ứng trên backend Jobbod. `[...path]` nhận nhiều đoạn đường dẫn, nên không cần tạo một route Next.js riêng cho mỗi endpoint nghiệp vụ.

@@ -18,6 +18,7 @@ export const POLICIES = {
       { title: "Thông tin bạn cung cấp", text: "Khi tạo tài khoản, bạn cung cấp họ tên, email và thông tin đăng nhập. Khi sử dụng các tính năng hồ sơ, bạn có thể bổ sung kỹ năng, mục tiêu, lịch rảnh và nội dung dự án." },
       { title: "Thông tin được dùng để làm gì?", text: "JobBod sử dụng thông tin để quản lý tài khoản, duy trì phiên đăng nhập và hỗ trợ những tính năng kết nối bạn sử dụng. Chỉ chia sẻ thông tin cá nhân với người khác khi bạn thấy phù hợp." },
       { title: "Bảo vệ tài khoản", text: "Phiên đăng nhập được quản lý bằng cookie HttpOnly. Bạn nên giữ bí mật mật khẩu, đăng xuất trên thiết bị dùng chung và tránh đưa thông tin nhạy cảm vào hồ sơ công khai." },
+      { title: "Phân tích trải nghiệm tùy chọn", text: "Khi được cấu hình, JobBod chỉ tải Google Analytics sau khi bạn chọn cho phép phân tích. Các sự kiện do JobBod gửi gồm lượt xem trang, bắt đầu đăng ký, đăng ký hoặc đăng nhập thành công và loại lỗi cơ bản. Những sự kiện này không chứa họ tên, email, mật khẩu, nội dung form hay chi tiết lỗi; tham số truy vấn và phần neo của URL được loại bỏ. Google Analytics có thể dùng cookie để phân biệt lượt truy cập. Bạn có thể từ chối hoặc thay đổi lựa chọn qua nút Tùy chọn quyền riêng tư." },
       { title: "Lựa chọn của bạn", text: "Bạn có thể xem lại thông tin mình đã cung cấp và điều chỉnh các thông tin hồ sơ khi tính năng tương ứng khả dụng. Với yêu cầu hỗ trợ về dữ liệu, hãy liên hệ đội ngũ JobBod qua kênh hỗ trợ bạn đang sử dụng." },
     ],
   },
@@ -28,6 +29,7 @@ export const POLICIES = {
       { title: "Cookie là gì?", text: "Cookie là những dữ liệu nhỏ được trình duyệt lưu khi bạn sử dụng một trang web. Chúng giúp hệ thống nhận biết phiên làm việc giữa các lần truy cập." },
       { title: "Cookie nào đang được sử dụng?", text: "JobBod dùng cookie xác thực để duy trì và làm mới phiên đăng nhập. Lựa chọn “Ghi nhớ tôi” quyết định việc giữ phiên giữa các lần mở trình duyệt. Các cookie phiên được đặt bởi server và không cho JavaScript đọc trực tiếp." },
       { title: "Lựa chọn ngôn ngữ", text: "Cookie jobbod_lang ghi nhớ ngôn ngữ của bạn trong một năm. Lựa chọn này cũng được lưu trong localStorage để đồng bộ giữa các tab. Các URL theo ngôn ngữ vẫn hoạt động khi bộ nhớ này bị chặn." },
+      { title: "Phân tích tùy chọn", text: "Nếu Google Analytics được cấu hình và bạn đồng ý, dịch vụ này có thể đặt cookie _ga và _ga_* để đo lượt truy cập. Trước khi đồng ý hoặc khi từ chối, JobBod không tải mã phân tích. Lựa chọn được lưu tại localStorage với khóa jobbod_analytics_v1; bạn có thể thay đổi qua nút Tùy chọn quyền riêng tư. Khi rút lại sự đồng ý, JobBod dừng đo lường, xóa cookie phân tích do tích hợp này đặt và tải lại trang." },
       { title: "Bạn có thể quản lý thế nào?", text: "Bạn có thể đăng xuất hoặc xóa cookie trong cài đặt trình duyệt. Nếu chặn cookie xác thực, bạn có thể không đăng nhập được hoặc phải đăng nhập lại khi truy cập." },
     ],
   },
@@ -80,6 +82,10 @@ const POLICIES_EN: Record<PolicyKind, PolicyDocument> = {
         "text": "Login sessions are managed with HttpOnly cookies. Keep your password private, log out on shared devices, and avoid including sensitive information in your public profile."
       },
       {
+        "title": "Optional experience analytics",
+        "text": "When configured, JobBod loads Google Analytics only after you allow analytics. Events sent by JobBod include page views, registration attempts, successful registrations or logins, and basic error categories. These events do not include your name, email, password, form contents or error details; URL query parameters and fragments are removed. Google Analytics may use cookies to distinguish visits. You can decline or change your choice using Privacy preferences."
+      },
+      {
         "title": "Your choices",
         "text": "You can review the information you have provided and update your profile when the corresponding features are available. For requests about your data, contact the JobBod team through the support channel you use."
       }
@@ -100,6 +106,10 @@ const POLICIES_EN: Record<PolicyKind, PolicyDocument> = {
       {
         "title": "Language preferences",
         "text": "The jobbod_lang cookie remembers your language for one year. This preference is also stored in localStorage to synchronize language changes across tabs. Language-specific URLs work even when this storage is blocked."
+      },
+      {
+        "title": "Optional analytics",
+        "text": "If Google Analytics is configured and you agree, it may set _ga and _ga_* cookies to measure visits. JobBod does not load analytics before you agree or when you decline. Your choice is stored in localStorage under jobbod_analytics_v1 and can be changed using Privacy preferences. Withdrawing consent stops measurement, removes analytics cookies set by this integration and reloads the page."
       },
       {
         "title": "How you can manage cookies",

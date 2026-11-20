@@ -14,6 +14,7 @@ import { createAuthSchemas, type LoginFields } from "@/lib/validations/auth";
 import { login } from "@/services/auth-service";
 import { useAuth } from "@/providers/auth-provider";
 import { AuthField, showValidationError } from "./auth-field";
+import { trackAnalytics } from "@/lib/analytics";
 
 export function LoginForm() {
   const router = useRouter();
@@ -33,16 +34,19 @@ export function LoginForm() {
     setError(null);
     const result = await login(values.email, values.password, remember);
     if (!result.success) {
+      trackAnalytics("auth_error", { action: "login", error_type: "request_failed" });
       setError(authErrorMessage(result, t));
       toast.error(authErrorMessage(result, t), { id: "auth-request" });
       return;
     }
     const session = await reload();
     if (!session.success) {
+      trackAnalytics("auth_error", { action: "login", error_type: "session_failed" });
       setError(authErrorMessage(session, t));
       toast.error(authErrorMessage(session, t), { id: "auth-request" });
       return;
     }
+    trackAnalytics("login");
     router.replace(href("/user"));
   }, errors => showValidationError(errors, t("auth.check_fields")));
   return <form onSubmit={submit} className="auth-form" noValidate>

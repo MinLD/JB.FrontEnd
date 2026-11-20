@@ -10,6 +10,8 @@ Chỉ dùng ba hàm sau khi viết chức năng gọi API:
 
 Cả ba dùng cùng đường dẫn backend, ví dụ `/api/profile/me`, và nhận body là object JSON. clientApi tự chuyển request qua Next.js proxy; serverApi/serverActionApi gọi backend trực tiếp bằng session cookie.
 
+Ngoại lệ frontend công khai: `clientApi("/api/measurement")` gọi trực tiếp route cấu hình đo lường của Next.js, không chuyển tiếp đến backend. Route chỉ trả GA4 Measurement ID công khai hoặc null, không trả biến môi trường khác và không gọi API tài khoản.
+
 Mọi kết quả đều là `ApiResult<T>` từ types/api.ts:
 
 ```ts

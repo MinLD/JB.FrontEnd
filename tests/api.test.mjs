@@ -55,6 +55,14 @@ test('client, SSR and Server Action use the same paths/result and serialize body
   assert.equal(new Headers(calls[2].options.headers).get('cookie'), null);
 });
 
+test('public measurement configuration stays on the frontend and does not forward to the backend', async () => {
+  const calls = [];
+  globalThis.fetch = async (url, options) => { calls.push({ url, options }); return envelope({ measurementId: null }); };
+  assertResult(await clientApi('/api/measurement'), true, 200);
+  assert.equal(calls[0].url, '/api/measurement');
+  assert.equal(new Headers(calls[0].options.headers).get('Authorization'), null);
+});
+
 test('expected API/network/JSON errors return results rather than rejecting promises', async () => {
   cookieStore({ accessToken: jwt() });
   for (const call of [() => clientApi('/api/profile/me'), () => serverApi('/api/profile/me'), () => serverActionApi('/api/profile/me')]) {

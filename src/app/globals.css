@@ -64,6 +64,14 @@ a { text-decoration: none; }
 button { cursor: pointer; }
 button:disabled { cursor: not-allowed; }
 :focus-visible { outline: 2px solid var(--ring); outline-offset: 4px; }
+.analytics-banner { position: fixed; z-index: 80; bottom: max(16px, env(safe-area-inset-bottom)); left: 16px; width: min(480px, calc(100% - 32px)); padding: 20px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); box-shadow: 0 8px 32px rgb(var(--shadow) / .12); }
+.analytics-banner h2 { margin: 0 0 8px; font-size: 16px; }
+.analytics-banner p { margin: 0; color: var(--text-secondary); font-size: 14px; line-height: 1.6; }
+.analytics-banner a { color: var(--foreground); text-decoration: underline; }
+.analytics-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.analytics-actions button { flex: 1; min-width: 160px; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--secondary); color: var(--foreground); font-size: 14px; }
+.analytics-actions button:last-child { background: var(--primary); color: var(--primary-foreground); border-color: var(--primary); }
+.analytics-settings { position: fixed; z-index: 60; bottom: max(12px, env(safe-area-inset-bottom)); left: 12px; padding: 8px 12px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); color: var(--foreground); font-size: 12px; }
 em { font-family: var(--font-lora), Georgia, serif; font-weight: 400; color: var(--gold-ink); }
 .page-container { width: min(1134px, calc(100% - 96px)); margin-inline: auto; }
 .landing-main, .site-footer { --gold-ink: var(--primary); --footer-gold: var(--primary); }

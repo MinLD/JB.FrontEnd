@@ -1,6 +1,14 @@
 import type { TranslationDictionary } from "../types.ts";
 
 export const vi: TranslationDictionary = {
+  analytics: {
+    title: "Giúp cải thiện JobBod",
+    description: "Cho phép dùng Google Analytics để hiểu lượt truy cập và cải thiện trải nghiệm. Bạn có thể thay đổi lựa chọn bất cứ lúc nào.",
+    learn_more: "Tìm hiểu thêm",
+    accept: "Cho phép phân tích",
+    decline: "Chỉ cần thiết",
+    settings: "Tùy chọn quyền riêng tư",
+  },
   header: {
     brand_aria: "Jobbod — Trang chủ",
     main_nav_aria: "Điều hướng chính",

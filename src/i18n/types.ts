@@ -301,6 +301,7 @@ export type AccessibilityTranslations = {
 };
 
 export type TranslationDictionary = {
+  analytics: { title: string; description: string; learn_more: string; accept: string; decline: string; settings: string };
   accessibility: AccessibilityTranslations;
   onboarding: OnboardingTranslations;
   auth: AuthTranslations;
