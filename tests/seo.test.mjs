@@ -46,7 +46,6 @@ test('sitemap contains only the ten canonical public URLs and robots lets crawle
   assert.equal(new Set(sitemap.map(entry => entry.url)).size, 10);
   for (const entry of sitemap) {
     assert.equal(entry.lastModified, undefined, 'Do not invent modification dates at build time');
-    assert.ok(Object.values(entry.alternates.languages).includes(entry.url));
   }
   const robots = createRobots();
   assert.equal(robots.sitemap, 'https://jobbod.net/sitemap.xml');

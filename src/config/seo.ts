@@ -69,7 +69,6 @@ export function createSitemap(): MetadataRoute.Sitemap {
   return Object.values(SEO_PAGES).filter(page => page.indexable).flatMap(page =>
     SUPPORTED_LANGUAGES.map(language => ({
       url: absoluteUrl(localePath(page.path, language.code)),
-      alternates: { languages: languageAlternates(page.path) },
     })),
   );
 }
